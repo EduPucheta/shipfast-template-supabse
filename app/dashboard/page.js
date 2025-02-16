@@ -17,6 +17,8 @@ export default async function Dashboard() {
     <>
       {" "}
       <Header />
+
+      <div>Helo!</div>
       <TableReviews />
     </>
   );
