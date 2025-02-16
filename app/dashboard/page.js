@@ -3,7 +3,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import ButtonAccount from "@/components/ButtonAccount";
 export const dynamic = "force-dynamic";
 import OptionComponent from "./OptionCompoent";
-import UserSurvey from "./UserSurvey";
+
 import Header from "@/components/Header";
 import TableReviews from "@/components/TableReviews";
 
