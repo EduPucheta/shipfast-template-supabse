@@ -79,7 +79,8 @@ const TableReviews = () => {
           >
             <div className=" px-4 text-2xl font-bold">{review.rating}</div>
             <div className="flex flex-col justify-end items-end ">
-              <div className="py-2  font-semibold">"{review.review}"</div>
+              <div className="py-2  font-semibold">{`"${review.review}"`}
+              </div>
               <small>
                 {format(new Date(review.created_at), "MMMM dd, yyyy HH:mm")}
               </small>
