@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Zap } from "lucide-react";
 import Image from "next/image";
 
-const HeroSection = () => {
+const HeroSection = () => { 
   return (
     <div className="bg-[#212121] min-h-screen flex items-center px-4 sm:px-6 md:px-8 lg:px-12">
       <div className="max-w-7xl w-full mx-auto py-16 flex flex-col lg:flex-row justify-between items-center">
@@ -21,7 +21,7 @@ const HeroSection = () => {
             Start colleting feedback
             <br />
             now,{" "}
-            <span className="bg-[#CFCFCF] text-[#2E1A05] px-2">don't wait</span>
+            <span className="bg-[#CFCFCF] text-[#2E1A05] px-2">dont wait</span>
           </h1>
 
           <p className="text-base text-[#CFCFCF] mb-8 max-w-2xl mx-auto lg:mx-0">
