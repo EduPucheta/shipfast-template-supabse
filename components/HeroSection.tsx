@@ -18,16 +18,18 @@ const HeroSection = () => {
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 text-[#CFCFCF] leading-tight">
-            Ship your startup
+            Start colleting feedback
             <br />
-            in days,{" "}
-            <span className="bg-[#CFCFCF] text-[#2E1A05] px-2">not weeks</span>
+            now,{" "}
+            <span className="bg-[#CFCFCF] text-[#2E1A05] px-2">don't wait</span>
           </h1>
 
           <p className="text-base text-[#CFCFCF] mb-8 max-w-2xl mx-auto lg:mx-0">
-            Tired of wasting time on setup instead of building? ShipFree is the
-            fastest way to launch your SaaS, AI tool, or web app—for free. No
-            setup headaches, no paywalls—just build and ship!
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laborum
+            est, perspiciatis nisi assumenda cum reprehenderit cumque laboriosam
+            earum doloribus tempore dolor, veritatis aliquid ipsam eum nihil
+            possimus excepturi in asperiores! Natus quibusdam quos laboriosam.
+            Asperiores eos esse culpa labore volupt
           </p>
 
           <Link

@@ -65,7 +65,7 @@ const config = {
           process.env.NODE_ENV === "development"
             ? "price_1O5KtcAxyNprDp7iftKnrrpw"
             : "price_456",
-        name: "Advanced",
+        name: "Entreprise",
         description: "You need more power",
         price: 99,
         priceAnchor: 149,
