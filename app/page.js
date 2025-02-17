@@ -1,5 +1,4 @@
-import Link from "next/link";
-import ButtonSignin from "@/components/ButtonSignin";
+
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import Pricing from "@/components/Pricing";

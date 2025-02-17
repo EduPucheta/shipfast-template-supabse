@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import ButtonAccount from "@/components/ButtonAccount";
+
 export const dynamic = "force-dynamic";
 
 
@@ -12,7 +12,7 @@ import TableReviews from "@/components/TableReviews";
 // It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
 // See https://shipfa.st/docs/tutorials/private-page
 export default async function Dashboard() {
-  const supabase = createServerComponentClient({ cookies });
+
   return (
     <>
       {" "}
