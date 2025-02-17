@@ -7,8 +7,8 @@ import { useRef, useState } from "react";
 
 const faqList = [
   {
-    question: "What do I get exactly?",
-    answer: <div className="space-y-2 leading-relaxed">A Quick way to create polls</div>,
+    question: "What happens after I reach 1,000 respones?",
+    answer: <div className="space-y-2 leading-relaxed">The upcoming responses will be blured out until you make the payment</div>,
   },
   {
     question: "Can I get a refund?",
