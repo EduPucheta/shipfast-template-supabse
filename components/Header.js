@@ -9,6 +9,8 @@ import logo from "@/app/icon.png";
 import config from "@/config";
 
 const links = [
+  { label: "Pricing", href: "/pricing" },
+  { label: "Features", href: "/features" },
 ];
 
 const cta = <ButtonSignin extraStyle="btn-primary" />;

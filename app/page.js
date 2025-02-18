@@ -19,6 +19,6 @@ export default function Page() {
         <CTA/>
         <Footer/>
       </div>
-    </>
+    </> 
   );
 }

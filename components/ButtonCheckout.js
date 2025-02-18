@@ -8,7 +8,7 @@ import config from "@/config";
 // It calls the /api/stripe/create-checkout route with the priceId, successUrl and cancelUrl
 // Users must be authenticated. It will prefill the Checkout data with their email and/or credit card (if any)
 // You can also change the mode to "subscription" if you want to create a subscription instead of a one-time payment
-const ButtonCheckout = ({ priceId, mode = "payment" }) => {
+const ButtonCheckout = ({ priceId, mode = "subscription" }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handlePayment = async () => {
