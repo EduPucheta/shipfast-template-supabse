@@ -6,7 +6,7 @@ import logo from "@/app/icon.png";
 // Add the Footer to the bottom of your landing page and more.
 // The support link is connected to the config.js file. If there's no config.mailgun.supportEmail, the link won't be displayed.
 
-const Footer = () => {
+const Footer = () => { 
   return (
     <footer className="bg-base-200 border-t border-base-content/10">
       <div className="max-w-7xl mx-auto px-8 py-24">

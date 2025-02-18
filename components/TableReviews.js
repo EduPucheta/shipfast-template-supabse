@@ -3,20 +3,39 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClientComponentClient();
 import { format } from "date-fns";
 
 const TableReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [userId, setUserId] = useState(null);
+
   useEffect(() => {
+    const getUser = async () => {
+      const { data } = await supabase.auth.getUser();
+
+      console.log(data.user);
+
+      setUserId(data.user.id);
+    };
+
+    getUser();
+  }, [supabase]);
+
+  useEffect(() => {
+
+    if (!userId) return; // Only fetch if userId is available
+
     const fetchReviews = async () => {
       try {
-        const { data, error } = await supabase.from("reviews").select("*");
+        const { data, error } = await supabase
+          .from("reviews")
+          .select("*")
+          .eq("user_id", userId);
 
         if (error) {
           console.error("Error fetching reviews:", error);
@@ -31,7 +50,7 @@ const TableReviews = () => {
     };
 
     fetchReviews();
-  }, []);
+  }, [userId]);
 
   if (loading) {
     return (

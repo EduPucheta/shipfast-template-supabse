@@ -82,7 +82,7 @@ const HeroSection = () => {
         </div>
         <div className="w-full lg:w-2/5 flex justify-center lg:justify-end">
           <Image
-            src="/techstack.svg"
+            src="/Screenshot_154.png"
             alt="Tech Stack"
             width={500}
             height={500}

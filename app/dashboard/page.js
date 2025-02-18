@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import TableReviews from "@/components/TableReviews";
 import SurveyNav from "@/components/SurveyNav";
 import MetricSummary from "@/components/MetricSummary";
+import HeaderDashboard from "@/components/HeaderDahsboard";
 
 // This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
 // It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
@@ -15,7 +16,8 @@ export default async function Dashboard() {
   return (
     <>
       {" "}
-      <Header />
+      <HeaderDashboard />
+
       <div className="container bg-base-100 max-w-[50%] flex justify-center items-start flex-row mx-auto gap-6 p-6">
         <SurveyNav />
         <div>
