@@ -64,9 +64,9 @@ const SurveyNav = () => {
 
   return (
     <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 ">
-      {reviews.map((title, index) => (
+      {reviews.map((title) => (
         <li>
-          <a key={index}>{title}</a>
+          <a key={title}>{title}</a>
         </li>
       ))}
     </ul>
