@@ -31,8 +31,8 @@ const SurveyNav = () => {
     const fetchReviews = async () => {
       try {
         const { data, error } = await supabase
-          .from("reviews")
-          .select("surveys(survey_title)")
+          .from("surveys")
+          .select("survey_title")
           .eq("user_id", userId);
 
         if (error) {
@@ -40,7 +40,7 @@ const SurveyNav = () => {
         } else {
           // Extract and deduplicate survey titles
           const uniqueSurveys = Array.from(
-            new Set(data.map((review) => review.surveys.survey_title))
+            new Set(data.map((review) => review.survey_title))
           );
           setReviews(uniqueSurveys);
         }
@@ -56,7 +56,7 @@ const SurveyNav = () => {
 
   if (loading) {
     return (
-      <div className="flex w-full h-full min-h-28 justify-center items-center mt-5">
+      <div className="flex min-h-28 justify-center h-20 w-80 items-center mt-5">
         <span className="loading loading-spinner loading-md"></span>
       </div>
     );

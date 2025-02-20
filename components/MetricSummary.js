@@ -54,7 +54,7 @@ const Table = () => {
 
   if (loading) {
     return (
-      <div className="flex h-full w-full justify-center items-center mt-5 min-h-28">
+      <div className="flex w-full justify-center items-center mt-5 h-28">
         <span className="loading loading-spinner loading-md"></span>
       </div>
     );

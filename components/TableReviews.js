@@ -54,7 +54,7 @@ const TableReviews = () => {
 
   if (loading) {
     return (
-      <div className="flex w-full h-full min-h-28 justify-center items-center mt-5 ">
+      <div className="flex w-full h-52 justify-center items-center mt-5 ">
         <span className="loading loading-spinner loading-md"></span>
       </div>
     );
