@@ -5,14 +5,52 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const supabase = createClientComponentClient();
 
-const themeOptions = ["Cupcake", "Light", "Dark"];
+const themeOptions = [
+  "light",
+  "dark",
+  "cupcake",
+  "bumblebee",
+  "emerald",
+  "corporate",
+  "synthwave",
+  "retro",
+  "cyberpunk",
+  "valentine",
+  "halloween",
+  "garden",
+  "forest",
+  "aqua",
+  "lofi",
+  "pastel",
+  "fantasy",
+  "wireframe",
+  "black",
+  "luxury",
+  "dracula",
+  "cmyk",
+  "autumn",
+  "business",
+  "acid",
+  "lemonade",
+  "night",
+  "coffee",
+  "winter",
+  "dim",
+  "nord",
+  "sunset",
+];
 const reactionOptions = ["Stars", "Hearts", "Emojis"];
 
-const CreateSurvey = ({ question1, setQuestion1 }) => {
+const CreateSurvey = ({
+  question1,
+  setQuestion1,
+  surveyTheme,
+  setSurveyTheme,
+  reactionType,
+  setreactionType,
+}) => {
   const [surveyTitle, setSurveyTitle] = useState("");
   const [surveyDescription, setDescription] = useState("");
-  const [surveyTheme, setSurveyTheme] = useState("");
-  const [reactionType, setreactionType] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -34,7 +72,7 @@ const CreateSurvey = ({ question1, setQuestion1 }) => {
     setLoading(true);
     setError(null);
 
-    const { data, error } = await supabase.from("surveys").insert([
+    const { error } = await supabase.from("surveys").insert([
       {
         survey_title: surveyTitle,
         survey_description: surveyDescription,
@@ -52,78 +90,126 @@ const CreateSurvey = ({ question1, setQuestion1 }) => {
       setDescription("");
       setSurveyTheme("");
       setreactionType("");
-      setQuestion1("How would you rate your experience?"); // Reset to default or empty string as needed
+      setQuestion1("How would you rate your experience?");
       alert("Survey created successfully!");
     }
     setLoading(false);
   };
 
   return (
-    <div className="card bg-base-200 w-full max-w-sm shrink-0 shadow-xl">
+    <div className="card bg-base-200 shadow-xl min-w-[500px] ">
       <div className="card-body">
-        <h2 className="text-xl font-bold text-center">Create a New Survey</h2>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Name (Internal)</span>
-          </label>
-          <input
-            type="text"
-            placeholder="Enter survey name"
-            className="input input-bordered"
-            value={surveyTitle}
-            onChange={(e) => setSurveyTitle(e.target.value)}
-            required
-          />
-          <label className="label">
-            <span className="label-text">Description (Internal)</span>
-          </label>
-          <input
-            type="text"
-            placeholder="Enter survey description"
-            className="input input-bordered"
-            value={surveyDescription}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <label className="label">
-            <span className="label-text">Theme Picker (Required)</span>
-          </label>
-          <select
-            className="select select-bordered"
-            value={surveyTheme}
-            onChange={(e) => setSurveyTheme(e.target.value)}
-            required
-          >
-            <option value="" disabled>Select a theme</option>
-            {themeOptions.map((theme) => (
-              <option key={theme} value={theme}>{theme}</option>
-            ))}
-          </select>
-          <label className="label">
-            <span className="label-text">Reaction Type</span>
-          </label>
-          <select
-            className="select select-bordered"
-            value={reactionType}
-            onChange={(e) => setreactionType(e.target.value)}
-            required
-          >
-            <option value="" disabled>Select a reaction type</option>
-            {reactionOptions.map((reaction) => (
-              <option key={reaction} value={reaction}>{reaction}</option>
-            ))}
-          </select>
-          <label className="label">
-            <span className="label-text">Question 1 (Required)</span>
-          </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            value={question1}
-            onChange={(e) => setQuestion1(e.target.value)}
-            required
-          />
+        <h2 className="text-xl font-bold text-center mb-4">Create a New Survey</h2>
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+        {/* Accordion Layout using DaisyUI's official component */}
+        <div className="space-y-4">
+          {/* Step 1: Survey Information */}
+          <details className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
+            <summary className="collapse-title text-base font-medium">
+              Step 1: Survey Information
+            </summary>
+            <div className="collapse-content">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Name (Internal)</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter survey name"
+                  className="input input-bordered"
+                  value={surveyTitle}
+                  onChange={(e) => setSurveyTitle(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-control mt-2">
+                <label className="label">
+                  <span className="label-text">Description (Internal)</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter survey description"
+                  className="input input-bordered"
+                  value={surveyDescription}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+            </div>
+          </details>
+          {/* Step 2: Survey Questions */}
+          <details className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
+            <summary className="collapse-title text-base font-medium">
+              Step 2: Survey Questions
+            </summary>
+            <div className="collapse-content">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Question 1 (Required)</span>
+                </label>
+                <input
+                  type="text"
+                  className="input input-bordered"
+                  value={question1}
+                  onChange={(e) => setQuestion1(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+          </details>
+          {/* Step 3: Survey Customization */}
+          <details className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
+            <summary className="collapse-title text-base font-medium">
+              Step 3: Survey Customization
+            </summary>
+            <div className="collapse-content">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Theme Picker (Required)</span>
+                </label>
+                <select
+                  className="select select-bordered"
+                  value={surveyTheme}
+                  onChange={(e) => setSurveyTheme(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>
+                    Select a theme
+                  </option>
+                  {themeOptions.map((theme) => (
+                    <option key={theme} value={theme}>
+                      {theme}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-control mt-2">
+                <label className="label">
+                  <span className="label-text">Reaction Type</span>
+                </label>
+                <select
+                  className="select select-bordered"
+                  value={reactionType}
+                  onChange={(e) => setreactionType(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>
+                    Select a reaction type
+                  </option>
+                  {reactionOptions.map((reaction) => (
+                    <option key={reaction} value={reaction}>
+                      {reaction}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </details>
+
+
         </div>
+
+        {/* Submission Button */}
         <div className="form-control mt-6">
           <button
             className="btn btn-primary"
