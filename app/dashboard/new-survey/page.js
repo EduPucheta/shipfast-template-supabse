@@ -1,8 +1,11 @@
 
+import CreateSurvey from "@/components/CreateSurvey";
+
 export default async function NewSurveyPage() {
   return (
-    <div>
-      <h1 className="flex py-8 justify-center items-center">New Survey</h1>
+    <div className=" mx-auto p-6 flex flex-col justify-center items-center gap-6">
+     
+      <CreateSurvey />
     </div>
   );
 }
