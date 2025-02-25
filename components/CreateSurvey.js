@@ -5,12 +5,14 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const supabase = createClientComponentClient();
 
-const CreateSurvey = () => {
+const themeOptions = ["Cupcake", "Light", "Dark"];
+const reactionOptions = ["Stars", "Hearts", "Emojis"];
+
+const CreateSurvey = ({ question1, setQuestion1 }) => {
   const [surveyTitle, setSurveyTitle] = useState("");
   const [surveyDescription, setDescription] = useState("");
-  const [surveyCategory, setSurveyCategory] = useState("");
-  const [targetAudience, setTargetAudience] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
+  const [surveyTheme, setSurveyTheme] = useState("");
+  const [reactionType, setreactionType] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -25,8 +27,8 @@ const CreateSurvey = () => {
   }, []);
 
   const handleCreateSurvey = async () => {
-    if (!surveyTitle.trim() || !surveyCategory.trim()) {
-      setError("Survey title and category are required.");
+    if (!surveyTitle.trim() || !surveyTheme || !question1.trim()) {
+      setError("Survey title, theme, and at least one question are required.");
       return;
     }
     setLoading(true);
@@ -36,9 +38,9 @@ const CreateSurvey = () => {
       {
         survey_title: surveyTitle,
         survey_description: surveyDescription,
-        survey_category: surveyCategory,
-        target_audience: targetAudience,
-        expiration_date: expirationDate,
+        survey_theme: surveyTheme,
+        reactionType: reactionType,
+        question1: question1,
         user_id: userId,
       },
     ]);
@@ -48,9 +50,9 @@ const CreateSurvey = () => {
     } else {
       setSurveyTitle("");
       setDescription("");
-      setSurveyCategory("");
-      setTargetAudience("");
-      setExpirationDate("");
+      setSurveyTheme("");
+      setreactionType("");
+      setQuestion1("How would you rate your experience?"); // Reset to default or empty string as needed
       alert("Survey created successfully!");
     }
     setLoading(false);
@@ -84,34 +86,42 @@ const CreateSurvey = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
           <label className="label">
-            <span className="label-text">Category (Required)</span>
+            <span className="label-text">Theme Picker (Required)</span>
           </label>
-          <input
-            type="text"
-            placeholder="Enter survey category"
-            className="input input-bordered"
-            value={surveyCategory}
-            onChange={(e) => setSurveyCategory(e.target.value)}
+          <select
+            className="select select-bordered"
+            value={surveyTheme}
+            onChange={(e) => setSurveyTheme(e.target.value)}
             required
-          />
+          >
+            <option value="" disabled>Select a theme</option>
+            {themeOptions.map((theme) => (
+              <option key={theme} value={theme}>{theme}</option>
+            ))}
+          </select>
           <label className="label">
-            <span className="label-text">Target Audience</span>
+            <span className="label-text">Reaction Type</span>
+          </label>
+          <select
+            className="select select-bordered"
+            value={reactionType}
+            onChange={(e) => setreactionType(e.target.value)}
+            required
+          >
+            <option value="" disabled>Select a reaction type</option>
+            {reactionOptions.map((reaction) => (
+              <option key={reaction} value={reaction}>{reaction}</option>
+            ))}
+          </select>
+          <label className="label">
+            <span className="label-text">Question 1 (Required)</span>
           </label>
           <input
             type="text"
-            placeholder="Enter target audience"
             className="input input-bordered"
-            value={targetAudience}
-            onChange={(e) => setTargetAudience(e.target.value)}
-          />
-          <label className="label">
-            <span className="label-text">Expiration Date</span>
-          </label>
-          <input
-            type="date"
-            className="input input-bordered"
-            value={expirationDate}
-            onChange={(e) => setExpirationDate(e.target.value)}
+            value={question1}
+            onChange={(e) => setQuestion1(e.target.value)}
+            required
           />
         </div>
         <div className="form-control mt-6">
