@@ -1,5 +1,5 @@
 import { supabase } from "../../../libs/supabase";
-import DisplaySurvey from "@/components/DisplaySurvey";
+import PreviewSurvey from "@/components/PreviewSurvey";
 
 async function getSurvey(id) {
   const { data, error } = await supabase
@@ -18,7 +18,7 @@ export default async function Survey({ params }) {
     <div>
       <h1>Survey ID: {survey.survey_title}</h1>
       <div>
-        <DisplaySurvey />
+        <PreviewSurvey />
       </div>
     </div>
   );

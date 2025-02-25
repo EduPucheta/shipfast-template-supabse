@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import CreateSurvey from "@/components/CreateSurvey";
-import DisplaySurvey from "@/components/DisplaySurvey";
+import PreviewSurvey from "@/components/PreviewSurvey";
 
 export default function NewSurveyPage() {
   // Lifted state for question1
@@ -10,9 +10,9 @@ export default function NewSurveyPage() {
   const [reactionType, setreactionType] = useState("Stars");
 
   return (
-    <div className="mx-auto p-6 flex flex-row justify-center items-start gap-10">
+    <div className="mx-auto p-6 flex flex-row justify-center items-start gap-14">
       <CreateSurvey question1={question1} setQuestion1={setQuestion1} surveyTheme={surveyTheme} setSurveyTheme={setSurveyTheme} reactionType={reactionType} setreactionType={setreactionType}  />
-      <DisplaySurvey question1={question1} surveyTheme={surveyTheme} reactionType={reactionType} />
+      <PreviewSurvey question1={question1} surveyTheme={surveyTheme} reactionType={reactionType} />
     </div>
   );
 }
