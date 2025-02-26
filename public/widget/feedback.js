@@ -52,7 +52,7 @@
   
         document.getElementById("submitFeedback").onclick = () => {
           const feedback = document.getElementById("feedbackText").value;
-          fetch("https://yourdomain.com/api/feedback", {
+          fetch("https://shipfast-template-supabse-k6pc.vercel.app/api/feedback", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ projectId: this.projectId, feedback }),
