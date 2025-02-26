@@ -9,10 +9,12 @@
         }
   
         this.projectId = projectId;
-        this.createButton();
+        document.addEventListener("DOMContentLoaded", this.createButton.bind(this));
       },
   
       createButton: function () {
+        if (!document.body) return;
+  
         const button = document.createElement("button");
         button.innerText = "Give Feedback";
         button.style.position = "fixed";
@@ -52,7 +54,7 @@
   
         document.getElementById("submitFeedback").onclick = () => {
           const feedback = document.getElementById("feedbackText").value;
-          fetch("https://shipfast-template-supabse-k6pc.vercel.app/api/feedback", {
+          fetch("https://yourdomain.com/api/feedback", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ projectId: this.projectId, feedback }),
