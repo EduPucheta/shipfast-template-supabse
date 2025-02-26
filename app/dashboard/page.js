@@ -22,9 +22,6 @@ export default async function Dashboard() {
             Create new survey
           </Link>
           <SurveyNav />
-
-          <MetricSummary />
-          <TableReviews />
         </div>
       </div>
     </>

@@ -8,7 +8,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 const supabase = createClientComponentClient();
 import { format } from "date-fns";
 
-const TableReviews = () => {
+const TableReviews = ({id}) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,8 +35,11 @@ const TableReviews = () => {
         const { data, error } = await supabase
           .from("reviews")
           .select("*")
-          .eq("user_id", userId);
+          
+          .eq("survey", id.surveyID);
 
+
+        console.log("Survey: ", id.surveyID);
         if (error) {
           console.error("Error fetching reviews:", error);
         } else {

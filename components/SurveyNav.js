@@ -92,7 +92,7 @@ const SurveyNav = () => {
               </td>
               <td className="px-4 py-2">
                 <a
-                  href={`/survey/${id}/responses`}
+                  href={`/dashboard/${id}/responses`}
                   className="text-blue-500 underline"
                 >
                   View Responses
