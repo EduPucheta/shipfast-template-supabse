@@ -40,7 +40,8 @@ const SurveyNav = () => {
         const { data, error } = await supabase
           .from("surveys")
           .select("survey_title, id, created_at")
-          .eq("user_id", userId);
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false });
 
         if (error) {
           console.error("Error fetching surveys:", error);
