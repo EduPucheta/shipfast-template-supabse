@@ -1,4 +1,3 @@
-
 export const dynamic = "force-dynamic";
 import TableReviews from "@/components/TableReviews";
 import SurveyNav from "@/components/SurveyNav";
@@ -14,15 +13,14 @@ export default async function Dashboard() {
   return (
     <>
       {" "}
-      <div className="container bg-base-100 max-w-[50%] flex justify-center items-start flex-row mx-auto gap-6 p-6">
-
-        <div>
-          <Link href={"/dashboard/new-survey"} className="btn m-4">
-            <Plus />
-            Create new survey
-          </Link>
-          <SurveyNav />
-        </div>
+      <div className="container bg-base-100 max-w-[85%] flex flex-col justify-center items-center  mx-auto gap-6 p-6">
+      <div className=" flex flex-col justify-center items-end ">
+        <Link href={"/dashboard/new-survey"} className="btn m-4">
+          <Plus />
+          Create new survey
+        </Link>
+        <SurveyNav />
+      </div>
       </div>
     </>
   );

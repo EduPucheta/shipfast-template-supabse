@@ -39,7 +39,7 @@ const TableReviews = ({id}) => {
           .eq("survey", id.surveyID);
 
 
-        console.log("Survey: ", id.surveyID);
+        
         if (error) {
           console.error("Error fetching reviews:", error);
         } else {
@@ -65,7 +65,7 @@ const TableReviews = ({id}) => {
 
   return (
     <>
-      <div className="flex w-full flex-col border-opacity-50 gap-2 ">
+      <div className="flex w-full flex-col border-opacity-50 gap-2 max-w-lg ">
         {reviews.map((review) => (
           <div
             className="flex bg-base-200 rounded-box p-6 duration-200 hover:shadow-lg cursor-pointer justify-between items-center gap-4"

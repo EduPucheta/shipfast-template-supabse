@@ -6,7 +6,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const supabase = createClientComponentClient();
 
-const Table = () => {
+const Table = ({id}) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);
@@ -24,7 +24,7 @@ const Table = () => {
   }, [supabase]);
 
   useEffect(() => {
-    console.log(userId);
+   
 
     if (!userId) return; // Wait until userId is set
 
@@ -33,7 +33,8 @@ const Table = () => {
         const { data, error } = await supabase
           .from("reviews")
           .select("*")
-          .eq("user_id", userId);
+          .eq("survey", id.surveyID); 
+
         if (error) {
           console.error("Error fetching reviews:", error);
         } else {
