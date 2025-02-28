@@ -43,7 +43,7 @@
         modal.style.justifyContent = "center";
         modal.innerHTML = `
           <div style="background: white; padding: 20px; border-radius: 8px; min-width: 300px;">
-            <h3>Submit Feedback</h3>
+            <h3>Submit Feedback!</h3>
             <textarea id="feedbackText" style="width:100%; height:100px;"></textarea>
             <button id="submitFeedback">Send</button>
             <button id="closeModal">Close</button>
