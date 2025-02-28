@@ -11,8 +11,8 @@ export default function NewSurveyPage() {
 
   return (
     <div className="mx-auto p-6 flex flex-row justify-center items-start gap-14">
-      <CreateSurvey question1={question1} setQuestion1={setQuestion1} surveyTheme={surveyTheme} setSurveyTheme={setSurveyTheme} reactionType={reactionType} setreactionType={setreactionType}  />
-      <PreviewSurvey question1={question1} surveyTheme={surveyTheme} reactionType={reactionType} />
+      <CreateSurvey  />
+      <PreviewSurvey isPreview={true }  />
     </div>
   );
 }

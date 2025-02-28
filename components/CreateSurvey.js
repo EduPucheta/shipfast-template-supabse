@@ -2,53 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useSurvey } from "../app/context/SurveyContext";
 
 const supabase = createClientComponentClient();
 
 const themeOptions = [
-  "light",
-  "dark",
-  "cupcake",
-  "bumblebee",
-  "emerald",
-  "corporate",
-  "synthwave",
-  "retro",
-  "cyberpunk",
-  "valentine",
-  "halloween",
-  "garden",
-  "forest",
-  "aqua",
-  "lofi",
-  "pastel",
-  "fantasy",
-  "wireframe",
-  "black",
-  "luxury",
-  "dracula",
-  "cmyk",
-  "autumn",
-  "business",
-  "acid",
-  "lemonade",
-  "night",
-  "coffee",
-  "winter",
-  "dim",
-  "nord",
-  "sunset",
+  "light", "dark", "cupcake", "bumblebee", "emerald", "corporate", "synthwave", "retro", "cyberpunk", "valentine",
+  "halloween", "garden", "forest", "aqua", "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula",
+  "cmyk", "autumn", "business", "acid", "lemonade", "night", "coffee", "winter", "dim", "nord", "sunset",
 ];
+
 const reactionOptions = ["Stars", "Hearts", "Emojis"];
 
-const CreateSurvey = ({
-  question1,
-  setQuestion1,
-  surveyTheme,
-  setSurveyTheme,
-  reactionType,
-  setreactionType,
-}) => {
+const CreateSurvey = () => {
+  const { question1, setQuestion1, surveyTheme, setSurveyTheme, reactionType, setreactionType } = useSurvey(); // Access context
+
   const [surveyTitle, setSurveyTitle] = useState("");
   const [surveyDescription, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -102,7 +70,6 @@ const CreateSurvey = ({
         <h2 className="text-xl font-bold text-center mb-4">Create a New Survey</h2>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-        {/* Accordion Layout using DaisyUI's official component */}
         <div className="space-y-4">
           {/* Step 1: Survey Information */}
           <details className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
@@ -137,6 +104,7 @@ const CreateSurvey = ({
               </div>
             </div>
           </details>
+
           {/* Step 2: Survey Questions */}
           <details className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
             <summary className="collapse-title text-base font-medium">
@@ -157,6 +125,7 @@ const CreateSurvey = ({
               </div>
             </div>
           </details>
+
           {/* Step 3: Survey Customization */}
           <details className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
             <summary className="collapse-title text-base font-medium">
@@ -205,8 +174,6 @@ const CreateSurvey = ({
               </div>
             </div>
           </details>
-
-
         </div>
 
         {/* Submission Button */}

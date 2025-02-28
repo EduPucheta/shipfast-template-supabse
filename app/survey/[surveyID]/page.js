@@ -16,9 +16,10 @@ export default async function Survey({ params }) {
   const survey = await getSurvey(params.surveyID);
   return (
     <div>
-      <h1>Survey ID: {survey.survey_title}</h1>
+    
       <div>
-        <PreviewSurvey />
+        <PreviewSurvey isPreview={false } />
+        
       </div>
     </div>
   );
