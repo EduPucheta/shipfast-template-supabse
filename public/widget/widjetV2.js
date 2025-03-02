@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -135,4 +135,5 @@ const FeedbackWidget = ({ projectId }) => {
   );
 };
 
-export default FeedbackWidget;
+// Make the component globally accessible
+window.FeedbackWidgetComponent = FeedbackWidget;
