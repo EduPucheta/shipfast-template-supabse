@@ -8,7 +8,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 const supabase = createClientComponentClient();
 import { format } from "date-fns";
 
-const TableReviews = ({id}) => {
+const TableReviews = ({ id }) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +27,6 @@ const TableReviews = ({id}) => {
   }, [supabase]);
 
   useEffect(() => {
-
     if (!userId) return; // Only fetch if userId is available
 
     const fetchReviews = async () => {
@@ -35,11 +34,9 @@ const TableReviews = ({id}) => {
         const { data, error } = await supabase
           .from("reviews")
           .select("*")
-          
+
           .eq("survey", id.surveyID);
 
-
-        
         if (error) {
           console.error("Error fetching reviews:", error);
         } else {
@@ -65,22 +62,72 @@ const TableReviews = ({id}) => {
 
   return (
     <>
-      <div className="flex w-full flex-col border-opacity-50 gap-2 max-w-lg ">
+      <ul className="list bg-base-100 rounded-box shadow-md min-w-2xl ">
+        <li className="p-4 pb-2 text-xs opacity-60 tracking-wide">
+          User responses
+        </li>
+
         {reviews.map((review) => (
-          <div
-            className="flex bg-base-200 rounded-box p-6 duration-200 hover:shadow-lg cursor-pointer justify-between items-center gap-4"
-            key={review.id}
-          >
-            <div className=" px-4 text-2xl font-bold">{review.rating}</div>
-            <div className="flex flex-col justify-end items-end ">
-              <div className="py-2  font-semibold">{`"${review.review}"`}</div>
-              <small>
-                {format(new Date(review.created_at), "MMMM dd, yyyy HH:mm")}
-              </small>
+          <li className="list-row">
+            <div>
+              <img
+                className="size-10 rounded-box"
+                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+              />
             </div>
-          </div>
+            <div>
+              <div className="rating my-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <div
+                    key={star}
+                    className="mask mask-star"
+                    aria-label={`${star} star`}
+                    aria-current={review.rating === star ? "true" : "false"}
+                  ></div>
+                ))}
+              </div>
+              <div className="text-xs  font-semibold opacity-60">
+                {format(new Date(review.created_at), "MMMM dd, yyyy HH:mm")}
+              </div>
+            </div>
+            <p className="list-col-wrap text-xs">{`${review.review}`}</p>
+            <button className="btn btn-square btn-ghost">
+              <svg
+                className="size-[1.2em]"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <g
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  strokeWidth="2"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path d="M6 3L20 12 6 21 6 3z"></path>
+                </g>
+              </svg>
+            </button>
+            <button className="btn btn-square btn-ghost">
+              <svg
+                className="size-[1.2em]"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <g
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  strokeWidth="2"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                </g>
+              </svg>
+            </button>
+          </li>
         ))}
-      </div>
+      </ul>
     </>
   );
 };

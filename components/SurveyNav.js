@@ -93,8 +93,8 @@ const SurveyNav = () => {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table-auto w-full">
+    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+  <table className="table">
         <thead>
           <tr>
             <th className="px-4 py-2">Survey Title</th>

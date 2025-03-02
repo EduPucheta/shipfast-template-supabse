@@ -17,7 +17,7 @@ export default async function SurveyResponses({ params }) {
   const survey = await getSurvey(params.surveyID);
   const surveyID = params; 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center md:max-w-2xl mx-auto">
       <MetricSummary id={params} />
       <TableReviews id={params} />
     </div>

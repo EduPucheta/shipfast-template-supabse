@@ -1,4 +1,4 @@
-import { Inter } from "next/font/google";
+import { Inter } from "next/font/google"; 
 import PlausibleProvider from "next-plausible";
 import { getSEOTags } from "@/libs/seo";
 import ClientLayout from "@/components/LayoutClient";
@@ -16,7 +16,7 @@ export const viewport = {
 };
 
 // This adds default SEO tags to all pages in our app.
-// You can override them in each page passing params to getSOTags() function.
+// You can override them in each page passing params to getSOTags() function. 
 export const metadata = getSEOTags();
 
 export default function RootLayout({ children }) {
@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
     <SurveyProvider>
       <html
         lang="en"
-        data-theme={config.colors.theme}
+        
         className={font.className}
       >
         {config.domainName && (
@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
             <PlausibleProvider domain={config.domainName} />
           </head>
         )}
-        <body>
+        <body  data-theme="cupcake"  >
           {/* ClientLayout contains all the client wrappers (Crisp chat support, toast messages, tooltips, etc.) */}
           <ClientLayout>{children}</ClientLayout>
         </body>

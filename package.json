@@ -34,10 +34,11 @@
     "react-tooltip": "^5.21.1",
     "stripe": "^13.2.0"
   },
-  "devDependencies": {
+  "devDependencies": { 
+    "@tailwindcss/postcss": "^4.0.9",
     "autoprefixer": "^10.4.15",
-    "daisyui": "^3.6.1",
-    "postcss": "^8.4.28",
-    "tailwindcss": "^4.0.9" 
+    "daisyui": "^5.0.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.9"
   }
 }

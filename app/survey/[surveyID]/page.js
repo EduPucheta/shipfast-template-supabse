@@ -13,14 +13,11 @@ async function getSurvey(id) {
 }
 
 export default async function Survey({ params }) {
-  const survey = await getSurvey(params.surveyID);
   return (
-    <div>
-    
-      <div>
-        <PreviewSurvey isPreview={false } />
-        
-      </div>
+    <div className="flex flex-col items-center justify-center min-h-screen ">
+      
+        <PreviewSurvey isPreview={false} surveyID={params.surveyID} />
+      
     </div>
   );
 }
