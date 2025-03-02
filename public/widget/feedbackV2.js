@@ -4,7 +4,7 @@
   window.FeedbackWidget = {
     init: function ({ projectId }) {
       const script = document.createElement("script");
-      script.src = "https://shipfast-template-supabse-k6pc.vercel.app/widget/feedbackV2.js"; // Adjust the path
+      script.src = "https://shipfast-template-supabse-k6pc.vercel.app/widget/widjetV2.js"; // Adjust the path
       document.head.appendChild(script);
 
       script.onload = () => {
