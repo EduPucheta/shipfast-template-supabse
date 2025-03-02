@@ -68,7 +68,7 @@ const TableReviews = ({ id }) => {
         </li>
 
         {reviews.map((review) => (
-          <li className="list-row">
+          <li key={review.id} className="list-row">
             <div>
               <img
                 className="size-10 rounded-box"
