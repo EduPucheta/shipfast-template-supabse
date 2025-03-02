@@ -52,7 +52,6 @@ const FeedbackWidget = ({ projectId }) => {
 
   return (
     <>
-      {/* Floating Feedback Button */}
       <button
         onClick={() => setIsOpen(true)}
         style={{
@@ -70,7 +69,6 @@ const FeedbackWidget = ({ projectId }) => {
         Give Feedback
       </button>
 
-      {/* Modal */}
       {isOpen && (
         <div
           style={{
@@ -96,7 +94,6 @@ const FeedbackWidget = ({ projectId }) => {
             <h3>Submit Feedback!</h3>
             <p>{surveyData?.question1}</p>
 
-            {/* Rating Input */}
             <div>
               {[1, 2, 3, 4, 5].map((val) => (
                 <button
@@ -114,7 +111,6 @@ const FeedbackWidget = ({ projectId }) => {
               ))}
             </div>
 
-            {/* Comment Input */}
             <textarea
               placeholder="Leave a comment"
               style={{ width: "100%", height: "100px", marginTop: "10px" }}
@@ -135,5 +131,5 @@ const FeedbackWidget = ({ projectId }) => {
   );
 };
 
-// Make the component globally accessible
+// ✅ Expose the component globally for use in other scripts
 window.FeedbackWidgetComponent = FeedbackWidget;
