@@ -1,4 +1,4 @@
-import {themes} from "daisyui";  
+
 
 
 const config = { 
