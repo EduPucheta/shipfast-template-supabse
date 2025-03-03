@@ -26,21 +26,22 @@
         return window.React && window.ReactDOM && window.FeedbackWidgetComponent;
       };
 
-      const waitForDependencies = (callback, retries = 10) => {
+      const waitForDependencies = (callback, retries = 20) => {
         if (checkDependencies()) {
-          console.log("All dependencies loaded.");
+          console.log("✅ All dependencies loaded.");
           return callback();
         }
         if (retries <= 0) {
-          console.error("Dependencies not loaded after multiple attempts.");
+          console.error("❌ Dependencies not loaded after multiple attempts.");
           return;
         }
+        console.warn(`⏳ Waiting for dependencies... (${retries} attempts left)`);
         setTimeout(() => waitForDependencies(callback, retries - 1), 500);
       };
 
       const renderWidget = () => {
         waitForDependencies(() => {
-          console.log("Rendering widget...");
+          console.log("🚀 Rendering widget...");
           const widgetContainer = document.createElement("div");
           widgetContainer.id = "feedback-widget";
           document.body.appendChild(widgetContainer);
