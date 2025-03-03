@@ -3,7 +3,17 @@
 
   window.FeedbackWidget = {
     init: function ({ projectId }) {
+      if (!projectId) {
+        console.error("FeedbackWidget: Missing projectId");
+        return;
+      }
+
       const loadScript = (src, callback) => {
+        if (document.querySelector(`script[src="${src}"]`)) {
+          console.log(`Script ${src} already loaded.`);
+          return callback();
+        }
+
         const script = document.createElement("script");
         script.src = src;
         script.async = true;
@@ -16,20 +26,29 @@
         return window.React && window.ReactDOM && window.FeedbackWidgetComponent;
       };
 
-      const renderWidget = () => {
-        if (!checkDependencies()) {
-          console.error("Dependencies not loaded.");
+      const waitForDependencies = (callback, retries = 10) => {
+        if (checkDependencies()) {
+          console.log("All dependencies loaded.");
+          return callback();
+        }
+        if (retries <= 0) {
+          console.error("Dependencies not loaded after multiple attempts.");
           return;
         }
+        setTimeout(() => waitForDependencies(callback, retries - 1), 500);
+      };
 
-        console.log("All dependencies loaded. Rendering widget...");
-        const widgetContainer = document.createElement("div");
-        widgetContainer.id = "feedback-widget";
-        document.body.appendChild(widgetContainer);
+      const renderWidget = () => {
+        waitForDependencies(() => {
+          console.log("Rendering widget...");
+          const widgetContainer = document.createElement("div");
+          widgetContainer.id = "feedback-widget";
+          document.body.appendChild(widgetContainer);
 
-        window.ReactDOM.createRoot(widgetContainer).render(
-          window.React.createElement(window.FeedbackWidgetComponent, { projectId })
-        );
+          window.ReactDOM.createRoot(widgetContainer).render(
+            window.React.createElement(window.FeedbackWidgetComponent, { projectId })
+          );
+        });
       };
 
       const loadReactDOM = () => {
