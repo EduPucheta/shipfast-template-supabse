@@ -13,12 +13,14 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const [surveyData, setSurveyData] = useState(null);
   const [rating, setRating] = useState(null);
   const [review, setReview] = useState("");
+  const [loading, setLoading] = useState(false);
 
   console.log("surveyID", surveyID);
 
   useEffect(() => {
     const fetchSurvey = async () => {
       if (!isPreview && surveyID) {
+        setLoading(true);
         const { data, error } = await supabase
           .from("surveys")
           .select("question1, survey_theme, reactionType")
@@ -30,6 +32,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
         } else {
           setSurveyData(data);
         }
+        setLoading(false);
       }
     };
 
@@ -46,9 +49,10 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
       return;
     }
 
-    const { error } = await supabase.from("reviews").insert([
-      { rating, review, survey: surveyID },
-    ]);
+    setLoading(true);
+    const { error } = await supabase
+      .from("reviews")
+      .insert([{ rating, review, survey: surveyID }]);
 
     if (error) {
       console.error("Error submitting review:", error);
@@ -58,6 +62,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
       setRating(null);
       setReview("");
     }
+    setLoading(false);
   };
 
   const displayQuestion = isPreview ? question1 : surveyData?.question1;
@@ -69,50 +74,63 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
       data-theme={displayTheme}
       className="card bg-base-200 w-full max-w-sm shrink-0 shadow-xl p-8 flex flex-col justify-center items-center gap-4"
     >
-      <div className="form-control flex flex-col justify-center items-center gap-4">
-        <label className="label">
-          <span className="label-text">{displayQuestion}</span>
-        </label>
-        {displayReaction === "Stars" && (
-          <div className="rating rating-lg" onChange={handleRatingChange}>
-            {[1, 2, 3, 4, 5].map((value) => (
-              <input
-                key={value}
-                type="radio"
-                name="rating-2"
-                value={value}
-                className="mask mask-star-2"
-              />
-            ))}
+      {loading ? (
+        <div className="flex justify-center items-center mt-5">
+          <span className="loading loading-spinner loading-md"></span>
+        </div>
+      ) : (
+        <>
+          <div className="form-control flex flex-col justify-center items-center gap-4">
+            <label className="label">
+              <span className="label-text">{displayQuestion}</span>
+            </label>
+            {displayReaction === "Stars" && (
+              <div className="rating rating-lg" onChange={handleRatingChange}>
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <input
+                    key={value}
+                    type="radio"
+                    name="rating-2"
+                    value={value}
+                    className="mask mask-star-2"
+                  />
+                ))}
+              </div>
+            )}
+            {displayReaction === "Hearts" && (
+              <div
+                className="rating rating-lg gap-1"
+                onChange={handleRatingChange}
+              >
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <input
+                    key={value}
+                    type="radio"
+                    name="rating-3"
+                    value={value}
+                    className={`mask mask-heart bg-${
+                      ["red", "orange", "yellow", "lime", "green"][value - 1]
+                    }-400`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        )}
-        {displayReaction === "Hearts" && (
-          <div className="rating rating-lg gap-1" onChange={handleRatingChange}>
-            {[1, 2, 3, 4, 5].map((value) => (
-              <input
-                key={value}
-                type="radio"
-                name="rating-3"
-                value={value}
-                className={`mask mask-heart bg-${["red", "orange", "yellow", "lime", "green"][value - 1]}-400`}
-              />
-            ))}
+
+          <textarea
+            placeholder="Leave us a comment"
+            className="textarea textarea-md"
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
+          ></textarea>
+
+          <div className="form-control mt-6">
+            <button className="btn btn-primary" onClick={handleSubmit}>
+              Submit
+            </button>
           </div>
-        )}
-      </div>
-
-      <textarea
-        placeholder="Leave us a comment"
-        className="textarea textarea-md"
-        value={review}
-        onChange={(e) => setReview(e.target.value)}
-      ></textarea>
-
-      <div className="form-control mt-6">
-        <button className="btn btn-primary" onClick={handleSubmit}>
-          Submit
-        </button>
-      </div>
+        </>
+      )}
     </div>
   );
 

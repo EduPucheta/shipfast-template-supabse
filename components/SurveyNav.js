@@ -4,7 +4,11 @@ import React, { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import {Link} from "lucide-react";
+import { Link } from "lucide-react";
+import { toast } from "react-hot-toast";
+import { EllipsisVertical } from "lucide-react";
+import { Trash2 } from "lucide-react";
+import DeleteSurveyModal from "./DeleteSurveyModal";
 
 dayjs.extend(relativeTime);
 
@@ -15,6 +19,8 @@ const SurveyNav = () => {
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);
   const [responseCounts, setResponseCounts] = useState({});
+  const [updatingSurvey, setUpdatingSurvey] = useState(null);
+  const [deletingSurvey, setDeletingSurvey] = useState(null);
 
   useEffect(() => {
     const getUser = async () => {
@@ -32,14 +38,14 @@ const SurveyNav = () => {
   }, []);
 
   useEffect(() => {
-    if (!userId) return; // Wait until userId is set
+    if (!userId) return;
 
     const fetchSurveys = async () => {
       setLoading(true);
       try {
         const { data, error } = await supabase
           .from("surveys")
-          .select("survey_title, id, created_at")
+          .select("survey_title, id, created_at, is_active")
           .eq("user_id", userId)
           .order("created_at", { ascending: false });
 
@@ -48,30 +54,16 @@ const SurveyNav = () => {
           return;
         }
 
-        // Remove duplicate surveys based on survey_title if necessary
-        const uniqueSurveys = Array.from(
-          new Map(data.map((survey) => [survey.survey_title, survey])).values()
-        );
+        setSurveys(data);
 
-        setSurveys(uniqueSurveys);
-
-        // Fetch response counts for each survey
         const counts = {};
-        for (const survey of uniqueSurveys) {
+        for (const survey of data) {
           const { count, error: countError } = await supabase
-          .from("reviews")
-          .select("id", { count: "exact", head: true }) 
-          .eq("survey", survey.id);
+            .from("reviews")
+            .select("id", { count: "exact", head: true })
+            .eq("survey", survey.id);
 
-          console.log(survey.id);
-        
-
-          if (countError) {
-            console.error("Error counting responses:", countError);
-            counts[survey.id] = 0;
-          } else {
-            counts[survey.id] = count || 0;
-          }
+          counts[survey.id] = count || 0;
         }
         setResponseCounts(counts);
       } catch (err) {
@@ -84,6 +76,30 @@ const SurveyNav = () => {
     fetchSurveys();
   }, [userId]);
 
+  const handleToggle = async (surveyId, currentStatus) => {
+    setUpdatingSurvey(surveyId);
+
+    const newStatus = !currentStatus;
+    const { error } = await supabase
+      .from("surveys")
+      .update({ is_active: newStatus })
+      .eq("id", surveyId);
+
+    if (error) {
+      console.error("Error updating survey status:", error);
+      toast.error("Failed to update status");
+    } else {
+      setSurveys((prevSurveys) =>
+        prevSurveys.map((survey) =>
+          survey.id === surveyId ? { ...survey, is_active: newStatus } : survey
+        )
+      );
+      toast.success("Survey status updated");
+    }
+
+    setUpdatingSurvey(null);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center mt-5">
@@ -94,56 +110,106 @@ const SurveyNav = () => {
 
   return (
     <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-  <table className="table">
+      {/* Open the modal using document.getElementById('ID').showModal() method */}
+<button className="btn" onClick={()=>document.getElementById('my_modal_2').showModal()}>open modal</button>
+<dialog id="my_modal_2" className="modal">
+  <div className="modal-box">
+    <h3 className="font-bold text-lg">Hello!</h3>
+    <p className="py-4">Press ESC key or click outside to close</p>
+  </div>
+  <form method="dialog" className="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+      <table className="table">
         <thead>
           <tr>
-            <th className="px-4 py-2">Survey Title</th>
-            <th className="px-4 py-2">Created</th>
-            <th className="px-4 py-2">Responses</th>
-            <th className="px-4 py-2">Survey Link</th>
-            <th className="px-4 py-2">View Responses</th>
+            <th>Status</th>
+            <th>Survey Title</th>
+            <th>Created</th>
+            <th>Responses</th>
+            <th>Survey Link</th>
+            <th>View Responses</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {surveys.map(({ id, survey_title, created_at }) => (
+          {surveys.map(({ id, survey_title, created_at, is_active }) => (
             <tr key={id} className="border-t">
-              <td className="px-4 py-2">{survey_title}</td>
-              <td className="px-4 py-2">
-                <span title={dayjs(created_at).format('YYYY-MM-DD HH:mm:ss')}>
+              <td>
+                <input
+                  type="checkbox"
+                  className="toggle"
+                  checked={is_active}
+                  onChange={() => handleToggle(id, is_active)}
+                />
+              </td>
+              <td>
+
+              <a href={`/dashboard/${id}/responses`} className="underline"> 
+              {survey_title}
+              </a>
+
+              </td>
+              <td>
+                <span title={dayjs(created_at).format("YYYY-MM-DD HH:mm:ss")}>
                   {dayjs(created_at).fromNow()}
                 </span>
               </td>
-              <td className="px-4 py-2">
-                <div className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    className="inline-block h-5 w-5 stroke-current mr-2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    ></path>
-                  </svg>
-                  <span>{responseCounts[id] || 0}</span>
-                </div>
-              </td>
-              <td className="px-4 py-2">
-                <a href={`/survey/${id}`} className="text-blue-500 underline flex items-center justify-center">
-                 <Link />
-                </a>
-              </td>
-              <td className="px-4 py-2">
+              <td>{responseCounts[id] || 0}</td>
+              <td>
                 <a
-                  href={`/dashboard/${id}/responses`}
+                  href={`/survey/${id}`}
+                  target="_blank"
                   className="text-blue-500 underline"
                 >
-                  <button className="btn btn-outline">View Responses</button>
-               
+                  <Link />
                 </a>
+              </td>
+              <td>
+                <a href={`/dashboard/${id}/responses`}>
+                  <button className="btn btn-outline">View Responses</button>
+                </a>
+              </td>
+              <td>
+                {/* change popover-1 and --anchor-1 names. Use unique names for each dropdown */}
+                {/* For TSX uncomment the commented types below */}
+                <button
+                  className="btn btn-ghost"
+                  popoverTarget={`popover-${id}`}
+                  style={
+                    {
+                      anchorName: `--anchor-${id}`,
+                    } /* as React.CSSProperties */
+                  }
+                >
+                  <EllipsisVertical />
+                </button>
+
+                <ul
+                  className="dropdown menu w-52 rounded-box bg-base-100 shadow-sm"
+                  popover="auto"
+                  id={`popover-${id}`} // unique id for each item
+                  style={
+                    {
+                      positionAnchor: `--anchor-${id}`, // matching style for the dropdown
+                    } /* as React.CSSProperties */
+                  }
+                >
+                  <li>
+                    <DeleteSurveyModal
+                      surveyId={id}
+                      surveyTitle={survey_title}
+                      onDeleteSuccess={(deletedId) =>
+                        setSurveys((prevSurveys) =>
+                          prevSurveys.filter(
+                            (survey) => survey.id !== deletedId
+                          )
+                        )
+                      }
+                    />
+                  </li>
+                </ul>
               </td>
             </tr>
           ))}

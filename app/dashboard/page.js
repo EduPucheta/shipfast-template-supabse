@@ -15,6 +15,7 @@ export default async function Dashboard() {
       {" "}
       <div className="container bg-base-100 max-w-[85%] flex flex-col justify-center items-center  mx-auto gap-6 p-6">
       <div className=" flex flex-col justify-center items-end ">
+        
         <Link href={"/dashboard/new-survey"} className="btn m-4">
           <Plus />
           Create new survey
