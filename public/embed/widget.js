@@ -1,7 +1,7 @@
 (function () {
     window.onload = function () {
       const iframe = document.createElement("iframe");
-      iframe.src = "https://shipfast-template-supabse-k6pc.vercel.app/widget"; // Your widget URL
+      iframe.src = "https://shipfast-template-supabse-k6pc.vercel.app/widjet"; // Your widget URL
       iframe.width = "400";
       iframe.height = "500";
       iframe.style.border = "none";
