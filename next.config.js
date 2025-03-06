@@ -7,6 +7,8 @@ const nextConfig = {
       "pbs.twimg.com",
       "images.unsplash.com",
       "logos-world.net",
+      "www.man-gos.com",
+      "https://shipfast-template-supabse-k6pc.vercel.app"
     ],
   },
 };
