@@ -5,7 +5,7 @@
       init: function ({ apiKey, projectId, theme = 'light' }) {
         document.addEventListener("DOMContentLoaded", function () { // Ensure DOM is ready
           const iframe = document.createElement("iframe");
-          iframe.src = `https://www.man-gos.com/embed/iframe.html?apiKey=${apiKey}&projectId=${projectId}&theme=${theme}`;
+          iframe.src = `https://shipfast-template-supabse-k6pc.vercel.app/embed/iframe.html?apiKey=${apiKey}&projectId=${projectId}&theme=${theme}`;
           iframe.style.border = "none";
           iframe.style.width = "100%";
           iframe.style.height = "400px";
