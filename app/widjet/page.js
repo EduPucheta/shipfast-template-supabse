@@ -24,6 +24,7 @@ export default function WidgetPage() {
         </style>
       </head>
       <body>
+        <div>Survey widjet</div>
         <div id="root">
           <PreviewSurvey />
         </div>
