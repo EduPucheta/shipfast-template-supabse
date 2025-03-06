@@ -21,18 +21,15 @@
   <div id="root"></div>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const apiKey = urlParams.get('apiKey');
-    const projectId = urlParams.get('projectId');
-    const theme = urlParams.get('theme') || 'light';
-
-    window.parent.postMessage({ apiKey, projectId, theme }, '*');
+    window.parent.postMessage(
+      {
+        apiKey: urlParams.get('apiKey'),
+        projectId: urlParams.get('projectId'),
+        theme: urlParams.get('theme') || 'light'
+      },
+      '*'
+    );
   </script>
-  <script src="https://shipfast-template-supabse-k6pc.vercel.app/_next/static/chunks/react.production.min.js"></script>
-  <script src="https://shipfast-template-supabse-k6pc.vercel.app/_next/static/chunks/react-dom.production.min.js"></script>
-  <script>
-    const container = document.getElementById("root");
-    const App = React.createElement("div", { className: theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black' }, `Feedback Widget Loaded for Project: ${projectId}`);
-    ReactDOM.createRoot(container).render(App);
-  </script>
+  <script src="/_next/static/chunks/app/embed/iframe/page.js"></script> <!-- This will automatically render your React component -->
 </body>
 </html>
