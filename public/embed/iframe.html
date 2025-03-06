@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,22 +13,24 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      background: transparent;
     }
   </style>
 </head>
 <body>
-  <div id="root">
+  <div id="root">Something</div>
+  <script type="module">
+    import { createRoot } from 'https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js';
+    import { createElement } from 'https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js';
 
-Body message
-
-  </div>
-  <script>
     const urlParams = new URLSearchParams(window.location.search);
     const apiKey = urlParams.get('apiKey');
     const projectId = urlParams.get('projectId');
     const theme = urlParams.get('theme') || 'light';
 
-    window.parent.postMessage({ apiKey, projectId, theme }, '*');
+    const root = createRoot(document.getElementById("root"));
+    const App = createElement("div", { className: theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black' }, `Feedback Widget Loaded for Project: ${projectId}`);
+    root.render(App);
   </script>
 </body>
 </html>
