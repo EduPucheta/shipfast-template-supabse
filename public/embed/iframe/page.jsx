@@ -3,6 +3,8 @@ import FeedbackWidget from "@/components/FeedbackWidget";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 
+export const dynamic = 'force-static'; // This will generate static HTML + JS at build time
+
 export default function IframePage({ searchParams }) {
   const { apiKey, projectId, theme } = searchParams;
 
