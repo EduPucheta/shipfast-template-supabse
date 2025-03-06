@@ -8,7 +8,7 @@ import { Link } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { EllipsisVertical } from "lucide-react";
 import { Trash2 } from "lucide-react";
-import DeleteSurveyModal from "./DeleteSurveyModal";
+import DeleteModal from "./DeleteModal";
 
 dayjs.extend(relativeTime);
 
@@ -109,18 +109,7 @@ const SurveyNav = () => {
   }
 
   return (
-    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
-<button className="btn" onClick={()=>document.getElementById('my_modal_2').showModal()}>open modal</button>
-<dialog id="my_modal_2" className="modal">
-  <div className="modal-box">
-    <h3 className="font-bold text-lg">Hello!</h3>
-    <p className="py-4">Press ESC key or click outside to close</p>
-  </div>
-  <form method="dialog" className="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
+    <div className="overflow-x-auto rounded-box  border border-base-content/5 bg-base-100">
       <table className="table">
         <thead>
           <tr>
@@ -145,11 +134,9 @@ const SurveyNav = () => {
                 />
               </td>
               <td>
-
-              <a href={`/dashboard/${id}/responses`} className="underline"> 
-              {survey_title}
-              </a>
-
+                <a href={`/dashboard/${id}/responses`} className="underline">
+                  {survey_title}
+                </a>
               </td>
               <td>
                 <span title={dayjs(created_at).format("YYYY-MM-DD HH:mm:ss")}>
@@ -197,9 +184,10 @@ const SurveyNav = () => {
                   }
                 >
                   <li>
-                    <DeleteSurveyModal
-                      surveyId={id}
-                      surveyTitle={survey_title}
+                    <DeleteModal
+                      object="survey"
+                      objectID={id}
+                      objectTitle={survey_title}
                       onDeleteSuccess={(deletedId) =>
                         setSurveys((prevSurveys) =>
                           prevSurveys.filter(

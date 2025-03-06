@@ -2,11 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { EllipsisVertical } from "lucide-react";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const supabase = createClientComponentClient();
 import { format } from "date-fns";
+import DeleteModal from "./DeleteModal";
 
 const TableReviews = ({ id }) => {
   const [reviews, setReviews] = useState([]);
@@ -125,6 +127,44 @@ const TableReviews = ({ id }) => {
                 </g>
               </svg>
             </button>
+            {/* change popover-1 and --anchor-1 names. Use unique names for each dropdown */}
+            {/* For TSX uncomment the commented types below */}
+            <button
+              className="btn btn-ghost"
+              popoverTarget={`popover-${review.id}`}
+              style={
+                {
+                  anchorName: `--anchor-${review.id}`,
+                } /* as React.CSSProperties */
+              }
+            >
+              <EllipsisVertical />
+            </button>
+                            <ul
+                              className="dropdown menu w-52 rounded-box bg-base-100 shadow-sm"
+                              popover="auto"
+                              id={`popover-${review.id}`} // unique id for each item
+                              style={
+                                {
+                                  positionAnchor: `--anchor-${review.id}`, // matching style for the dropdown
+                                } /* as React.CSSProperties */
+                              }
+                            >
+                              <li>
+                                <DeleteModal
+                                  object="review"
+                                  objectID={review.id}
+                                  objectTitle={review.review}
+                                  onDeleteSuccess={(deletedId) =>
+                                    setReviews((prevReviews) =>
+                                      prevReviews.filter(
+                                        (review) => review.id !== deletedId
+                                      )
+                                    )
+                                  }
+                                />
+                              </li>
+                            </ul>
           </li>
         ))}
       </ul>
