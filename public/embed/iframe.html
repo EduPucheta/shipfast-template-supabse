@@ -22,17 +22,6 @@
 
     Iframe conntenet will be rendered here
   </div>
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    window.parent.postMessage(
-      {
-        apiKey: urlParams.get('apiKey'),
-        projectId: urlParams.get('projectId'),
-        theme: urlParams.get('theme') || 'light'
-      },
-      '*'
-    );
-  </script>
-  <script src="https://shipfast-template-supabse-k6pc.vercel.app/_next/static/chunks/app/embed/iframe/page.js"></script> <!-- This will automatically render your React component -->
+
 </body>
 </html>
