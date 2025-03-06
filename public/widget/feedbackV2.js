@@ -1,75 +1,30 @@
-(function () {
-  if (window.FeedbackWidget) return;
+// embed-form.js (to be served from your Next.js project's /public directory or an API route)
 
-  window.FeedbackWidget = {
-    init: function ({ projectId }) {
-      if (!projectId) {
-        console.error("FeedbackWidget: Missing projectId");
-        return;
-      }
+(function() {
+  function embedForm(options) {
+    const targetElementId = options.targetId || 'embedded-form'; // Default ID
+    const formUrl = options.formUrl; // URL of your Next.js form page
 
-      const loadScript = (src, callback) => {
-        if (document.querySelector(`script[src="${src}"]`)) {
-          console.log(`Script ${src} already loaded.`);
-          return callback();
-        }
+    if (!formUrl) {
+      console.error('Form URL is required.');
+      return;
+    }
 
-        const script = document.createElement("script");
-        script.src = src;
-        script.async = true;
-        script.onload = callback;
-        script.onerror = () => console.error(`Failed to load ${src}`);
-        document.head.appendChild(script);
-      };
+    const targetElement = document.getElementById(targetElementId);
+    if (!targetElement) {
+      console.error(`Target element with ID '${targetElementId}' not found.`);
+      return;
+    }
 
-      const checkDependencies = () => {
-        return window.React && window.ReactDOM && window.FeedbackWidgetComponent;
-      };
+    const iframe = document.createElement('iframe');
+    iframe.src = formUrl;
+    iframe.style.width = '100%';
+    iframe.style.height = '500px'; // Adjust as needed
+    iframe.style.border = 'none';
 
-      const waitForDependencies = (callback, retries = 20) => {
-        if (checkDependencies()) {
-          console.log("✅ All dependencies loaded.");
-          return callback();
-        }
-        if (retries <= 0) {
-          console.error("❌ Dependencies not loaded after multiple attempts.");
-          return;
-        }
-        console.warn(`⏳ Waiting for dependencies... (${retries} attempts left)`);
-        setTimeout(() => waitForDependencies(callback, retries - 1), 500);
-      };
+    targetElement.appendChild(iframe);
+  }
 
-      const renderWidget = () => {
-        waitForDependencies(() => {
-          console.log("🚀 Rendering widget...");
-          const widgetContainer = document.createElement("div");
-          widgetContainer.id = "feedback-widget";
-          document.body.appendChild(widgetContainer);
-
-          window.ReactDOM.createRoot(widgetContainer).render(
-            window.React.createElement(window.FeedbackWidgetComponent, { projectId })
-          );
-        });
-      };
-
-      const loadReactDOM = () => {
-        if (window.ReactDOM) return renderWidget();
-        loadScript(
-          "https://unpkg.com/react-dom@18/umd/react-dom.production.min.js",
-          renderWidget
-        );
-      };
-
-      const loadReact = () => {
-        if (window.React) return loadReactDOM();
-        loadScript("https://unpkg.com/react@18/umd/react.production.min.js", loadReactDOM);
-      };
-
-      if (checkDependencies()) {
-        renderWidget();
-      } else {
-        loadReact();
-      }
-    },
-  };
+  // Expose the embedForm function globally
+  window.embedForm = embedForm;
 })();
