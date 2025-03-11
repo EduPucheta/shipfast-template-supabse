@@ -12,10 +12,10 @@ const HeroSection = () => {
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
-            Start colleting feedback
+            A simpler way to
             <br />
-            now,{" "}
-            <span className="bg-[#CFCFCF] text-[#2E1A05] px-2">dont wait</span>
+            collect feedback{" "}
+            <span className="bg-[#CFCFCF] text-[#2E1A05] px-2">than Hotjar</span>
           </h1>
 
           <p className="text-base  mb-8 max-w-2xl mx-auto lg:mx-0">

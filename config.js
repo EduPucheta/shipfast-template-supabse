@@ -34,7 +34,7 @@ const config = {
         priceAnchor: 19,
         features: [
           {
-            name: "Up to 200 responses",
+            name: "Unlimited responses",
           },
           { name: "Unlimited surveys" },
           
@@ -53,7 +53,7 @@ const config = {
         priceAnchor: 49,
         features: [
           {
-            name: "Up to 10,000 responses",
+            name: "Unlimited responses",
           },
           { name: "Unlimited surveys" },
 

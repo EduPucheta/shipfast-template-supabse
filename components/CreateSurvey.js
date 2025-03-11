@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useSurvey } from "../app/context/SurveyContext";
+import { toast } from "react-hot-toast";
 
 const supabase = createClientComponentClient();
 
@@ -33,16 +34,67 @@ const CreateSurvey = () => {
   }, []);
 
   const handleCreateSurvey = async () => {
-    if (!surveyTitle.trim() || !surveyTheme || !question1.trim()) {
-      setError("Survey title, theme, and at least one question are required.");
+    let finalSurveyTitle = surveyTitle.trim();
+    
+    if (!finalSurveyTitle) {
+      // Get all surveys for the current user to determine the next number
+      const { data: existingSurveys, error: fetchError } = await supabase
+        .from("surveys")
+        .select("survey_title")
+        .eq("user_id", userId)
+        .like("survey_title", "Survey-%");
+
+      if (fetchError) {
+        setError("Error fetching existing surveys");
+        return;
+      }
+
+      // Find the highest number in existing survey titles
+      let maxNumber = 0;
+      existingSurveys?.forEach(survey => {
+        const match = survey.survey_title.match(/Survey-(\d+)/);
+        if (match) {
+          const num = parseInt(match[1]);
+          maxNumber = Math.max(maxNumber, num);
+        }
+      });
+
+      // Create new survey name with incremented number
+      finalSurveyTitle = `Survey-${maxNumber + 1}`;
+    }
+
+    if (!surveyTheme || !question1.trim()) {
+      setError("Survey theme and at least one question are required.");
       return;
     }
+    
     setLoading(true);
     setError(null);
 
+    // First check if the name already exists for this user
+    const { data: existingData, error: checkError } = await supabase
+      .from("surveys")
+      .select("survey_title")
+      .eq("survey_title", finalSurveyTitle)
+      .eq("user_id", userId)
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') { // PGRST116 means no rows returned
+      setError("Error checking survey name");
+      setLoading(false);
+      return;
+    }
+
+    if (existingData) {
+      setError("You already have a survey with this name. Please choose a different name.");
+      setLoading(false);
+      return;
+    }
+
+    // If we get here, the name is unique, so we can create the survey
     const { error } = await supabase.from("surveys").insert([
       {
-        survey_title: surveyTitle,
+        survey_title: finalSurveyTitle,
         survey_description: surveyDescription,
         survey_theme: surveyTheme,
         reactionType: reactionType,
@@ -56,10 +108,10 @@ const CreateSurvey = () => {
     } else {
       setSurveyTitle("");
       setDescription("");
-      setSurveyTheme("");
-      setreactionType("");
+      setSurveyTheme("cupcake");
+      setreactionType("Stars");
       setQuestion1("How would you rate your experience?");
-      alert("Survey created successfully!");
+      toast.success("Survey created successfully!");
     }
     setLoading(false);
   };
@@ -142,13 +194,15 @@ const CreateSurvey = () => {
                   onChange={(e) => setSurveyTheme(e.target.value)}
                   required
                 >
-                  <option value="" disabled>
-                    Select a theme
+                  <option value="cupcake" selected>
+                    cupcake
                   </option>
                   {themeOptions.map((theme) => (
-                    <option key={theme} value={theme}>
-                      {theme}
-                    </option>
+                    theme !== "cupcake" && (
+                      <option key={theme} value={theme}>
+                        {theme}
+                      </option>
+                    )
                   ))}
                 </select>
               </div>
@@ -162,13 +216,15 @@ const CreateSurvey = () => {
                   onChange={(e) => setreactionType(e.target.value)}
                   required
                 >
-                  <option value="" disabled>
-                    Select a reaction type
+                  <option value="Stars" selected>
+                    Stars
                   </option>
                   {reactionOptions.map((reaction) => (
-                    <option key={reaction} value={reaction}>
-                      {reaction}
-                    </option>
+                    reaction !== "Stars" && (
+                      <option key={reaction} value={reaction}>
+                        {reaction}
+                      </option>
+                    )
                   ))}
                 </select>
               </div>

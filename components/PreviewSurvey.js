@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useSurvey } from "../app/context/SurveyContext";
 
@@ -14,6 +14,8 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const [rating, setRating] = useState(null);
   const [review, setReview] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   console.log("surveyID", surveyID);
 
@@ -39,31 +41,36 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
     fetchSurvey();
   }, [isPreview, surveyID]);
 
-  const handleRatingChange = (e) => {
+  const handleRatingChange = useCallback((e) => {
     setRating(e.target.value);
-  };
+  }, []);
 
-  const handleSubmit = async () => {
+  const handleReviewChange = useCallback((e) => {
+    setReview(e.target.value);
+  }, []);
+
+  const handleSubmit = useCallback(async () => {
     if (!rating) {
-      alert("Please select a rating");
+      setError("Please select a rating");
       return;
     }
 
-    setLoading(true);
-    const { error } = await supabase
+    setIsSubmitting(true);
+    setError(null);
+    
+    const { error: submitError } = await supabase
       .from("reviews")
       .insert([{ rating, review, survey: surveyID }]);
 
-    if (error) {
-      console.error("Error submitting review:", error);
-      alert("Error submitting review");
+    if (submitError) {
+      console.error("Error submitting review:", submitError);
+      setError("Failed to submit review. Please try again.");
     } else {
-      alert("Review submitted successfully");
       setRating(null);
       setReview("");
     }
-    setLoading(false);
-  };
+    setIsSubmitting(false);
+  }, [rating, review, surveyID]);
 
   const displayQuestion = isPreview ? question1 : surveyData?.question1;
   const displayTheme = isPreview ? surveyTheme : surveyData?.survey_theme;
@@ -80,12 +87,17 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
         </div>
       ) : (
         <>
+          {error && (
+            <div className="alert alert-error">
+              <span>{error}</span>
+            </div>
+          )}
           <div className="form-control flex flex-col justify-center items-center gap-4">
             <label className="label">
               <span className="label-text">{displayQuestion}</span>
             </label>
             {displayReaction === "Stars" && (
-              <div className="rating rating-lg" onChange={handleRatingChange}>
+              <div className="rating rating-lg" onChange={handleRatingChange} role="radiogroup" aria-label="Rating">
                 {[1, 2, 3, 4, 5].map((value) => (
                   <input
                     key={value}
@@ -93,6 +105,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
                     name="rating-2"
                     value={value}
                     className="mask mask-star-2"
+                    aria-label={`${value} stars`}
                   />
                 ))}
               </div>
@@ -121,12 +134,19 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
             placeholder="Leave us a comment"
             className="textarea textarea-md"
             value={review}
-            onChange={(e) => setReview(e.target.value)}
+            onChange={handleReviewChange}
+            aria-label="Review comment"
           ></textarea>
 
           <div className="form-control mt-6">
-            <button className="btn btn-primary" onClick={handleSubmit}>
-              Submit
+            <button 
+              className="btn btn-primary" 
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <span className="loading loading-spinner loading-sm"></span>
+              ) : 'Submit'}
             </button>
           </div>
         </>

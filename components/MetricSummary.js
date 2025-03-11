@@ -51,7 +51,7 @@ const Table = ({id}) => {
   }, [userId]);
 
   const ratings = reviews.map((review) => review.rating);
-  const averageRating = (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(2);
+  const averageRating = ratings.length === 0 ? "No ratings yet" : (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(2);
 
   if (loading) {
     return (
