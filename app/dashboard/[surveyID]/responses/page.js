@@ -21,20 +21,61 @@ export default async function SurveyResponses({ params }) {
       <div className="flex flex-row justify-center items-center gap-4 w">
         <div
           className="inline-grid *:[grid-area:1/1] tooltip"
-          data-tip={survey.is_active ? "Survey is live and receiving responses" : "Survey is not active"}
+          data-tip={
+            survey.is_active
+              ? "Survey is live and receiving responses"
+              : "Survey is not active"
+          }
         >
           <div
-            className={`status status-lg ${survey.is_active ? "status-success" : "status-error"} animate-ping`}
+            className={`status status-lg ${
+              survey.is_active ? "status-success" : "status-error"
+            } animate-ping`}
           ></div>
           <div
-            className={`status status-lg ${survey.is_active ? "status-success" : "status-error"}`}
+            className={`status status-lg ${
+              survey.is_active ? "status-success" : "status-error"
+            }`}
           ></div>
         </div>
         <h1 className="text-2xl font-bold">{survey.survey_title}</h1>
       </div>
       <p className="text-base text-gray-600">{survey.survey_description}</p>
       <MetricSummary id={params} />
-      <TableReviews id={params} />
+      {/* name of each tab group should be unique */}
+      <div className="tabs tabs-lift">
+        <input
+          type="radio"
+          name="my_tabs_3"
+          className="tab"
+          aria-label="User responses"
+        />
+        <div className="tab-content bg-base-100 border-base-300 p-2">
+          {" "}
+          <TableReviews id={params} />
+        </div>
+
+        <input
+          type="radio"
+          name="my_tabs_3"
+          className="tab"
+          aria-label="Analytics"
+          defaultChecked
+        />
+        <div className="tab-content bg-base-100 border-base-300 p-2">
+          Tab content 2
+        </div>
+
+        <input
+          type="radio"
+          name="my_tabs_3"
+          className="tab"
+          aria-label="Survey preview"
+        />
+        <div className="tab-content bg-base-100 border-base-300 p-2">
+          Tab content 3
+        </div>
+      </div>
     </div>
   );
 }

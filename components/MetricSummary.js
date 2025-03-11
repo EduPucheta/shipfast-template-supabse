@@ -62,8 +62,8 @@ const Table = ({id}) => {
   }
 
   return (
-    <div className="flex flex-col items-center my-6">
-      <div className="stats shadow">
+    <div className="flex flex-col items-center my-6  ">
+      <div className="stats shadow bg-base-100 ">
         <div className="stat">
           <div className="stat-figure text-primary">
             <svg
