@@ -32,9 +32,10 @@
     "react-hot-toast": "^2.4.1",
     "react-syntax-highlighter": "^15.5.0",
     "react-tooltip": "^5.21.1",
+    "resend": "^4.1.2",
     "stripe": "^13.2.0"
   },
-  "devDependencies": { 
+  "devDependencies": {
     "@tailwindcss/postcss": "^4.0.9",
     "autoprefixer": "^10.4.15",
     "daisyui": "^5.0.0",

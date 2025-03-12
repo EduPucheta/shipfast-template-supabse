@@ -106,6 +106,12 @@ const CreateSurvey = () => {
     if (error) {
       setError(error.message);
     } else {
+      // Send welcome email
+      fetch("/api/send", { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.error("Error sending welcome email:", err));
+
       setSurveyTitle("");
       setDescription("");
       setSurveyTheme("cupcake");
