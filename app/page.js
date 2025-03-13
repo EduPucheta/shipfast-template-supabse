@@ -14,7 +14,6 @@ export default function Page() {
       <div>
         <Header/>
         <HeroSection/>
-      
         <Pricing/>
         <FAQ/>
         <Testimonial/>

@@ -56,6 +56,8 @@ const config = {
             name: "Unlimited responses",
           },
           { name: "Unlimited surveys" },
+          
+          { name: "AI analysis" },
 
         ],
       },

@@ -88,7 +88,7 @@ const SignUpPresale = () => {
         </div>
         {status.message && (
           <div
-            className={`alert ${
+            className={`alert alert-outline  ${
               status.type === "success" ? "alert-success" : "alert-error"
             } text-sm`}
           >
