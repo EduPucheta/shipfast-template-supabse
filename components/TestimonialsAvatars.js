@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import React from "react";
 import Image from "next/image";
 
 const avatars = [
@@ -28,22 +27,7 @@ const avatars = [
   },
 ];
 
-export default function TestimonialsAvatars() {
-  const [subscriberCount, setSubscriberCount] = useState("...");
-  const supabase = createClientComponentClient();
-
-  useEffect(() => {
-    async function fetchSubscriberCount() {
-      const { count } = await supabase
-        .from('presale_subscribers')
-        .select('*', { count: 'exact', head: true });
-      
-      setSubscriberCount(count || 0);
-    }
-
-    fetchSubscriberCount();
-  }, []);
-
+export default function TestimonialsAvatars({ subscriberCount }) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-center -space-x-4">
@@ -63,11 +47,9 @@ export default function TestimonialsAvatars() {
 
         {/* RATING */}
         <div className="flex flex-col justify-center items-center md:items-start gap-1 pl-4 ">
-
-
           <p className="text-center text-base-content/80">
-        Join <span className="font-semibold text-base-content">{subscriberCount}</span> subscribers 
-      </p> 
+            Join our <span className="font-semibold text-base-content">{subscriberCount}</span> subscribers 
+          </p> 
         </div>
       </div>
     </div>

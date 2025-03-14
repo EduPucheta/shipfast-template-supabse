@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-const SignUpPresale = () => {
+const SignUpPresale = ({ onSubscribeSuccess }) => {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState({ type: "", message: "" });
   const [loading, setLoading] = useState(false);
@@ -53,6 +53,7 @@ const SignUpPresale = () => {
         message: "Thanks for subscribing!",
       });
       setEmail("");
+      onSubscribeSuccess?.();
     } catch (error) {
       console.error("Error:", error);
       setStatus({

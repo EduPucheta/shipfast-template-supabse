@@ -33,6 +33,8 @@ export async function POST(req) {
       .eq("id", session?.user?.id)
       .single();
 
+    
+
     if (!data?.customer_id) {
       return NextResponse.json(
         {

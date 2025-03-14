@@ -2,6 +2,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useSurvey } from "../app/context/SurveyContext";
+import { Smartphone } from "lucide-react";
+import { Monitor } from "lucide-react";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -57,7 +59,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
 
     setIsSubmitting(true);
     setError(null);
-    
+
     const { error: submitError } = await supabase
       .from("reviews")
       .insert([{ rating, review, survey: surveyID }]);
@@ -97,7 +99,12 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
               <span className="label-text">{displayQuestion}</span>
             </label>
             {displayReaction === "Stars" && (
-              <div className="rating rating-lg" onChange={handleRatingChange} role="radiogroup" aria-label="Rating">
+              <div
+                className="rating rating-lg"
+                onChange={handleRatingChange}
+                role="radiogroup"
+                aria-label="Rating"
+              >
                 {[1, 2, 3, 4, 5].map((value) => (
                   <input
                     key={value}
@@ -139,14 +146,16 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
           ></textarea>
 
           <div className="form-control mt-6">
-            <button 
-              className="btn btn-primary" 
+            <button
+              className="btn btn-primary"
               onClick={handleSubmit}
               disabled={isSubmitting}
             >
               {isSubmitting ? (
                 <span className="loading loading-spinner loading-sm"></span>
-              ) : 'Submit'}
+              ) : (
+                "Submit"
+              )}
             </button>
           </div>
         </>
@@ -159,6 +168,18 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
       <h2 className="text-xl font-bold text-center mb-4">
         {isPreview ? "Preview" : ""}
       </h2>
+      {isPreview ?  
+      <div role="tablist" className="tabs tabs-box">
+        <a role="tab" className="tab tab-active">
+        <Smartphone />
+        </a>
+        <a role="tab" className="tab ">
+
+         <Monitor />
+        </a>
+
+      </div>
+      : ""}
 
       {isPreview ? (
         <div className="mockup-phone">
