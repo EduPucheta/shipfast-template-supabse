@@ -11,7 +11,7 @@
       iframe.style.transform = "translateY(-50%)";
       iframe.style.zIndex = "9999";
       iframe.allow = "clipboard-write"; // Optional permissions
-      document.body.appendChild(iframe);
+      window.parent.document.body.appendChild(iframe);
       console.log("Widget Loaded ✅");
     };
   })();
