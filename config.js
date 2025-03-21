@@ -42,7 +42,7 @@ const config = {
       },
       {
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
-        isFeatured: true,
+        isFeatured: false,
         priceId:
           process.env.NODE_ENV === "development"
             ? "price_1R2HPPIPjutGjJ5SoNiP5bgq"
@@ -56,27 +56,8 @@ const config = {
             name: "Unlimited responses",
           },
           { name: "Unlimited surveys" },
-          
           { name: "AI analysis" },
-
-        ],
-      },
-      {
-        // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
-    
-        priceId:
-          process.env.NODE_ENV === "development"
-            ? "price_1O5KtcAxyNprDp7iftKnrrpw"
-            : "price_456",
-        name: "Entreprise",
-        description: "You need more power",
-        price: 99,
-        priceAnchor: 149,
-        features: [
-          {
-            name: "Unlimited responses",
-          },
-          { name: "Unlimited surveys" },
+          { name: "Remove Feedbackr branding" },
 
         ],
       }

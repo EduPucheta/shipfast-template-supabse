@@ -1,6 +1,8 @@
 import MetricSummary from "@/components/MetricSummary";
 import TableReviews from "@/components/TableReviews";
 import { supabase } from "../../../../libs/supabase";
+import PreviewSurvey from "@/components/PreviewSurvey";
+import { notFound } from "next/navigation";
 
 async function getSurvey(id) {
   const { data, error } = await supabase
@@ -9,7 +11,9 @@ async function getSurvey(id) {
     .eq("id", id)
     .single();
 
-  if (error) throw new Error("Survey not found");
+  if (error || !data) {
+    notFound();
+  }
   return data;
 }
 
@@ -73,7 +77,16 @@ export default async function SurveyResponses({ params }) {
           aria-label="Survey preview"
         />
         <div className="tab-content bg-base-100 border-base-300 p-2">
-          Tab content 3
+          <PreviewSurvey isPreview={true} id={params} />
+        </div>
+        <input
+          type="radio"
+          name="my_tabs_3"
+          className="tab"
+          aria-label="Ask AI"
+        />
+        <div className="tab-content bg-base-100 border-base-300 p-2">
+       
         </div>
       </div>
     </div>
