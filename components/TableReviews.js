@@ -43,7 +43,11 @@ const TableReviews = ({ id }) => {
         if (error) {
           console.error("Error fetching reviews:", error);
         } else {
-          setReviews(data || []);
+          // Sort reviews by created_at in descending order (newest first)
+          const sortedReviews = (data || []).sort((a, b) => 
+            new Date(b.created_at) - new Date(a.created_at)
+          );
+          setReviews(sortedReviews);
         }
       } catch (err) {
         console.error("Unexpected error:", err);

@@ -53,6 +53,7 @@ export default async function SurveyResponses({ params }) {
           name="my_tabs_3"
           className="tab"
           aria-label="User responses"
+          defaultChecked
         />
         <div className="tab-content bg-base-100 border-base-300 p-2">
           {" "}
@@ -64,7 +65,7 @@ export default async function SurveyResponses({ params }) {
           name="my_tabs_3"
           className="tab"
           aria-label="Analytics"
-          defaultChecked
+         
         />
         <div className="tab-content bg-base-100 border-base-300 p-2">
           Tab content 2
