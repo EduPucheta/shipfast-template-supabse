@@ -2,11 +2,11 @@
     window.onload = function () {
       const iframe = document.createElement("iframe");
       iframe.src = "http://localhost:3000/widjet"; // Your widget URL
-      iframe.width = "200px" ;
-      iframe.height = "400px";
+      iframe.width = "auto" ;
+      iframe.height = "auto";
       iframe.style.border = "none";
       iframe.style.position = "fixed";
-      iframe.style.left = "20px";
+      iframe.style.right = "20px";
       iframe.style.top = "50%";
       iframe.style.transform = "translateY(-50%)";
       iframe.style.zIndex = "9999";
