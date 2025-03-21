@@ -20,7 +20,7 @@ const TableReviews = ({ id }) => {
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
-
+ 
       console.log(data.user);
 
       setUserId(data.user.id);
