@@ -22,7 +22,12 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  console.log("surveyID", surveyID);
+  useEffect(() => {
+    // Notify parent window that widget is ready
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'widget-ready' }, '*');
+    }
+  }, []);
 
   useEffect(() => {
     const fetchSurvey = async () => {
@@ -73,6 +78,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
     } else {
       setRating(null);
       setReview("");
+      setIsVisible(false);
     }
     setIsSubmitting(false);
   }, [rating, review, surveyID]);
@@ -84,7 +90,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const innerContent = (
     <div
       data-theme={displayTheme}
-      className="card bg-base-200 w-full max-w-sm shrink-0  p-8 flex flex-col justify-center items-center gap-4"
+      className="card bg-base-200 w-full max-w-sm shrink-0 p-8 flex flex-col justify-center items-center gap-4"
     >
       {loading ? (
         <div className="flex justify-center items-center mt-5">

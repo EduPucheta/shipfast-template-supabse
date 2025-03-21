@@ -31,3 +31,72 @@ P.S.
 - Want to showcase your startups? Get your [Indie Page](https://indiepa.ge?ref=shipfast_readme) and share your entrepreneur's journey. Join 3,132 founders ⭐️
 - Don't get banned from Stripe for 1 dispute. Use [ByeDispute](https://byedispute.com/?ref=shipfast_readme) to prevent them from happenening 🛡️
 - Make your launch go viral and get your first customers with [LaunchViral](https://launchvir.al/?ref=shipfast_readme) 🚀
+
+# Feedback Widget Integration Guide
+
+This guide explains how to integrate the feedback widget into your website.
+
+## Installation
+
+1. Add the following script to your website's HTML, just before the closing `</body>` tag:
+
+```html
+<script src="https://your-domain.com/widget.js"></script>
+```
+
+2. Replace `YOUR_WIDGET_URL` in the widget.js file with your actual widget URL (e.g., `https://your-domain.com/widget`).
+
+3. Replace `YOUR_DOMAIN` in the widget.js file with your actual domain for security purposes.
+
+## Features
+
+- Floating feedback button in the bottom-right corner
+- Customizable themes
+- Star or heart rating system
+- Optional comment field
+- Mobile-responsive design
+- Secure iframe integration
+
+## Customization
+
+The widget supports the following themes:
+- light
+- dark
+- cupcake
+- bumblebee
+- emerald
+- corporate
+- synthwave
+- retro
+- cyberpunk
+- valentine
+- halloween
+- garden
+- forest
+- aqua
+- lofi
+- pastel
+- fantasy
+- wireframe
+- black
+- luxury
+- dracula
+- cmyk
+- autumn
+- business
+- acid
+- lemonade
+- night
+- coffee
+- winter
+- dim
+- nord
+- sunset
+
+## Security
+
+The widget is loaded in an iframe for security and isolation. Communication between the widget and the parent window is handled through secure postMessage events.
+
+## Support
+
+For support or questions, please contact us at support@your-domain.com.
