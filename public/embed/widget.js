@@ -3,7 +3,7 @@
       const iframe = document.createElement("iframe");
       iframe.src = "http://localhost:3000/widjet"; // Your widget URL
       iframe.width = "auto" ;
-      iframe.height = "auto";
+      iframe.height = "600px";
       iframe.style.border = "none";
       iframe.style.position = "fixed";
       iframe.style.right = "20px";
