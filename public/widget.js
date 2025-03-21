@@ -9,8 +9,8 @@
   iframe.style.position = 'fixed';
   iframe.style.bottom = '0';
   iframe.style.right = '0';
-  iframe.style.width = '100%';
-  iframe.style.height = '100%';
+  iframe.style.width = '40%';
+  iframe.style.height = '40%';
   iframe.style.border = 'none';
   iframe.style.zIndex = '9999';
   iframe.style.background = 'transparent';
