@@ -4,6 +4,8 @@ import { createClient } from "@supabase/supabase-js";
 import { useSurvey } from "../app/context/SurveyContext";
 import { Smartphone } from "lucide-react";
 import { Monitor } from "lucide-react";
+import { MessageSquare } from "lucide-react";
+import { X } from "lucide-react";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -18,6 +20,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   console.log("surveyID", surveyID);
 
@@ -81,7 +84,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const innerContent = (
     <div
       data-theme={displayTheme}
-      className="card bg-base-200 w-full max-w-sm shrink-0 shadow-xl p-8 flex flex-col justify-center items-center gap-4"
+      className="card bg-base-200 w-full max-w-sm shrink-0  p-8 flex flex-col justify-center items-center gap-4"
     >
       {loading ? (
         <div className="flex justify-center items-center mt-5">
@@ -164,32 +167,50 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <h2 className="text-xl font-bold text-center mb-4">
-        {isPreview ? "Preview" : ""}
-      </h2>
-      {isPreview ?  
-      <div role="tablist" className="tabs tabs-box">
-        <a role="tab" className="tab tab-active">
-        <Smartphone />
-        </a>
-        <a role="tab" className="tab ">
+    <div className="fixed bottom-4 right-4 z-50">
+      {!isVisible ? (
+        <button
+          onClick={() => setIsVisible(true)}
+          className="btn btn-primary rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+        >
+          <MessageSquare className="w-5 h-5" />
+          <span>Feedback</span>
+        </button>
+      ) : (
+        <div className="relative">
+          <button
+            onClick={() => setIsVisible(false)}
+            className="absolute -top-2 -right-2 btn btn-circle btn-sm btn-ghost bg-base-200 shadow-lg hover:shadow-xl z-10"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <div className="flex flex-col items-center justify-center bg-base-200 rounded-lg shadow-2xl p-4">
+            <h2 className="text-xl font-bold text-center mb-4">
+              {isPreview ? "Preview" : ""}
+            </h2>
+            {isPreview ?  
+              <div role="tablist" className="tabs tabs-box">
+                <a role="tab" className="tab tab-active">
+                  <Smartphone />
+                </a>
+                <a role="tab" className="tab">
+                  <Monitor />
+                </a>
+              </div>
+            : ""}
 
-         <Monitor />
-        </a>
-
-      </div>
-      : ""}
-
-      {isPreview ? (
-        <div className="mockup-phone">
-          <div className="mockup-phone-camera"></div>
-          <div className="mockup-phone-display flex flex-col justify-center items-center">
-            <div className="w-[320px] h-[568px]">{innerContent}</div>
+            {isPreview ? (
+              <div className="mockup-phone">
+                <div className="mockup-phone-camera"></div>
+                <div className="mockup-phone-display flex flex-col justify-center items-center">
+                  <div className="w-[320px] h-[568px]">{innerContent}</div>
+                </div>
+              </div>
+            ) : (
+              innerContent
+            )}
           </div>
         </div>
-      ) : (
-        innerContent
       )}
     </div>
   );
