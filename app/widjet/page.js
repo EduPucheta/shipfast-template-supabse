@@ -24,7 +24,7 @@ export default function WidgetPage() {
         </style>
       </head>
       <body>
-        <div>Survey widget</div>
+        <div>Survey widget2 </div>
         <div id="root">
           <PreviewSurvey />
         </div>
