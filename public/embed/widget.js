@@ -6,8 +6,9 @@
       iframe.height = "400px";
       iframe.style.border = "none";
       iframe.style.position = "fixed";
-      iframe.style.bottom = "20px";
-      iframe.style.right = "20px";
+      iframe.style.left = "20px";
+      iframe.style.top = "50%";
+      iframe.style.transform = "translateY(-50%)";
       iframe.style.zIndex = "9999";
       iframe.allow = "clipboard-write"; // Optional permissions
       document.body.appendChild(iframe);
