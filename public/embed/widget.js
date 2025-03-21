@@ -2,8 +2,8 @@
     window.onload = function () {
       const iframe = document.createElement("iframe");
       iframe.src = "http://localhost:3000/widjet"; // Your widget URL
-      iframe.width = "100%" ;
-      iframe.height = "100%";
+      iframe.width = "50%" ;
+      iframe.height = "50%";
       iframe.style.border = "none";
       iframe.style.position = "fixed";
       iframe.style.right = "20px";
