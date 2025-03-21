@@ -9,7 +9,7 @@ export const EmailTemplate = ({
         Welcome to Feedbackr, {firstName}! 🎉
       </h1>
       <p style={{ color: '#4a4a4a', fontSize: '16px', lineHeight: '1.5' }}>
-        We're excited to have you on board and can't wait to help you gather valuable insights through surveys.
+        We&apos;re excited to have you on board and can&apos;t wait to help you gather valuable insights through surveys.
       </p>
     </div>
 
@@ -20,7 +20,7 @@ export const EmailTemplate = ({
       <ul style={{ listStyle: 'none', padding: '0', margin: '0' }}>
         <li style={{ marginBottom: '12px', display: 'flex', alignItems: 'flex-start' }}>
           <span style={{ color: '#4a4a4a', marginRight: '10px' }}>1.</span>
-          <span style={{ color: '#4a4a4a' }}>Create your first survey by clicking the "New Survey" button</span>
+          <span style={{ color: '#4a4a4a' }}>Create your first survey by clicking the &quot;New Survey&quot; button</span>
         </li>
         <li style={{ marginBottom: '12px', display: 'flex', alignItems: 'flex-start' }}>
           <span style={{ color: '#4a4a4a', marginRight: '10px' }}>2.</span>
@@ -38,7 +38,7 @@ export const EmailTemplate = ({
         Need Help?
       </h2>
       <p style={{ color: '#4a4a4a', fontSize: '16px', lineHeight: '1.5' }}>
-        Our support team is here to help you succeed. If you have any questions or need assistance, don't hesitate to reach out.
+        Our support team is here to help you succeed. If you have any questions or need assistance, don&apos;t hesitate to reach out.
       </p>
     </div>
 
