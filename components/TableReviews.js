@@ -16,7 +16,7 @@ const TableReviews = ({ id }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 30;
   const [userId, setUserId] = useState(null);
-
+ 
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
