@@ -71,5 +71,14 @@
         loadReact();
       }
     },
+    setPosition: function ({ top, right }) {
+      // Implementation of setPosition method
+    },
+    setSize: function ({ width, height }) {
+      // Implementation of setSize method
+    },
+    setStyle: function ({ borderRadius, boxShadow, transform }) {
+      // Implementation of setStyle method
+    }
   };
 })();

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui" {
   themes: all;
-}; 
+}
 
 html,
 body {
@@ -11,6 +11,10 @@ body {
 /* It makes the HTML progress bar filling smooth when value change. */
 progress::-webkit-progress-value {
   transition: 0.6s width ease-out;
+}
+
+:root, [data-theme] {
+  background-color: unset !important;
 }
 
 /*
