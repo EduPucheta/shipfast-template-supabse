@@ -1,4 +1,4 @@
-
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import Pricing from "@/components/Pricing";
@@ -12,7 +12,9 @@ export default function Page() {
   return (
     <>
       <div>
-        <Header/>
+        <Suspense fallback={<div className="h-16 bg-base-100" />}>
+          <Header/>
+        </Suspense>
         <HeroSection/>
         <Pricing/>
         <FAQ/>
