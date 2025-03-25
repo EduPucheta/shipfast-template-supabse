@@ -20,7 +20,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     // Notify parent window that widget is ready
@@ -173,14 +173,14 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   );
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-10 right-4 z-50">
       {!isVisible ? (
         <button
           onClick={() => setIsVisible(true)}
           className="btn btn-primary rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
         >
           <MessageSquare className="w-5 h-5" />
-          <span>Feedback</span>
+          <span>Feedback2</span>
         </button>
       ) : (
         <div className="relative">
@@ -190,7 +190,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
           >
             <X className="w-4 h-4" />
           </button>
-          <div className="flex flex-col items-center justify-center bg-base-200 rounded-lg shadow-2xl p-4">
+          <div className="flex flex-col items-center justify-center bg-base-100 rounded-lg shadow-xl  p-4">
             <h2 className="text-xl font-bold text-center mb-4">
               {isPreview ? "Preview" : ""}
             </h2>
