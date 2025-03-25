@@ -79,25 +79,57 @@ const SurveyNav = () => {
   const handleToggle = async (surveyId, currentStatus) => {
     setUpdatingSurvey(surveyId);
 
-    const newStatus = !currentStatus;
-    const { error } = await supabase
-      .from("surveys")
-      .update({ is_active: newStatus })
-      .eq("id", surveyId);
+    try {
+      const newStatus = !currentStatus;
+      console.log('Attempting to update survey:', { surveyId, currentStatus, newStatus });
+      
+      // First verify the survey exists
+      const { data: surveyData, error: fetchError } = await supabase
+        .from("surveys")
+        .select("id, is_active")
+        .eq("id", surveyId)
+        .single();
 
-    if (error) {
-      console.error("Error updating survey status:", error);
-      toast.error("Failed to update status");
-    } else {
+      if (fetchError) {
+        console.error("Error fetching survey:", fetchError);
+        toast.error("Failed to verify survey");
+        return;
+      }
+
+      if (!surveyData) {
+        console.error("Survey not found:", surveyId);
+        toast.error("Survey not found");
+        return;
+      }
+
+      // Perform the update
+      const { data: updateData, error: updateError } = await supabase
+        .from("surveys")
+        .update({ is_active: newStatus })
+        .eq("id", surveyId)
+        .select();
+
+      if (updateError) {
+        console.error("Error updating survey status:", updateError);
+        toast.error("Failed to update status");
+        return;
+      }
+
+      console.log('Update successful:', updateData);
+
+      // Update local state since the update was successful
       setSurveys((prevSurveys) =>
         prevSurveys.map((survey) =>
           survey.id === surveyId ? { ...survey, is_active: newStatus } : survey
         )
       );
       toast.success("Survey status updated");
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      toast.error("An unexpected error occurred");
+    } finally {
+      setUpdatingSurvey(null);
     }
-
-    setUpdatingSurvey(null);
   };
 
   if (loading) {

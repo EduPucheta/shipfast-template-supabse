@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, ExternalLink } from "lucide-react";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
@@ -103,9 +103,20 @@ const TableReviews = ({ id }) => {
                       ></div>
                     ))}
                   </div>
-                  <div className="text-xs  font-semibold opacity-60">
+                  <div className="text-xs font-semibold opacity-60">
                     {format(new Date(review.created_at), "MMMM dd, yyyy HH:mm")}
                   </div>
+                  {review.page && (
+                    <a 
+                      href={review.page}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs hover:text-primary-focus flex items-center gap-1 mt-1"
+                    >
+                      <ExternalLink className="size-3" />
+                      {review.page}
+                    </a>
+                  )}
                 </div>
                 <p className="list-col-wrap text-xs">{`${review.review}`}</p>
 
