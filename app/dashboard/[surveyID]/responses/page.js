@@ -92,6 +92,6 @@ export default async function SurveyResponses({ params }) {
             <AskAI id={params} />
         </div>
       </div>
-    </div>
+    </div> 
   );
 }
