@@ -3,6 +3,7 @@ import TableReviews from "@/components/TableReviews";
 import { supabase } from "../../../../libs/supabase";
 import PreviewSurvey from "@/components/PreviewSurvey";
 import { notFound } from "next/navigation";
+import AskAI from "@/components/AskAI";
 
 
 async function getSurvey(id) {
@@ -88,7 +89,7 @@ export default async function SurveyResponses({ params }) {
           aria-label="Ask AI"
         />
         <div className="tab-content bg-base-100 border-base-300 p-2">
-       
+            <AskAI id={params} />
         </div>
       </div>
     </div>

@@ -28,7 +28,7 @@ export async function POST(req) {
       Use this data to provide accurate and relevant answers to the user's questions about their survey responses.`
     };
 
-    const completion = await client.chat.completions.create({
+    const completion = await client.chat.completions.create({ 
       model: "gpt-4o-mini",
       messages: [systemMessage, ...messages],
       temperature: 0.7,
