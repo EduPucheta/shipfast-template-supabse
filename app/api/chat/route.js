@@ -32,7 +32,7 @@ export async function POST(req) {
       model: "gpt-4o-mini",
       messages: [systemMessage, ...messages],
       temperature: 0.7,
-      max_tokens: 1000,
+      max_tokens: 1000, 
     });
 
     if (!completion.choices?.[0]?.message?.content) {

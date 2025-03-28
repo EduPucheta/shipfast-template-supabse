@@ -5,7 +5,6 @@ import PreviewSurvey from "@/components/PreviewSurvey";
 import { notFound } from "next/navigation";
 import AskAI from "@/components/AskAI";
 
-
 async function getSurvey(id) {
   const { data, error } = await supabase
     .from("surveys")
