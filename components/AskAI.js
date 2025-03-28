@@ -13,6 +13,7 @@ export default function AskAI({ id }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [surveyData, setSurveyData] = useState(null);
+  const [remainingTokens, setRemainingTokens] = useState(null);
 
   const suggestedQuestions = [
     "What are the key insights from the survey responses?",
@@ -76,6 +77,7 @@ export default function AskAI({ id }) {
       }
 
       setMessages((prev) => [...prev, { role: "assistant", content: data.content }]);
+      setRemainingTokens(data.remainingTokens);
     } catch (error) {
       console.error("Error:", error);
       setError(error.message);
@@ -89,72 +91,87 @@ export default function AskAI({ id }) {
   };
 
   return (
-    <div className="flex flex-col h-[600px] w-full">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`chat ${
-              msg.role === "user" ? "chat-end" : "chat-start"
-            }`}
-          >
-            <div className={`chat-bubble ${
-              msg.role === "user" ? "chat-bubble-primary" : "chat-bubble-secondary"
-            }`}>
-              {msg.role === "assistant" ? (
-                <TypewriterText text={msg.content} speed={30} />
-              ) : (
-                msg.content
-              )}
-            </div>
-          </div>
-        ))}
-        {loading && (
-          <div className="flex justify-center">
-            <span className="loading loading-dots loading-md"></span>
-          </div>
-        )}
-        {error && (
-          <div className="text-error text-sm text-center">
-            {error}
-          </div>
-        )}
-      </div>
-      
-      <form onSubmit={handleSubmit} className="p-4 border-t">
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Ask about your survey responses..."
-              className="input input-bordered flex-1"
-              disabled={loading}
-            />
-            <button 
-              type="submit" 
-              className="btn btn-primary" 
-              disabled={loading || !message.trim()}
+    <div className="card bg-base-100  min-h-[600px] w-full">
+      <div className="card-body p-0">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-base-200">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`chat ${
+                msg.role === "user" ? "chat-end" : "chat-start"
+              }`}
             >
-              <SendHorizontal size={20} />
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {suggestedQuestions.map((question, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => handleSuggestedQuestionClick(question)}
-                className="btn btn-sm btn-ghost"
-                disabled={loading}
-              >
-                {question}
-              </button>
-            ))}
-          </div>
+              <div className={`chat-bubble ${
+                msg.role === "user" ? "chat-bubble-primary" : "chat-bubble-secondary"
+              } whitespace-pre-wrap max-w-[80%] prose`}>
+                {msg.role === "assistant" ? (
+                  <TypewriterText text={msg.content} speed={30} />
+                ) : (
+                  msg.content
+                )}
+              </div>
+            </div>
+          ))}
+          {loading && (
+            <div className="flex justify-center">
+              <span className="loading loading-dots loading-md"></span>
+            </div>
+          )}
+          {error && (
+            <div className="alert alert-error">
+              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{error}</span>
+            </div>
+          )}
         </div>
-      </form>
+        
+        <div className="p-4 border-t border-base-300">
+          <form onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-4">
+              <div className="join w-full">
+                <input
+                  type="text"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Ask about your survey responses..."
+                  className="input input-bordered join-item flex-1"
+                  disabled={loading}
+                />
+                <button 
+                  type="submit" 
+                  className="btn btn-primary join-item" 
+                  disabled={loading || !message.trim()}
+                >
+                  <SendHorizontal size={20} />
+                </button>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {suggestedQuestions.map((question, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => handleSuggestedQuestionClick(question)}
+                    className="btn btn-sm btn-ghost btn-outline"
+                    disabled={loading}
+                  >
+                    {question}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </form>
+          {remainingTokens !== null && (
+                <div className="text-sm my-2">
+                  Remaining tokens this month: {remainingTokens.toLocaleString()}
+                </div>
+              )}
+        </div>
+
+      </div>
+
     </div>
   );
 }
