@@ -14,16 +14,11 @@ const CTA = () => {
       <div className="relative hero-content text-center text-neutral-content p-8">
         <div className="flex flex-col items-center max-w-xl p-8 md:p-0">
           <h2 className="font-bold text-3xl md:text-5xl tracking-tight mb-8 md:mb-12">
-            Boost your app, launch, earn
+            Transform your feedback into actionable insights
           </h2>
           <p className="text-lg opacity-80 mb-12 md:mb-16">
-            Don&apos;t waste time integrating APIs or designing a pricing
-            section...
+            Stop spending hours analyzing survey responses manually. Let AI help you understand what your users are really saying.
           </p>
-
-          <button className="btn btn-primary btn-wide">
-            Get {config.appName}
-          </button>
         </div>
       </div>
     </section>

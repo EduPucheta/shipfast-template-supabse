@@ -6,7 +6,7 @@ const config = {
   appName: "Feedbackr",
   // REQUIRED: a short description of your app for SEO tags (can be overwritten)
   appDescription:
-    "Get user feedback for free",
+    "Survey analysis, AI boosted",
   // REQUIRED (no https://, not trialing slash at the end, just the naked domain)
   domainName: "feedbackr.com",
   crisp: {
@@ -37,6 +37,7 @@ const config = {
             name: "Unlimited responses",
           },
           { name: "Unlimited surveys" },
+          { name: "Some tokens to talk to the AI" },
           
         ],
       },
@@ -56,7 +57,7 @@ const config = {
             name: "Unlimited responses",
           },
           { name: "Unlimited surveys" },
-          { name: "AI analysis" },
+          { name: "10 million tokens to talk to the AI" },
           { name: "Remove Feedbackr branding" },
 
         ],

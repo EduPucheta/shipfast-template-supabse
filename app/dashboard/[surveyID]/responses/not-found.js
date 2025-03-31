@@ -19,12 +19,6 @@ export default function NotFound() {
         >
           Return to Dashboard
         </Link>
-        <Link 
-          href="/dashboard/surveys" 
-          className="btn btn-outline btn-lg"
-        >
-          View All Surveys
-        </Link>
       </div>
     </div>
   );

@@ -7,18 +7,25 @@ import Testimonial from "@/components/Testimonials1";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import SignUpPresale from "@/components/SignUpPresale"; 
+import Problem from "@/components/Problem";
+import FeaturesAccordion from "@/components/FeaturesAccordion";
+
 
 export default function Page() {
   return (
     <>
-      <div>
+      <div className="bg-base-100">
         <Suspense fallback={<div className="h-16 bg-base-100" />}>
           <Header/>
         </Suspense>
+       
+
         <HeroSection/>
+        <Problem/> 
+        <FeaturesAccordion/>
         <Pricing/>
         <FAQ/>
-        <Testimonial/>
+       
         <CTA/>
         <Footer/>
       </div>

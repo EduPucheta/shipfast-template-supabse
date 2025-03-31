@@ -7,21 +7,35 @@ import { useRef, useState } from "react";
 
 const faqList = [
   {
-    question: "What happens after I reach 1,000 respones?",
-    answer: <div className="space-y-2 leading-relaxed">The upcoming responses will be blured out until you make the payment</div>,
-  },
-  {
-    question: "Can I get a refund?",
+    question: "How does the AI analysis of feedback work?",
     answer: (
-      <p>
-        No! it is already free!
-      </p>
+      <div className="space-y-2 leading-relaxed">
+        Our AI analyzes your survey responses to identify patterns, trends, and key insights. You can have natural conversations with the AI to dive deeper into specific aspects of your feedback, ask follow-up questions, and get actionable recommendations based on the data.
+      </div>
     ),
   },
   {
-    question: "I have another question",
+    question: "What types of feedback can I collect?",
     answer: (
-      <div className="space-y-2 leading-relaxed">Cool, contact us by email</div>
+      <div className="space-y-2 leading-relaxed">
+        You can collect various types of feedback including customer satisfaction surveys, product feedback, employee feedback, market research, and more. Our platform supports multiple question types and can handle both structured and unstructured responses.
+      </div>
+    ),
+  },
+  {
+    question: "Is my feedback data secure?",
+    answer: (
+      <div className="space-y-2 leading-relaxed">
+        Yes, we take data security seriously. All feedback is encrypted in transit and at rest. We use industry-standard security practices and comply with data protection regulations. Your data is never shared with third parties without your explicit consent.
+      </div>
+    ),
+  },
+  {
+    question: "How do I get started?",
+    answer: (
+      <div className="space-y-2 leading-relaxed">
+        Getting started is easy! Simply sign up for an account, create your first survey, and start collecting feedback. Our AI assistant will automatically analyze responses as they come in, and you can start asking questions about your data right away.
+      </div>
     ),
   },
 ];
@@ -88,7 +102,7 @@ const Item = ({ item }) => {
 
 const FAQ = () => {
   return (
-    <section className="bg-base-200" id="faq">
+    <section className="bg-base-100" id="faq">
       <div className="py-24 px-8 max-w-7xl mx-auto flex flex-col md:flex-row gap-12">
         <div className="flex flex-col text-left basis-1/2">
           <p className="inline-block font-semibold text-primary mb-4">FAQ</p>
