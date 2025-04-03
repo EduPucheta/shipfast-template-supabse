@@ -25,7 +25,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   useEffect(() => {
     // Notify parent window that widget is ready
     if (window.parent !== window) {
-      window.parent.postMessage({ type: 'widget-ready' }, '*');
+      window.parent.postMessage({ type: "widget-ready" }, "*");
     }
   }, []);
 
@@ -68,9 +68,17 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
     setIsSubmitting(true);
     setError(null);
 
+    // Get the current page URL
+    const pageUrl = window.location.href;
+
     const { error: submitError } = await supabase
       .from("reviews")
-      .insert([{ rating, review, survey: surveyID }]);
+      .insert([{ 
+        rating, 
+        review, 
+        survey: surveyID,
+        page: pageUrl 
+      }]);
 
     if (submitError) {
       console.error("Error submitting review:", submitError);
@@ -90,7 +98,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const innerContent = (
     <div
       data-theme={displayTheme}
-      className="card bg-base-200 w-full max-w-sm shrink-0 p-8 flex flex-col justify-center items-center gap-4"
+      className="card !bg-base-200 w-full  shrink-0 p-8 flex flex-col justify-center items-center gap-4"
     >
       {loading ? (
         <div className="flex justify-center items-center mt-5">
@@ -103,7 +111,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
               <span>{error}</span>
             </div>
           )}
-          <div className="form-control flex flex-col justify-center items-center gap-4">
+          <div className="form-control flex flex-col justify-center items-center gap-4 ">
             <label className="label">
               <span className="label-text">{displayQuestion}</span>
             </label>
@@ -173,7 +181,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   );
 
   return (
-    <div className="fixed bottom-10 right-4 z-50">
+    <div className=" " data-theme="" >
       {!isVisible ? (
         <button
           onClick={() => setIsVisible(true)}
@@ -183,18 +191,15 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
           <span>Feedback2</span>
         </button>
       ) : (
-        <div className="relative">
-          <button
-            onClick={() => setIsVisible(false)}
-            className="absolute -top-2 -right-2 btn btn-circle btn-sm btn-ghost bg-base-200 shadow-lg hover:shadow-xl z-10"
-          >
-            <X className="w-4 h-4" />
-          </button>
-          <div className="flex flex-col items-center justify-center bg-base-100 rounded-lg shadow-xl  p-4">
-            <h2 className="text-xl font-bold text-center mb-4">
-              {isPreview ? "Preview" : ""}
-            </h2>
-            {isPreview ?  
+        <div  className="relative">
+          <div className="flex flex-col items-center justify-center  rounded-lg shadow-xl ">
+            {isPreview ? (
+              <h2 className="text-xl font-bold text-center mb-4">Preview</h2>
+            ) : (
+              ""
+            )}
+
+            {isPreview ? (
               <div role="tablist" className="tabs tabs-box">
                 <a role="tab" className="tab tab-active">
                   <Smartphone />
@@ -203,12 +208,13 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
                   <Monitor />
                 </a>
               </div>
-            : ""}
+            ) : (
+              ""
+            )}
 
             {isPreview ? (
-              <div className="mockup-phone">
-                <div className="mockup-phone-camera"></div>
-                <div className="mockup-phone-display flex flex-col justify-center items-center">
+              <div className="">
+                <div className=" flex flex-col justify-center items-center">
                   <div className="w-[320px] h-[568px]">{innerContent}</div>
                 </div>
               </div>
