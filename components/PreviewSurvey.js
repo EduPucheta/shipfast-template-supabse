@@ -78,7 +78,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
         review, 
         survey: surveyID,
         page: pageUrl 
-      }]);
+      }]); 
 
     if (submitError) {
       console.error("Error submitting review:", submitError);
