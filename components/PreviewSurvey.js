@@ -22,6 +22,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [showThankYou, setShowThankYou] = useState(false);
+  const [previewMode, setPreviewMode] = useState("smartphone");
 
   useEffect(() => {
     // Notify parent window that widget is ready
@@ -108,7 +109,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const innerContent = (
     <div
       data-theme={displayTheme}
-      className="card !bg-base-200 w-full  shrink-0 p-8 flex flex-col justify-center items-center gap-4"
+      className="card !bg-base-200 w-full  shrink-0 p-8 flex flex-col justify-center items-center gap-4 max-w-md" 
     >
       {loading ? (
         <div className="flex justify-center items-center mt-5">
@@ -211,7 +212,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
         </button>
       ) : (
         <div  className="relative">
-          <div className="flex flex-col items-center justify-center  rounded-lg shadow-xl ">
+          <div className="flex flex-col items-center justify-center  ">
             {isPreview ? (
               <h2 className="text-xl font-bold text-center mb-4">Preview</h2>
             ) : (
@@ -219,12 +220,20 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
             )}
 
             {isPreview ? (
-              <div role="tablist" className="tabs tabs-box">
-                <a role="tab" className="tab tab-active">
-                  <Smartphone />
+              <div role="tablist" className="tabs tabs-box mb-4 tabs-sm">
+                <a
+                  role="tab"
+                  className={`tab ${previewMode === 'smartphone' ? 'tab-active' : ''}`}
+                  onClick={() => setPreviewMode('smartphone')}
+                >
+                  <Smartphone className="w-4 h-4" />
                 </a>
-                <a role="tab" className="tab">
-                  <Monitor />
+                <a
+                  role="tab"
+                  className={`tab ${previewMode === 'monitor' ? 'tab-active' : ''}`}
+                  onClick={() => setPreviewMode('monitor')}
+                >
+                  <Monitor className="w-4 h-4" />
                 </a>
               </div>
             ) : (
@@ -232,9 +241,17 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
             )}
 
             {isPreview ? (
-              <div className="">
-                <div className=" flex flex-col justify-center items-center">
-                  <div className="w-[320px] h-[568px]">{innerContent}</div>
+              <div className="overflow-auto border border-base-300 rounded-lg">
+                <div className="flex flex-col justify-center items-center">
+                  <div
+                    className={`${
+                      previewMode === 'smartphone'
+                        ? 'w-[320px] h-[568px] '
+                        : 'w-[600px] h-[400px] flex flex-col justify-center items-center'
+                    } transition-all duration-300 bg-white`}
+                  >
+                    {innerContent}
+                  </div>
                 </div>
               </div>
             ) : (
