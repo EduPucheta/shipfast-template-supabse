@@ -170,6 +170,26 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
                     ))}
                   </div>
                 )}
+                {displayReaction === "Emojis" && (
+                  <div className="flex gap-4" role="radiogroup" aria-label="Rating">
+                    {["😡", "😠", "😐", "😊", "😍"].map((emoji, index) => (
+                      <label key={index} className="cursor-pointer flex flex-col items-center">
+                        <input
+                          type="radio"
+                          name="emoji-rating"
+                          value={index + 1}
+                          onChange={handleRatingChange}
+                          className="sr-only"
+                        />
+                        <span className={`text-3xl transition-all duration-200 hover:scale-110 hover:opacity-100 ${
+                          rating ? (rating === (index + 1).toString() ? 'transform scale-125 opacity-100' : 'opacity-40') : 'opacity-100'
+                        }`}>
+                          {emoji}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <textarea
