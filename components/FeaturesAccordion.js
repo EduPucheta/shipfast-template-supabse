@@ -60,9 +60,12 @@ const features = [
     ),
   },
   {
-    title: "AI Chat Assistant",
+    title: "AI Chat",
+    type: "video",
+    path: "https://d3m8mk7e1mf7xn.cloudfront.net/app/widget.webm",
+    format: "video/webm",
     description:
-      "Powered by advanced AI, our chat assistant helps you understand and respond to customer feedback more effectively. Get instant insights, suggested responses, and automated categorization of customer messages. Save time while maintaining a personal touch.",
+      "Utilizing advanced AI, our chat assistant analyzes collected data to provide deep insights into customer feedback. Ask questions to discover how you can improve your business and enhance customer satisfaction.",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +93,7 @@ const Item = ({ feature, isOpen, setFeatureSelected }) => {
   return (
     <li>
       <button
-        className="relative flex gap-2 items-center w-full py-5 text-base font-medium text-left md:text-lg"
+        className="relative flex gap-2 items-center w-full py-5 text-base font-medium text-left md:text-lg hover:cursor-pointer"
         onClick={(e) => {
           e.preventDefault();
           setFeatureSelected();
