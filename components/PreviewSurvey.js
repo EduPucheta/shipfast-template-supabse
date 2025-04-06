@@ -21,6 +21,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  const [showThankYou, setShowThankYou] = useState(false);
 
   useEffect(() => {
     // Notify parent window that widget is ready
@@ -50,6 +51,15 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
 
     fetchSurvey();
   }, [isPreview, surveyID]);
+
+  useEffect(() => {
+    if (showThankYou) {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showThankYou]);
 
   const handleRatingChange = useCallback((e) => {
     setRating(e.target.value);
@@ -86,7 +96,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
     } else {
       setRating(null);
       setReview("");
-      setIsVisible(false);
+      setShowThankYou(true);
     }
     setIsSubmitting(false);
   }, [rating, review, surveyID]);
@@ -111,70 +121,79 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
               <span>{error}</span>
             </div>
           )}
-          <div className="form-control flex flex-col justify-center items-center gap-4 ">
-            <label className="label">
-              <span className="label-text">{displayQuestion}</span>
-            </label>
-            {displayReaction === "Stars" && (
-              <div
-                className="rating rating-lg"
-                onChange={handleRatingChange}
-                role="radiogroup"
-                aria-label="Rating"
-              >
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <input
-                    key={value}
-                    type="radio"
-                    name="rating-2"
-                    value={value}
-                    className="mask mask-star-2"
-                    aria-label={`${value} stars`}
-                  />
-                ))}
+          {showThankYou ? (
+            <div className="text-center p-4">
+              <h3 className="text-lg font-semibold">Thank You!</h3>
+              <p>Your feedback has been submitted.</p>
+            </div>
+          ) : (
+            <>
+              <div className="form-control flex flex-col justify-center items-center gap-4 ">
+                <label className="label">
+                  <span className="label-text">{displayQuestion}</span>
+                </label>
+                {displayReaction === "Stars" && (
+                  <div
+                    className="rating rating-lg"
+                    onChange={handleRatingChange}
+                    role="radiogroup"
+                    aria-label="Rating"
+                  >
+                    {[1, 2, 3, 4, 5].map((value) => (
+                      <input
+                        key={value}
+                        type="radio"
+                        name="rating-2"
+                        value={value}
+                        className="mask mask-star-2"
+                        aria-label={`${value} stars`}
+                      />
+                    ))}
+                  </div>
+                )}
+                {displayReaction === "Hearts" && (
+                  <div
+                    className="rating rating-lg gap-1"
+                    onChange={handleRatingChange}
+                  >
+                    {[1, 2, 3, 4, 5].map((value) => (
+                      <input
+                        key={value}
+                        type="radio"
+                        name="rating-3"
+                        value={value}
+                        className={`mask mask-heart bg-${
+                          ["red", "orange", "yellow", "lime", "green"][value - 1]
+                        }-400`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-            {displayReaction === "Hearts" && (
-              <div
-                className="rating rating-lg gap-1"
-                onChange={handleRatingChange}
-              >
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <input
-                    key={value}
-                    type="radio"
-                    name="rating-3"
-                    value={value}
-                    className={`mask mask-heart bg-${
-                      ["red", "orange", "yellow", "lime", "green"][value - 1]
-                    }-400`}
-                  />
-                ))}
+
+              <textarea
+                placeholder="Leave us a comment"
+                className="textarea textarea-md"
+                value={review}
+                onChange={handleReviewChange}
+                aria-label="Review comment"
+              ></textarea>
+
+              <div className="form-control mt-6">
+                <button
+                  className="btn btn-primary"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
               </div>
-            )}
-          </div>
-
-          <textarea
-            placeholder="Leave us a comment"
-            className="textarea textarea-md"
-            value={review}
-            onChange={handleReviewChange}
-            aria-label="Review comment"
-          ></textarea>
-
-          <div className="form-control mt-6">
-            <button
-              className="btn btn-primary"
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <span className="loading loading-spinner loading-sm"></span>
-              ) : (
-                "Submit"
-              )}
-            </button>
-          </div>
+            </>
+          )}
         </>
       )}
     </div>

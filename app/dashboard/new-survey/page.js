@@ -20,12 +20,14 @@ export default function NewSurveyPage() {
         reactionType={reactionType}
         setReactionType={setReactionType}
       />
+      <div className="min-w-2xl h-full">
       <PreviewSurvey 
         isPreview={true}
         question1={question1}
         surveyTheme={surveyTheme}
         reactionType={reactionType}
       />
+      </div>
     </div>
   );
 }

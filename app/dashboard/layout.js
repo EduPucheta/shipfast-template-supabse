@@ -23,7 +23,7 @@ export default async function LayoutPrivate({ children }) {
   return (
     <>
       <HeaderDashboard  />
-      <div className="md:min-h-screen bg-base-200"> 
+      <div className="md:min-h-screen bg-base-100"> 
       {children}
       </div>
     </>
