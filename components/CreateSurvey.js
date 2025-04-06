@@ -24,6 +24,13 @@ const CreateSurvey = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [selectedDevices, setSelectedDevices] = useState({
+    desktop: true,
+    tablet: true,
+    mobile: true
+  });
+  const [targetingType, setTargetingType] = useState('all_pages'); // 'all_pages' or 'specific_pages'
+  const [targetUrls, setTargetUrls] = useState(['']); // Array of URLs/triggers
 
   useEffect(() => {
     const getUser = async () => {
@@ -63,6 +70,18 @@ const CreateSurvey = () => {
         setError("Reaction type is required.");
         // Optionally focus the select or expand the section
         document.getElementById('reaction-select')?.focus();
+        return;
+    }
+
+    // Add validation for devices
+    if (!selectedDevices.desktop && !selectedDevices.tablet && !selectedDevices.mobile) {
+        setError("Please select at least one device type.");
+        return;
+    }
+
+    // Add validation for specific pages if that option is selected
+    if (targetingType === 'specific_pages' && (!targetUrls.length || !targetUrls[0])) {
+        setError("Please specify at least one URL or trigger.");
         return;
     }
 
@@ -131,6 +150,9 @@ const CreateSurvey = () => {
                     reactionType: reactionType,
                     question1: question1,
                     user_id: userId,
+                    target_devices: selectedDevices,
+                    targeting_type: targetingType,
+                    target_urls: targetingType === 'specific_pages' ? targetUrls : null,
                 },
             ])
             .select()
@@ -166,7 +188,7 @@ const CreateSurvey = () => {
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl w-full max-w-2xl mx-auto">
+    <div className="card bg-base-100 w-full max-w-2xl mx-auto">
       <div className="card-body">
         <h2 className="card-title text-2xl justify-center mb-6">Create a New Survey</h2>
 
@@ -299,6 +321,150 @@ const CreateSurvey = () => {
                           <span className="label-text-alt">How users rate.</span>
                       </label>
                  </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 4: Survey Targeting */}
+          <div className="collapse collapse-arrow bg-base-200 rounded-box shadow-sm">
+            <input type="checkbox" className="peer" />
+            <div className="collapse-title text-lg font-medium peer-checked:bg-base-300 peer-checked:text-base-content">
+              Targeting
+            </div>
+            <div className="collapse-content bg-base-100 text-base-content peer-checked:bg-base-100">
+              <div className="pt-4 space-y-6">
+                {/* Devices Selection */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-semibold">Devices <span className="text-error">*</span></span>
+                  </label>
+                  <p className="text-sm text-base-content/70 mb-2">Select which devices to show this survey on</p>
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="checkbox"
+                        checked={selectedDevices.desktop}
+                        onChange={(e) => setSelectedDevices(prev => ({ ...prev, desktop: e.target.checked }))}
+                      />
+                      <span className="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="2" y="3" width="20" height="14" rx="2" />
+                          <line x1="8" y1="21" x2="16" y2="21" />
+                          <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                        Desktop
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="checkbox"
+                        checked={selectedDevices.tablet}
+                        onChange={(e) => setSelectedDevices(prev => ({ ...prev, tablet: e.target.checked }))}
+                      />
+                      <span className="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="4" y="2" width="16" height="20" rx="2" />
+                          <line x1="12" y1="18" x2="12" y2="18" />
+                        </svg>
+                        Tablet
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="checkbox"
+                        checked={selectedDevices.mobile}
+                        onChange={(e) => setSelectedDevices(prev => ({ ...prev, mobile: e.target.checked }))}
+                      />
+                      <span className="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="5" y="2" width="14" height="20" rx="2" />
+                          <circle cx="12" cy="18" r="1" />
+                        </svg>
+                        Mobile
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Pages or Events Selection */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-semibold">Pages or events <span className="text-error">*</span></span>
+                  </label>
+                  <p className="text-sm text-base-content/70 mb-2">Select which pages or events to show this survey on</p>
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="targeting-type"
+                        className="radio"
+                        checked={targetingType === 'all_pages'}
+                        onChange={() => setTargetingType('all_pages')}
+                      />
+                      <span>All pages</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="targeting-type"
+                        className="radio"
+                        checked={targetingType === 'specific_pages'}
+                        onChange={() => setTargetingType('specific_pages')}
+                      />
+                      <span>Specific pages or events</span>
+                    </label>
+                  </div>
+
+                  {targetingType === 'specific_pages' && (
+                    <div className="mt-4 space-y-4">
+                      <p className="text-sm font-medium">Show the survey on the following URLs or triggers:</p>
+                      <p className="text-xs text-base-content/70">Fields are case-sensitive and events always take priority over URLs.</p>
+                      
+                      {targetUrls.map((url, index) => (
+                        <div key={index} className="flex gap-2">
+                          <select className="select select-bordered flex-none w-40">
+                            <option>Simple URL match</option>
+                            <option>Exact URL match</option>
+                            <option>Regular expression</option>
+                            <option>Event trigger</option>
+                          </select>
+                          <input
+                            type="text"
+                            className="input input-bordered flex-1"
+                            placeholder="e.g. https://www.example.com/"
+                            value={url}
+                            onChange={(e) => {
+                              const newUrls = [...targetUrls];
+                              newUrls[index] = e.target.value;
+                              setTargetUrls(newUrls);
+                            }}
+                          />
+                          {index === targetUrls.length - 1 ? (
+                            <button
+                              className="btn btn-primary"
+                              onClick={() => setTargetUrls([...targetUrls, ''])}
+                            >
+                              Add another
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-ghost"
+                              onClick={() => {
+                                const newUrls = targetUrls.filter((_, i) => i !== index);
+                                setTargetUrls(newUrls);
+                              }}
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

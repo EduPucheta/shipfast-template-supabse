@@ -38,7 +38,10 @@ export async function POST(req) {
     const systemMessage = {
       role: "system",
       content: `You are a helpful AI assistant that helps users understand their survey responses. 
-      You have access to the following survey data: ${JSON.stringify(surveyData)}. 
+      You have access to the following data:
+      - Survey Information: ${JSON.stringify(surveyData.survey)}
+      - Survey Responses: ${JSON.stringify(surveyData.reviews)}
+      
       Use this data to provide accurate and relevant answers to the user's questions about their survey responses. Be concise and to the point.`
     };
 

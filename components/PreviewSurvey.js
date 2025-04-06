@@ -23,6 +23,15 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [showThankYou, setShowThankYou] = useState(false);
   const [previewMode, setPreviewMode] = useState("smartphone");
+  const [isDeviceAllowed, setIsDeviceAllowed] = useState(true);
+
+  // Function to detect device type
+  const detectDeviceType = () => {
+    const width = window.innerWidth;
+    if (width < 768) return 'mobile';
+    if (width < 1024) return 'tablet';
+    return 'desktop';
+  };
 
   useEffect(() => {
     // Notify parent window that widget is ready
@@ -35,16 +44,31 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
     const fetchSurvey = async () => {
       if (!isPreview && surveyID) {
         setLoading(true);
+        
+        // Detect device type
+        const width = window.innerWidth;
+        const deviceType = width < 768 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop';
+        console.log('Current device type:', deviceType, 'Window width:', width);
+        
         const { data, error } = await supabase
           .from("surveys")
-          .select("question1, survey_theme, reactionType")
+          .select("question1, survey_theme, reactionType, target_devices")
           .eq("id", surveyID)
+          .eq("is_active", true)
           .single();
 
+        console.log('Survey data:', data);
+        console.log('Target devices from survey:', data?.target_devices);
+        
         if (error) {
           console.error("Error fetching survey data:", error);
-        } else {
+          setSurveyData(null);
+        } else if (data && data.target_devices?.[deviceType]) {
+          console.log('Device type is allowed for this survey');
           setSurveyData(data);
+        } else {
+          console.log('Device type is not allowed for this survey');
+          setSurveyData(null);
         }
         setLoading(false);
       }
@@ -219,6 +243,10 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
       )}
     </div>
   );
+
+  if (!isDeviceAllowed) {
+    return null;
+  }
 
   return (
     <div className=" " data-theme="" >

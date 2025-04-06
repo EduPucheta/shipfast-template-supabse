@@ -30,13 +30,24 @@ export default function AskAI({ id }) {
   useEffect(() => {
     async function fetchSurveyData() {
       try {
-        const { data, error } = await supabase
+        const { data: reviewsData, error: reviewsError } = await supabase
           .from("reviews")
           .select("*")
           .eq("survey", id.surveyID);
 
-        if (error) throw error;
-        setSurveyData(data);
+        const { data: surveyData, error: surveyError } = await supabase
+          .from("surveys")
+          .select("*")
+          .eq("id", id.surveyID)
+          .single();
+
+        if (reviewsError) throw reviewsError;
+        if (surveyError) throw surveyError;
+
+        setSurveyData({
+          reviews: reviewsData,
+          survey: surveyData
+        });
       } catch (error) {
         console.error("Error fetching survey data:", error);
         setError("Failed to load survey data");
