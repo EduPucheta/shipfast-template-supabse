@@ -12,13 +12,14 @@ import { Plus } from "lucide-react";
 export default async function Dashboard() {
   return (
     <>
-      {" "}
-      <div className="container w-full min-h-screen  flex flex-col justify-start items-center  mx-auto gap-6 p-6">
-        <div className=" flex flex-col justify-center items-end ">
-          <Link href={"/dashboard/new-survey"} className="btn m-4">
+      <div className="container w-full min-h-screen flex flex-col justify-start items-center mx-auto gap-6 p-6">
+        <div className="w-full flex justify-end mb-4">
+          <Link href={"/dashboard/new-survey"} className="btn">
             <Plus />
             Create new survey
-          </Link> 
+          </Link>
+        </div>
+        <div className="w-full">
           <SurveyNav />
         </div>
       </div>
