@@ -34,7 +34,7 @@ const CardArticle = ({
           </figure>
         </Link>
       )}
-      <div className="card-body">
+      <div className="card-body ">
         {/* CATEGORIES */}
         {showCategory && (
           <div className="flex flex-wrap gap-2">

@@ -133,7 +133,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const innerContent = (
     <div
       data-theme={displayTheme}
-      className="card !bg-base-200 w-full  shrink-0 p-8 flex flex-col justify-center items-center gap-4 max-w-md" 
+      className="card !bg-base-200 w-full m-4  shrink-0 p-8 flex flex-col justify-center items-center gap-4 max-w-md" 
     >
       {loading ? (
         <div className="flex justify-center items-center mt-5">
@@ -294,7 +294,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
                   <div
                     className={`${
                       previewMode === 'smartphone'
-                        ? 'w-[320px] h-[568px] '
+                        ? 'w-[340px] h-[568px] flex flex-col justify-center items-center'
                         : 'w-[600px] h-[400px] flex flex-col justify-center items-center'
                     } transition-all duration-300 bg-white`}
                   >

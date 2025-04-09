@@ -18,7 +18,7 @@ export default async function Dashboard() {
           <Link href={"/dashboard/new-survey"} className="btn m-4">
             <Plus />
             Create new survey
-          </Link>
+          </Link> 
           <SurveyNav />
         </div>
       </div>

@@ -22,9 +22,11 @@ export default async function LayoutPrivate({ children }) {
 
   return (
     <>
-      <HeaderDashboard  />
-      <div className="md:min-h-screen bg-base-100"> 
-      {children}
+      <HeaderDashboard />
+      <div className="lg:pl-64 min-h-screen bg-base-100">
+        <main className="   ">
+          {children}
+        </main>
       </div>
     </>
   );
