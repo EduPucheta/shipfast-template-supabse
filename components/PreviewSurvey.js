@@ -133,10 +133,10 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const innerContent = (
     <div
       data-theme={displayTheme}
-      className="card !bg-base-200 w-[320px] m-4  shrink-0 p-8 flex flex-col justify-center items-center gap-4 max-w-[400px] "  
+      className="card !bg-base-200 w-[320px] m-4 shrink-0 p-4 flex flex-col justify-center items-center gap-4 max-w-[400px]"  
     >
       {loading ? (
-        <div className="flex justify-center items-center mt-5">
+        <div className="flex justify-center items-center py-4">
           <span className="loading loading-spinner loading-md"></span>
         </div>
       ) : (
@@ -147,19 +147,19 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
             </div>
           )}
           {showThankYou ? (
-            <div className="text-center p-4">
-              <h3 className="text-lg font-semibold">Thank You!</h3>
+            <div className="text-center py-4">
+              <h3 className="text-lg font-semibold mb-1">Thank You!</h3>
               <p>Your feedback has been submitted.</p>
             </div>
           ) : (
             <>
-              <div className="form-control flex flex-col justify-center items-center gap-4 ">
+              <div className="form-control flex flex-col justify-center items-center gap-4">
                 <label className="label">
                   <span className="label-text">{displayQuestion}</span>
                 </label>
                 {displayReaction === "Stars" && (
                   <div
-                    className="rating rating-lg"
+                    className="rating rating-lg gap-1"
                     onChange={handleRatingChange}
                     role="radiogroup"
                     aria-label="Rating"
@@ -195,7 +195,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
                   </div>
                 )}
                 {displayReaction === "Emojis" && (
-                  <div className="flex gap-4" role="radiogroup" aria-label="Rating">
+                  <div className="flex gap-2" role="radiogroup" aria-label="Rating">
                     {["😡", "😠", "😐", "😊", "😍"].map((emoji, index) => (
                       <label key={index} className="cursor-pointer flex flex-col items-center">
                         <input
@@ -218,13 +218,13 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
 
               <textarea
                 placeholder="Leave us a comment"
-                className="textarea textarea-md"
+                className="textarea textarea-md mt-2"
                 value={review}
                 onChange={handleReviewChange}
                 aria-label="Review comment"
               ></textarea>
 
-              <div className="form-control mt-6">
+              <div className="form-control mt-4">
                 <button
                   className="btn btn-primary"
                   onClick={handleSubmit}
@@ -285,13 +285,13 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
             )}
 
             {isPreview ? (
-              <div className="overflow-auto border border-base-300 rounded-lg">
-                <div className="flex flex-col justify-center items-center">
+              <div className="overflow-auto border border-base-300 rounded-lg p-2">
+                <div className="flex flex-col justify-center items-center gap-2">
                   <div
                     className={`${
                       previewMode === 'smartphone'
-                        ? 'w-[340px] h-[568px] flex flex-col justify-center items-center'
-                        : 'w-[600px] h-[400px] flex flex-col justify-center items-center'
+                        ? 'w-[340px] h-[568px] flex flex-col justify-center items-center gap-2'
+                        : 'w-[600px] h-[400px] flex flex-col justify-center items-center gap-2'
                     } transition-all duration-300 bg-white`}
                   >
                     {innerContent}
