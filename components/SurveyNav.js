@@ -21,6 +21,7 @@ const SurveyNav = () => {
   const [responseCounts, setResponseCounts] = useState({});
   const [updatingSurvey, setUpdatingSurvey] = useState(null);
   const [deletingSurvey, setDeletingSurvey] = useState(null);
+  const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
 
   useEffect(() => {
     const getUser = async () => {
@@ -132,6 +133,43 @@ const SurveyNav = () => {
     }
   };
 
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortedSurveys = () => {
+    if (!surveys.length) return [];
+    
+    return [...surveys].sort((a, b) => {
+      if (sortConfig.key === 'responses') {
+        const countA = responseCounts[a.id] || 0;
+        const countB = responseCounts[b.id] || 0;
+        return sortConfig.direction === 'asc' ? countA - countB : countB - countA;
+      }
+      
+      if (sortConfig.key === 'is_active') {
+        return sortConfig.direction === 'asc' 
+          ? (a.is_active ? 1 : -1) - (b.is_active ? 1 : -1)
+          : (b.is_active ? 1 : -1) - (a.is_active ? 1 : -1);
+      }
+      
+      if (sortConfig.key === 'survey_title') {
+        return sortConfig.direction === 'asc'
+          ? a.survey_title.localeCompare(b.survey_title)
+          : b.survey_title.localeCompare(a.survey_title);
+      }
+      
+      // Default sort by created_at
+      return sortConfig.direction === 'asc'
+        ? new Date(a.created_at) - new Date(b.created_at)
+        : new Date(b.created_at) - new Date(a.created_at);
+    });
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center mt-5">
@@ -160,21 +198,49 @@ const SurveyNav = () => {
   }
 
   return (
-    <div className="overflow-x-auto rounded-box  border border-base-content/5 bg-base-100 " >
+    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
       <table className="table">
         <thead>
           <tr>
-            <th>Status</th>
-            <th>Survey Title</th>
-            <th>Created</th>
-            <th>Responses</th>
+            <th 
+              className="cursor-pointer hover:bg-base-200" 
+              onClick={() => handleSort('is_active')}
+            >
+              Status {sortConfig.key === 'is_active' && (
+                <span>{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+              )}
+            </th>
+            <th 
+              className="cursor-pointer hover:bg-base-200" 
+              onClick={() => handleSort('survey_title')}
+            >
+              Survey Title {sortConfig.key === 'survey_title' && (
+                <span>{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+              )}
+            </th>
+            <th 
+              className="cursor-pointer hover:bg-base-200" 
+              onClick={() => handleSort('created_at')}
+            >
+              Created {sortConfig.key === 'created_at' && (
+                <span>{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+              )}
+            </th>
+            <th 
+              className="cursor-pointer hover:bg-base-200" 
+              onClick={() => handleSort('responses')}
+            >
+              Responses {sortConfig.key === 'responses' && (
+                <span>{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+              )}
+            </th>
             <th>Survey Link</th>
             <th>View Responses</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {surveys.map(({ id, survey_title, created_at, is_active }) => (
+          {getSortedSurveys().map(({ id, survey_title, created_at, is_active }) => (
             <tr key={id} className="border-t">
               <td>
                 <input
