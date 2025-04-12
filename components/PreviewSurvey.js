@@ -133,7 +133,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const innerContent = (
     <div
       data-theme={displayTheme}
-      className="card !bg-base-200 w-full m-4  shrink-0 p-8 flex flex-col justify-center items-center gap-4 max-w-md" 
+      className="card !bg-base-200 w-[320px] m-4  shrink-0 p-8 flex flex-col justify-center items-center gap-4 max-w-[400px] "  
     >
       {loading ? (
         <div className="flex justify-center items-center mt-5">
