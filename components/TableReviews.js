@@ -14,6 +14,7 @@ const TableReviews = ({ id }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 30;
   const [userId, setUserId] = useState(null);
+  const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
  
   useEffect(() => {
     const getUser = async () => {
@@ -53,11 +54,50 @@ const TableReviews = ({ id }) => {
     fetchReviews();
   }, [userId, id.surveyID]);
 
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortedReviews = () => {
+    if (!reviews.length) return [];
+    
+    return [...reviews].sort((a, b) => {
+      if (sortConfig.key === 'rating') {
+        return sortConfig.direction === 'asc' ? a.rating - b.rating : b.rating - a.rating;
+      }
+      
+      if (sortConfig.key === 'created_at') {
+        return sortConfig.direction === 'asc' 
+          ? new Date(a.created_at) - new Date(b.created_at)
+          : new Date(b.created_at) - new Date(a.created_at);
+      }
+      
+      if (sortConfig.key === 'review') {
+        return sortConfig.direction === 'asc'
+          ? a.review.localeCompare(b.review)
+          : b.review.localeCompare(a.review);
+      }
+      
+      if (sortConfig.key === 'page') {
+        return sortConfig.direction === 'asc'
+          ? (a.page || '').localeCompare(b.page || '')
+          : (b.page || '').localeCompare(a.page || '');
+      }
+      
+      return 0;
+    });
+  };
+
   // Calculate pagination values
-  const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+  const sortedReviews = getSortedReviews();
+  const totalPages = Math.ceil(sortedReviews.length / reviewsPerPage);
   const startIndex = (currentPage - 1) * reviewsPerPage;
   const endIndex = startIndex + reviewsPerPage;
-  const currentReviews = reviews.slice(startIndex, endIndex);
+  const currentReviews = sortedReviews.slice(startIndex, endIndex);
 
   if (loading) {
     return (
@@ -97,10 +137,30 @@ const TableReviews = ({ id }) => {
           <table className="table table-zebra w-full">
             <thead>
               <tr>
-                <th>Rating</th>
-                <th>Date</th>
-                <th>Review</th>
-                <th>Page</th>
+                <th 
+                  className="cursor-pointer hover:bg-base-200"
+                  onClick={() => handleSort('rating')}
+                >
+                  Rating {sortConfig.key === 'rating' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                </th>
+                <th 
+                  className="cursor-pointer hover:bg-base-200"
+                  onClick={() => handleSort('created_at')}
+                >
+                  Date {sortConfig.key === 'created_at' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                </th>
+                <th 
+                  className="cursor-pointer hover:bg-base-200"
+                  onClick={() => handleSort('review')}
+                >
+                  Review {sortConfig.key === 'review' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                </th>
+                <th 
+                  className="cursor-pointer hover:bg-base-200"
+                  onClick={() => handleSort('page')}
+                >
+                  Page {sortConfig.key === 'page' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                </th>
                 <th>Actions</th>
               </tr>
             </thead>
