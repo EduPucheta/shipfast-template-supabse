@@ -140,6 +140,25 @@ const SurveyNav = () => {
     );
   }
 
+  if (surveys.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 px-4 text-center border border-base-content/5 bg-base-100 rounded-box">
+        <div className="mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="mx-auto text-primary">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+            <path d="M9 14l2 2 4-4"></path>
+          </svg>
+        </div>
+        <h3 className="text-xl font-semibold mb-2">No surveys yet</h3>
+        <p className="text-base-content/70 mb-6 max-w-md">Create your first survey to start collecting feedback from your customers.</p>
+        <a href="/dashboard/new-survey" className="btn btn-primary">
+          Create your first survey
+        </a>
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-x-auto rounded-box  border border-base-content/5 bg-base-100 " >
       <table className="table">

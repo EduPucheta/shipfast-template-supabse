@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
+import SurveyAnalytics from "@/components/SurveyAnalytics";
 
 dayjs.extend(relativeTime);
 
@@ -73,7 +74,7 @@ export default function SurveyResponses({ params }) {
 
   return (
     <div>
-      <div className="flex flex-col justify-center items-start p-24 pb-6 bg-base-200 ">
+      <div className="flex flex-col justify-center items-start p-24 py-6 bg-base-200 ">
         <div className="flex flex-row justify-between items-center w-full mb-4 ">
           <div className="flex flex-row items-center gap-4">
             <div
@@ -142,17 +143,7 @@ export default function SurveyResponses({ params }) {
           className="tab"
           aria-label="Analytics"
         />
-        <div className="tab-content min-h-screen bg-base-100  p-2">Tab content 2</div>
-
-        <input
-          type="radio"
-          name="my_tabs_3"
-          className="tab"
-          aria-label="Survey preview"
-        />
-        <div className="tab-content min-h-screen bg-base-100  p-2">
-          <PreviewSurvey isPreview={true} id={params} />
-        </div>
+        <div className="tab-content min-h-screen bg-base-100  p-2">  <SurveyAnalytics id={params} /></div>
         <input
           type="radio"
           name="my_tabs_3"
@@ -162,6 +153,16 @@ export default function SurveyResponses({ params }) {
         <div className="tab-content min-h-screen bg-base-100  p-2">
           <AskAI id={params} />
         </div>
+        <input
+          type="radio"
+          name="my_tabs_3"
+          className="tab"
+          aria-label="Survey preview"
+        />
+        <div className="tab-content min-h-screen bg-base-100  p-2">
+          <PreviewSurvey isPreview={true} id={params} />
+        </div>
+
       </div>
     </div>
   );

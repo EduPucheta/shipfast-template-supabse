@@ -261,11 +261,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
       ) : (
         <div  className="relative">
           <div className="flex flex-col items-center justify-center  ">
-            {isPreview ? (
-              <h2 className="text-xl font-bold text-center mb-4">Preview</h2>
-            ) : (
-              ""
-            )}
+
 
             {isPreview ? (
               <div role="tablist" className="tabs tabs-box mb-4 tabs-sm">

@@ -21,6 +21,7 @@ export default function NewSurveyPage() {
         setReactionType={setReactionType}
       />
       <div className="min-w-2xl h-full sticky top-0">
+      <h2 className="text-xl font-bold text-center mb-4">Preview</h2>
         <PreviewSurvey 
           isPreview={true}
           question1={question1}

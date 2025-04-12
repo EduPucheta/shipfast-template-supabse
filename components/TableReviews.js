@@ -69,15 +69,17 @@ const TableReviews = ({ id }) => {
 
   function renderRating(rating) {
     return (
-      <div className="rating rating-sm">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <div
-            key={star}
-            className="mask mask-star"
-            aria-label={`${star} star`}
-            aria-current={rating === star ? "true" : "false"}
-          ></div>
-        ))}
+      <div className="tooltip" data-tip={`Rating: ${rating}/5`}>
+        <div className="rating rating-sm">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <div
+              key={star}
+              className="mask mask-star"
+              aria-label={`${star} star`}
+              aria-current={rating === star ? "true" : "false"}
+            ></div>
+          ))}
+        </div>
       </div>
     );
   }
