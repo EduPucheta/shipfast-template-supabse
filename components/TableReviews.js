@@ -22,7 +22,7 @@ const TableReviews = ({ id }) => {
     };
 
     getUser();
-  }, [supabase]);
+  }, []);
 
   useEffect(() => {
     if (!userId) return; // Only fetch if userId is available
@@ -51,7 +51,7 @@ const TableReviews = ({ id }) => {
     };
 
     fetchReviews();
-  }, [userId]);
+  }, [userId, id.surveyID]);
 
   // Calculate pagination values
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
@@ -131,7 +131,7 @@ const TableReviews = ({ id }) => {
                         <ExternalLink className="size-3" />
                         <div className="tooltip" data-tip={review.page}>
                           <span className="truncate max-w-[150px]">
-                            {review.page.replace(/^https?:\/\/[^\/]+/, '')}
+                            {review.page.replace(/^https?:\/\/[^/]+/, '')}
                           </span>
                         </div>
                       </a>
