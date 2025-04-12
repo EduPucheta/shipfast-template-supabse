@@ -102,7 +102,7 @@ export default function AskAI({ id }) {
   };
 
   return (
-    <div className="card bg-base-100  min-h-[600px] w-full">
+    <div className="card bg-base-100  min-h-[400px] w-full">
       <div className="card-body p-0">
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-base-200">
           {messages.map((msg, index) => (

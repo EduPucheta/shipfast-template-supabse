@@ -190,7 +190,7 @@ const CreateSurvey = () => {
   return (
     <div className="card bg-base-100 w-full max-w-2xl mx-auto">
       <div className="card-body pt-0">
-        <h2 className="card-title text-xl justify-center mb-6">Create a New Survey</h2>
+        <h2 className="card-title text-xl justify-center mb-6">Create new survey</h2>
 
         {/* Error Alert */}
         {error && (

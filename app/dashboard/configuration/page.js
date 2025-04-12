@@ -26,7 +26,7 @@ export default function ConfigurationPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Configuration</h1>
+  
 
       <div className="grid gap-6">
         {/* Setup Instructions */}
@@ -39,8 +39,8 @@ export default function ConfigurationPage() {
                 section of your site:
               </p>
               <div className="relative">
-                <pre className="bg-base-200 p-4 rounded-lg">
-                  <code>{trackingCode}</code>
+                <pre className="bg-neutral p-4 rounded-lg">
+                  <code className='text-base-200'>{trackingCode}</code>
                 </pre>
                 <button
                   onClick={handleCopy}

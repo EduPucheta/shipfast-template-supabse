@@ -101,7 +101,7 @@ const Table = ({id}) => {
               ></path>
             </svg>
           </div>
-          <div className="stat-title">Review Count</div>
+          <div className="stat-title">Reviews</div>
           <div className="stat-value text-secondary">{ratings.length}</div>
          
         </div>

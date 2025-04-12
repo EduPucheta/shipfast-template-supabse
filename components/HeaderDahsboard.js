@@ -111,7 +111,7 @@ const HeaderDashboard = () => {
               className="btn btn-outline w-full flex items-center justify-center gap-2"
             >
               <Plus className="w-5 h-5" />
-              Create New Survey
+              Create new survey
             </Link>
           </div>
 

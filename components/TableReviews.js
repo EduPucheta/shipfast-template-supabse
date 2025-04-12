@@ -108,10 +108,18 @@ const TableReviews = ({ id }) => {
               {currentReviews.map((review) => (
                 <tr key={review.id}>
                   <td>{renderRating(review.rating)}</td>
-                  <td className="text-xs font-semibold opacity-60">
-                    {format(new Date(review.created_at), "MMM dd, yyyy HH:mm")}
+                  <td>
+                    <div className="tooltip" data-tip={format(new Date(review.created_at), "MMM dd, yyyy HH:mm")}>
+                      <span className="text-xs font-semibold opacity-60">
+                        {format(new Date(review.created_at), new Date(review.created_at).getFullYear() === new Date().getFullYear() ? "MMM dd, HH:mm" : "MMM dd, yyyy HH:mm")}
+                      </span>
+                    </div>
                   </td>
-                  <td className="text-sm max-w-md">{review.review}</td>
+                  <td>
+                    <div className="tooltip" data-tip={review.review}>
+                      <span className="text-sm max-w-md line-clamp-2">{review.review}</span>
+                    </div>
+                  </td>
                   <td>
                     {review.page && (
                       <a 
@@ -121,7 +129,11 @@ const TableReviews = ({ id }) => {
                         className="text-xs hover:text-primary-focus flex items-center gap-1"
                       >
                         <ExternalLink className="size-3" />
-                        <span className="truncate max-w-[150px]">{review.page}</span>
+                        <div className="tooltip" data-tip={review.page}>
+                          <span className="truncate max-w-[150px]">
+                            {review.page.replace(/^https?:\/\/[^\/]+/, '')}
+                          </span>
+                        </div>
                       </a>
                     )}
                   </td>
