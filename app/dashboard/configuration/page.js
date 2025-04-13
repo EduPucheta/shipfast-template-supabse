@@ -5,14 +5,7 @@ import { useState } from 'react';
 export default function ConfigurationPage() {
   const [isCopied, setIsCopied] = useState(false);
 
-  const trackingCode = `<script>
-  window.surveyConfig = {
-    projectId: 'YOUR_PROJECT_ID',
-    apiKey: 'YOUR_API_KEY',
-    environment: 'production'
-  };
-</script>
-<script src="/path/to/survey-script.js" async></script>`;
+  const trackingCode = `<script src="https://shipfast-template-supabse-k6pc.vercel.app/widget.js"></script>`;
 
   const handleCopy = async () => {
     try {
@@ -30,7 +23,7 @@ export default function ConfigurationPage() {
 
       <div className="grid gap-6">
         {/* Setup Instructions */}
-        <div className="p-6">
+        <div className="p-6">  
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-medium mb-2">Tracking Code Setup</h3>
