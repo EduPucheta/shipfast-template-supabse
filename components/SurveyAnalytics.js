@@ -1,15 +1,27 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import * as d3 from 'd3';
 
 export default function SurveyAnalytics({ id }) {
   const [pageData, setPageData] = useState([]);
   const [ratingData, setRatingData] = useState([]);
+  const [wordData, setWordData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const svgRef = useRef(null);
   
   const supabase = createClientComponentClient();
+
+  // Common words to exclude from word cloud
+  const commonWords = new Set([
+    'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'i', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at',
+    'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what',
+    'so', 'up', 'out', 'if', 'about', 'who', 'get', 'which', 'go', 'me', 'when', 'make', 'can', 'like', 'time', 'no', 'just', 'him', 'know', 'take',
+    'people', 'into', 'year', 'your', 'good', 'some', 'could', 'them', 'see', 'other', 'than', 'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also',
+    'back', 'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way', 'even', 'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us'
+  ]);
 
   useEffect(() => {
     async function fetchData() {
@@ -19,7 +31,7 @@ export default function SurveyAnalytics({ id }) {
         // Fetch all reviews for this survey
         const { data: reviews, error } = await supabase
           .from('reviews')
-          .select('page, rating')
+          .select('page, rating, review')
           .eq('survey', id.surveyID);
 
         if (error) throw error;
@@ -27,6 +39,7 @@ export default function SurveyAnalytics({ id }) {
         // Count responses by page
         const pageCounts = {};
         const ratingCounts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+        const wordCounts = {};
         
         reviews.forEach(review => {
           const page = review.page || 'Unknown Page';
@@ -38,6 +51,18 @@ export default function SurveyAnalytics({ id }) {
             if (roundedRating >= 1 && roundedRating <= 5) {
               ratingCounts[roundedRating] = (ratingCounts[roundedRating] || 0) + 1;
             }
+          }
+
+          // Process review text for word cloud
+          if (review.review) {
+            const words = review.review.toLowerCase()
+              .replace(/[^\w\s]/g, '') // Remove punctuation
+              .split(/\s+/)
+              .filter(word => word.length > 2 && !commonWords.has(word));
+            
+            words.forEach(word => {
+              wordCounts[word] = (wordCounts[word] || 0) + 1;
+            });
           }
         });
         
@@ -58,9 +83,19 @@ export default function SurveyAnalytics({ id }) {
             count
           }))
           .sort((a, b) => a.rating - b.rating);
+
+        // Convert word counts to array and sort by frequency
+        const wordDataArray = Object.entries(wordCounts)
+          .map(([word, count]) => ({
+            word,
+            count
+          }))
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 50); // Take top 50 words
         
         setPageData(pageDataArray);
         setRatingData(ratingDataArray);
+        setWordData(wordDataArray);
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Failed to load survey data');
@@ -94,6 +129,26 @@ export default function SurveyAnalytics({ id }) {
       return url;
     }
   }
+
+  // Bubble chart dimensions
+  const width = 600;
+  const height = 400;
+
+  // Prepare packed data for D3
+  let packedWords = [];
+  if (wordData.length > 0) {
+    // D3 hierarchy expects a root node
+    const root = d3.hierarchy({ children: wordData })
+      .sum(d => d.count);
+    const pack = d3.pack()
+      .size([width, height])
+      .padding(6);
+    const packed = pack(root);
+    packedWords = packed.leaves();
+  }
+
+  // Color scale
+  const color = d3.scaleOrdinal(d3.schemeCategory10);
 
   if (loading) {
     return (
@@ -152,8 +207,37 @@ export default function SurveyAnalytics({ id }) {
         </div>
       </div>
 
+      {/* Bubble Chart for Most Common Words */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold mb-4">Most Common Words</h2>
+        <div className="w-full flex justify-center">
+          <svg ref={svgRef} width={width} height={height}>
+            {packedWords.map((node, i) => (
+              <g key={i} transform={`translate(${node.x},${node.y})`}>
+                <circle
+                  r={node.r}
+                  fill={color(i)}
+                  fillOpacity={0.7}
+                  stroke="#fff"
+                  strokeWidth={2}
+                />
+                <text
+                  textAnchor="middle"
+                  dy="0.3em"
+                  fontSize={Math.max(10, node.r * 0.5)}
+                  fill="#222"
+                  style={{ pointerEvents: 'none', fontWeight: 600 }}
+                >
+                  {node.data.word}
+                </text>
+                <title>{`${node.data.word}: ${node.data.count} occurrences`}</title>
+              </g>
+            ))}
+          </svg>
+        </div>
+      </div>
+
       <h2 className="text-2xl font-bold mb-6">Response Analysis by Page</h2>
-      
       
       {/* Page Response Table */}
       <div className="overflow-x-auto">

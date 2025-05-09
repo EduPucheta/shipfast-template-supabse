@@ -157,7 +157,7 @@ export default function SurveyResponses({ params }) {
           type="radio"
           name="my_tabs_3"
           className="tab"
-          aria-label="Survey preview"
+          aria-label="Preview"
         />
         <div className="tab-content min-h-screen bg-base-100  p-2">
           <PreviewSurvey isPreview={true} id={params} />

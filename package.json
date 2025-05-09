@@ -16,6 +16,7 @@
     "@supabase/supabase-js": "^2.38.3",
     "axios": "^1.4.0",
     "crisp-sdk-web": "^1.0.21",
+    "d3": "^7.9.0",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "eslint": "8.47.0",
