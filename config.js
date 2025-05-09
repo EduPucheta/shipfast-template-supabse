@@ -50,7 +50,7 @@ const config = {
             : "price_456",
         name: "Advanced",
         description: "You need more power",
-        price: 19,
+        price: 29,
         priceAnchor: 49,
         features: [
           {
