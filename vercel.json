@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/cron/generate-reviews.js": {
-      "schedule": "*/10 * * * *"
-    }
-  }
-}
