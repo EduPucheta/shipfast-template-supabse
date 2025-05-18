@@ -31,7 +31,7 @@ export const generateReview = async () => {
   const rating = Math.floor(Math.random() * 5) + 1; // Random rating 1-5
 
   // Generate a random page name
-  const pages = ['home', 'product', 'features', 'pricing', 'about'];
+  const pages = ['/', '/product', '/features', '/pricing', '/about'];
   const page = pages[Math.floor(Math.random() * pages.length)];
 
   // Create the review data
