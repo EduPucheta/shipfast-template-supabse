@@ -6,7 +6,7 @@ import { supabase } from "../../../../libs/supabase";
 import PreviewSurvey from "@/components/PreviewSurvey";
 import { notFound } from "next/navigation";
 import AskAI from "@/components/AskAI";
-import dayjs from "dayjs";
+import dayjs from "dayjs"; 
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
