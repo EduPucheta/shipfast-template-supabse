@@ -177,7 +177,7 @@ const TableReviews = ({ id }) => {
                   </td>
                   <td>
                     <div className="tooltip" data-tip={review.review}>
-                      <span className="text-sm max-w-md line-clamp-2">{review.review}</span>
+                      <span className="text-sm whitespace-pre-wrap break-words">{review.review}</span>
                     </div>
                   </td>
                   <td>
