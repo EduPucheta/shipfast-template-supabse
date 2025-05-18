@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { supabase } from '../libs/supabase.js';
 import { sendOpenAi } from '../libs/gpt.js';
 
