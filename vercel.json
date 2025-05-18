@@ -1,0 +1,6 @@
+{
+  "crons": [{
+    "path": "/api/cron/generate-reviews",
+    "schedule": "0 0 * * *"
+  }]
+} 

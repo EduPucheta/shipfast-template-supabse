@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { supabase } from '../libs/supabase.js';
 import { sendOpenAi } from '../libs/gpt.js';
 
-const generateReview = async () => {
+export const generateReview = async () => {
   // Use specific survey ID 69
   const surveyId = 69;
 
@@ -56,7 +56,4 @@ const generateReview = async () => {
   }
 
   console.log('Successfully inserted review:', reviewData);
-};
-
-// Run the generator
-generateReview(); 
+}; 
