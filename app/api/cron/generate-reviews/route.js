@@ -1,7 +1,12 @@
 import { generateReview } from '../../../../scripts/generateReviews.js';
 
+// Definí el cron job directamente acá
+export const config = {
+  schedule: '*/10 * * * *', // cada 10 minutos
+};
+
 export async function GET(request) {
-  // Verify the request is from Vercel Cron
+  // Verificá que el request venga de Vercel Cron
   const authHeader = request.headers.get('authorization');
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return new Response('Unauthorized', { status: 401 });
@@ -14,4 +19,4 @@ export async function GET(request) {
     console.error('Error generating review:', error);
     return new Response('Error generating review', { status: 500 });
   }
-} 
+}
