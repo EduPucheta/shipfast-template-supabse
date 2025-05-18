@@ -1,10 +1,5 @@
 import { generateReview } from '../../../../scripts/generateReviews.js';
 
-// Definí el cron job directamente acá
-export const config = {
-  schedule: '*/10 * * * *', // cada 10 minutos
-};
-
 export async function GET(request) {
   // Verificá que el request venga de Vercel Cron
   const authHeader = request.headers.get('authorization');
