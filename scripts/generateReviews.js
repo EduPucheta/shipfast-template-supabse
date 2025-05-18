@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { supabase } from '../libs/supabase.js';
 import { sendOpenAi } from '../libs/gpt.js';
 
@@ -52,6 +51,12 @@ export const generateReview = async () => {
 
   if (error) {
     console.error('Error inserting review:', error);
+    console.error('Error details:', {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code
+    });
     return;
   }
 

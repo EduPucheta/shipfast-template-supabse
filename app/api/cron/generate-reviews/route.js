@@ -1,7 +1,5 @@
 import { generateReview } from '../../../../scripts/generateReviews.js';
 
-export const runtime = 'edge';
-
 export async function GET(request) {
   // Verify the request is from Vercel Cron
   const authHeader = request.headers.get('authorization');
