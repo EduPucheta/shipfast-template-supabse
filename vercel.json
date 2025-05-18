@@ -1,6 +1,7 @@
 {
-  "crons": [{
-    "path": "/api/cron/generate-reviews",
-    "schedule": "*/10 * * * *"
-  }]
-} 
+  "functions": {
+    "api/cron/generate-reviews.js": {
+      "schedule": "*/10 * * * *"
+    }
+  }
+}
