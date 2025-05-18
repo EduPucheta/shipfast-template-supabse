@@ -17,7 +17,7 @@ export const generateReview = async () => {
       content: "Generate a realistic user review for a product. Include: 1) A name for the reviewer, 2) Detailed review content, 3) Rating (1-5)"
     }
   ];
-
+ 
   const reviewContent = await sendOpenAi(messages, 'review-generator', 500, 0.7);
   
   if (!reviewContent) {
