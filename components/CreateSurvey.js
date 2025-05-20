@@ -21,8 +21,8 @@ const CreateSurvey = () => {
 
   const [surveyTitle, setSurveyTitle] = useState("");
   const [surveyDescription, setDescription] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(null); 
   const [userId, setUserId] = useState(null);
   const [selectedDevices, setSelectedDevices] = useState({
     desktop: true,
