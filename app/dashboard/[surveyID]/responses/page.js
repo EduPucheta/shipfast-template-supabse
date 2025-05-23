@@ -11,6 +11,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import SurveyAnalytics from "@/components/SurveyAnalytics";
+import RecommendedActions from "@/components/RecommendedActions";
 
 dayjs.extend(relativeTime);
 
@@ -152,6 +153,15 @@ export default function SurveyResponses({ params }) {
         />
         <div className="tab-content min-h-screen bg-base-100  p-2">
           <AskAI id={params} />
+        </div>
+        <input
+          type="radio"
+          name="my_tabs_3"
+          className="tab"
+          aria-label="Recommended Actions"
+        />
+        <div className="tab-content min-h-screen bg-base-100  p-2">
+          <RecommendedActions />
         </div>
         <input
           type="radio"

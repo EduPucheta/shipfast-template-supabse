@@ -88,6 +88,12 @@ const TableReviews = ({ id }) => {
           : (b.page || '').localeCompare(a.page || '');
       }
       
+      if (sortConfig.key === 'category') {
+        return sortConfig.direction === 'asc'
+          ? (a.category || '').localeCompare(b.category || '')
+          : (b.category || '').localeCompare(a.category || '');
+      }
+      
       return 0;
     });
   };
@@ -157,6 +163,12 @@ const TableReviews = ({ id }) => {
                 </th>
                 <th 
                   className="cursor-pointer hover:bg-base-200"
+                  onClick={() => handleSort('category')}
+                >
+                  Category {sortConfig.key === 'category' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                </th>
+                <th 
+                  className="cursor-pointer hover:bg-base-200"
                   onClick={() => handleSort('page')}
                 >
                   Page {sortConfig.key === 'page' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
@@ -178,6 +190,11 @@ const TableReviews = ({ id }) => {
                   <td>
                     <div className="tooltip" data-tip={review.review}>
                       <span className="text-sm whitespace-pre-wrap break-words">{review.review}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="tooltip" data-tip={review.category}>
+                      <span className="text-sm whitespace-pre-wrap break-words">{review.category}</span>
                     </div>
                   </td>
                   <td>

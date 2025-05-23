@@ -1,6 +1,3 @@
-
-
-
 const config = { 
   // REQUIRED
   appName: "Feedbackr",
@@ -43,7 +40,7 @@ const config = {
       },
       {
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
-        isFeatured: false,
+        isFeatured: true,
         priceId:
           process.env.NODE_ENV === "development"
             ? "price_1R2HPPIPjutGjJ5SoNiP5bgq"
@@ -60,6 +57,26 @@ const config = {
           { name: "10 million tokens to talk to the AI" },
           { name: "Remove Feedbackr branding" },
 
+        ],
+      },
+      {
+        isFeatured: false,
+        priceId:
+          process.env.NODE_ENV === "development"
+            ? "price_agency_dev"
+            : "price_agency_prod",
+        name: "Scale",
+        description: "For managing multiple sites",
+        price: "Custom",
+        
+        features: [
+          { name: "Everything in Advanced plan" },
+          { name: "Unlimited team members" },
+          { name: "Client management dashboard" },
+        
+          { name: "Priority support" },
+    
+          { name: "Dedicated account manager" }
         ],
       }
     ],
