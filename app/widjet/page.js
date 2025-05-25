@@ -82,10 +82,10 @@ export default function WidgetPage() {
         <>
           <button
             onClick={handleExpand}
-            className="btn btn-primary rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-row  items-center gap-2"
+            className="btn btn-primary cursor-pointer rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-row  items-center gap-2"
           >
             <MessageSquare className="w-5 h-5" />
-            Feedback 2
+            Feedback 3
           </button>
         </>
       )}

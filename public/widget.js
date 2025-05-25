@@ -17,7 +17,7 @@
   iframe.style.pointerEvents = 'none';
   
   // Set the source to your widget URL
-  iframe.src = 'http://localhost:3001/widjet'; // Replace with your actual widget URL
+  iframe.src = 'http://localhost:3000/widjet'; // Replace with your actual widget URL
   
   container.appendChild(iframe);
 
@@ -58,7 +58,7 @@
       surveyIframe.style.borderRadius = '8px';
       surveyIframe.style.background = 'unset';
       surveyIframe.style.zIndex = '9999';
-      surveyIframe.src = 'http://localhost:3001/widjet?expanded=true';
+      surveyIframe.src = 'http://localhost:3000/widjet?expanded=true';
       
       expandedContainer.appendChild(surveyIframe);
       expandedContainer.style.display = 'block';
