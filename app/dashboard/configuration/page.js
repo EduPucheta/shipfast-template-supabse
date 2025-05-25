@@ -31,6 +31,9 @@ export default function ConfigurationPage() {
                 Add the following tracking code to the <code>&lt;head&gt;</code>{" "}
                 section of your site:
               </p>
+              <p className="mb-2 ">
+                This tracking script supports a single domain only.
+              </p>
               <div className="relative">
                 <pre className="bg-neutral p-4 rounded-lg">
                   <code className='text-base-200'>{trackingCode}</code>

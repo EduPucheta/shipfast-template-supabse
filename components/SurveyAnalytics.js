@@ -8,6 +8,8 @@ export default function SurveyAnalytics({ id }) {
   const [pageData, setPageData] = useState([]);
   const [ratingData, setRatingData] = useState([]);
   const [wordData, setWordData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+  const [hoveredCategory, setHoveredCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const svgRef = useRef(null);
@@ -31,7 +33,7 @@ export default function SurveyAnalytics({ id }) {
         // Fetch all reviews for this survey
         const { data: reviews, error } = await supabase
           .from('reviews')
-          .select('page, rating, review')
+          .select('page, rating, review, category')
           .eq('survey', id.surveyID);
 
         if (error) throw error;
@@ -40,6 +42,7 @@ export default function SurveyAnalytics({ id }) {
         const pageCounts = {};
         const ratingCounts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
         const wordCounts = {};
+        const categoryCounts = {};
         
         reviews.forEach(review => {
           const page = review.page || 'Unknown Page';
@@ -64,6 +67,10 @@ export default function SurveyAnalytics({ id }) {
               wordCounts[word] = (wordCounts[word] || 0) + 1;
             });
           }
+
+          // Count by category
+          const category = review.category || 'Uncategorized';
+          categoryCounts[category] = (categoryCounts[category] || 0) + 1;
         });
         
         // Convert page counts to array for easier rendering
@@ -93,9 +100,15 @@ export default function SurveyAnalytics({ id }) {
           .sort((a, b) => b.count - a.count)
           .slice(0, 50); // Take top 50 words
         
+        // Convert category counts to array and sort by count
+        const categoryDataArray = Object.entries(categoryCounts)
+          .map(([category, count]) => ({ category, count }))
+          .sort((a, b) => b.count - a.count);
+        
         setPageData(pageDataArray);
         setRatingData(ratingDataArray);
         setWordData(wordDataArray);
+        setCategoryData(categoryDataArray);
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Failed to load survey data');
@@ -234,6 +247,87 @@ export default function SurveyAnalytics({ id }) {
               </g>
             ))}
           </svg>
+        </div>
+      </div>
+
+      {/* Reviews by Category Donut Chart */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold mb-4">Reviews by Category</h2>
+        <div className="w-full flex flex-row items-center justify-center gap-8 relative">
+          {categoryData.length === 0 ? (
+            <div className="text-center text-gray-500">No category data available.</div>
+          ) : (
+            <>
+              {/* Donut chart on the left */}
+              <div style={{ position: 'relative' }}>
+                <svg width={350} height={250} viewBox="0 0 350 250">
+                  <g transform="translate(175,125)">
+                    {(() => {
+                      const pie = d3.pie().value(d => d.count)(categoryData);
+                      const arc = d3.arc().innerRadius(60).outerRadius(100);
+                      return pie.map((d, i) => (
+                        <g key={d.data.category}>
+                          <path
+                            d={arc(d)}
+                            fill={color(i)}
+                            stroke="#fff"
+                            strokeWidth={2}
+                            onMouseEnter={() => setHoveredCategory({ category: d.data.category, count: d.data.count, x: arc.centroid(d)[0], y: arc.centroid(d)[1] })}
+                            onMouseLeave={() => setHoveredCategory(null)}
+                            style={{ cursor: 'pointer' }}
+                          />
+                          {/* Percentage label */}
+                          {d.endAngle - d.startAngle > 0.2 && (
+                            <text
+                              transform={`translate(${arc.centroid(d)})`}
+                              textAnchor="middle"
+                              alignmentBaseline="middle"
+                              fontSize={13}
+                              fill="#222"
+                              fontWeight={600}
+                            >
+                              {((d.data.count / categoryData.reduce((sum, c) => sum + c.count, 0)) * 100).toFixed(0)}%
+                            </text>
+                          )}
+                        </g>
+                      ));
+                    })()}
+                  </g>
+                </svg>
+                {/* Tooltip for hovered segment */}
+                {hoveredCategory && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: 175 + hoveredCategory.x,
+                      top: 125 + hoveredCategory.y - 40,
+                      background: 'rgba(0,0,0,0.85)',
+                      color: '#fff',
+                      padding: '6px 12px',
+                      borderRadius: 6,
+                      pointerEvents: 'none',
+                      whiteSpace: 'nowrap',
+                      fontSize: 14,
+                      fontWeight: 500,
+                      zIndex: 10,
+                      transform: 'translate(-50%, -100%)',
+                    }}
+                  >
+                    {hoveredCategory.category}: {hoveredCategory.count}
+                  </div>
+                )}
+              </div>
+              {/* Legend on the right */}
+              <div className="flex flex-col gap-2 min-w-[320px] max-w-[320px]">
+                {categoryData.map((item, i) => (
+                  <div key={item.category} className="flex items-center gap-2">
+                    <span className="inline-block w-4 h-4 rounded" style={{ background: color(i) }}></span>
+                    <span className="truncate max-w-[280px]" title={item.category}>{item.category}</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
