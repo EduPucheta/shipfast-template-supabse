@@ -23,7 +23,6 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [showThankYou, setShowThankYou] = useState(false);
   const [previewMode, setPreviewMode] = useState("smartphone");
-  const [isDeviceAllowed, setIsDeviceAllowed] = useState(true);
 
   // Function to detect device type
   const detectDeviceType = () => {
@@ -63,11 +62,14 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
         if (error) {
           console.error("Error fetching survey data:", error);
           setSurveyData(null);
-        } else if (data && data.target_devices?.[deviceType]) {
-          console.log('Device type is allowed for this survey');
+        } else if (data) {
+          console.log('Survey data fetched successfully');
           setSurveyData(data);
+          if (!data.target_devices?.[deviceType]) {
+            console.log('Device type is not allowed for this survey, but showing content anyway.');
+          }
         } else {
-          console.log('Device type is not allowed for this survey');
+          console.log('No survey data found.');
           setSurveyData(null);
         }
         setLoading(false);
@@ -243,10 +245,6 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
       )}
     </div>
   );
-
-  if (!isDeviceAllowed) {
-    return null;
-  }
 
   return (
     <div className=" " data-theme="" >

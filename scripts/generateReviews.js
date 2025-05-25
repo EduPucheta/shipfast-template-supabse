@@ -17,7 +17,7 @@ export const generateReview = async () => {
     }
   ];
  
-  const reviewContent = await sendOpenAi(messages, 'review-generator', 200, 0.7);
+  const reviewContent = await sendOpenAi(messages, 'review-generator', 100, 0.7);
   
   if (!reviewContent) {
     console.error('Failed to generate review');
@@ -31,8 +31,21 @@ export const generateReview = async () => {
   const rating = Math.floor(Math.random() * 5) + 1; // Random rating 1-5
 
   // Generate a random page name
-  const pages = ['/', '/product', '/features', '/pricing', '/about'];
+  const pages = ['https://example.com/', 'https://example.com/product', 'https://example.com/features', 'https://example.com/pricing', 'https://example.com/about'];
   const page = pages[Math.floor(Math.random() * pages.length)];
+
+  // Generate mock data for other fields
+  const categories = ['Bug Report', 'Feature Request', 'Usability Issue', 'Performance Feedback', 'General Inquiry'];
+  const category = categories[Math.floor(Math.random() * categories.length)];
+
+  const countries = ['USA', 'Canada', 'UK', 'Germany', 'France', 'Australia', 'Japan'];
+  const country = countries[Math.floor(Math.random() * countries.length)];
+
+  const devices = ['Desktop', 'Mobile', 'Tablet'];
+  const device = devices[Math.floor(Math.random() * devices.length)];
+
+  const browsers = ['Chrome', 'Firefox', 'Safari', 'Edge', 'Opera'];
+  const browser = browsers[Math.floor(Math.random() * browsers.length)];
 
   // Create the review data
   const reviewData = {
@@ -41,6 +54,10 @@ export const generateReview = async () => {
     review,
     survey: surveyId,
     page,
+    category,
+    country,
+    device,
+    browser,
     created_at: new Date().toISOString()
   };
 
