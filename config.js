@@ -31,7 +31,7 @@ const config = {
         priceAnchor: 19,
         features: [
           {
-            name: "Unlimited responses",
+            name: "200 monthly responses",
           },
           { name: "Unlimited surveys" },
           { name: "Some tokens to talk to the AI" },

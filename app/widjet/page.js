@@ -85,7 +85,7 @@ export default function WidgetPage() {
             className="btn btn-primary cursor-pointer rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-row  items-center gap-2"
           >
             <MessageSquare className="w-5 h-5" />
-            Feedback 
+            Feedback
           </button>
         </>
       )}
