@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import SurveyAnalytics from "@/components/SurveyAnalytics";
 import RecommendedActions from "@/components/RecommendedActions";
+import SurveyDetailsDisplay from "@/components/SurveyDetailsDisplay";
 
 dayjs.extend(relativeTime);
 
@@ -167,10 +168,14 @@ export default function SurveyResponses({ params }) {
           type="radio"
           name="my_tabs_3"
           className="tab"
-          aria-label="Survey Preview"
+          aria-label="Survey Details"
         />
-        <div className="tab-content min-h-screen bg-base-100  p-2">
-          <PreviewSurvey isPreview={false} surveyID={params.surveyID} showDeviceToggles={true} />
+        <div className="tab-content min-h-screen bg-base-100 p-2">
+
+          <div className="flex flex-row gap-4 p-4">
+            <SurveyDetailsDisplay survey={survey} />
+            <PreviewSurvey isPreview={false} surveyID={params.surveyID} showDeviceToggles={true} />
+          </div>
         </div>
 
       </div>
