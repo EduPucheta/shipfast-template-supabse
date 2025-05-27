@@ -27,6 +27,7 @@ export default function NewSurveyPage() {
           question1={question1}
           surveyTheme={surveyTheme}
           reactionType={reactionType}
+          showDeviceToggles={true}
         />
       </div>
     </div>

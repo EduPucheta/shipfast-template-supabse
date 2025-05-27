@@ -170,7 +170,7 @@ export default function SurveyResponses({ params }) {
           aria-label="Survey Preview"
         />
         <div className="tab-content min-h-screen bg-base-100  p-2">
-          <PreviewSurvey isPreview={true} id={params} />
+          <PreviewSurvey isPreview={false} surveyID={params.surveyID} showDeviceToggles={true} />
         </div>
 
       </div>

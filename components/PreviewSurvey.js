@@ -4,15 +4,13 @@ import { createClient } from "@supabase/supabase-js";
 import { useSurvey } from "../app/context/SurveyContext";
 import { Smartphone } from "lucide-react";
 import { Monitor } from "lucide-react";
-import { MessageSquare } from "lucide-react";
-import { X } from "lucide-react";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-const PreviewSurvey = ({ isPreview, surveyID }) => {
+const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles }) => {
   const { question1, surveyTheme, reactionType } = useSurvey();
   const [surveyData, setSurveyData] = useState(null);
   const [rating, setRating] = useState(null);
@@ -20,7 +18,6 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
   const [showThankYou, setShowThankYou] = useState(false);
   const [previewMode, setPreviewMode] = useState("smartphone");
 
@@ -41,7 +38,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
 
   useEffect(() => {
     const fetchSurvey = async () => {
-      if (!isPreview && surveyID) {
+      if (surveyID) {
         setLoading(true);
         
         // Detect device type
@@ -77,13 +74,13 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
     };
 
     fetchSurvey();
-  }, [isPreview, surveyID]);
+  }, [surveyID]);
 
   useEffect(() => {
     if (showThankYou) {
       const timer = setTimeout(() => {
-        setIsVisible(false);
-      }, 3000);
+        // setShowThankYou(false); // No longer making it invisible, just reset for potential re-interaction if parent allows
+      }, 3000); // Duration of thank you message
       return () => clearTimeout(timer);
     }
   }, [showThankYou]);
@@ -135,10 +132,10 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
   const innerContent = (
     <div
       data-theme={displayTheme}
-      className="card !bg-base-200 w-[320px] m-4 shrink-0 p-4 flex flex-col justify-center items-center gap-4 max-w-[400px]"  
+      className="card !bg-base-200  shrink-0 p-4 flex flex-col justify-center items-center gap-4 w-full h-full shadow-lg"  
     >
       {loading ? (
-        <div className="flex justify-center items-center py-4">
+        <div className="flex justify-center items-center py-4 ">
           <span className="loading loading-spinner loading-md"></span>
         </div>
       ) : (
@@ -155,7 +152,7 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
             </div>
           ) : (
             <>
-              <div className="form-control flex flex-col justify-center items-center gap-4">
+              <div className="form-control flex flex-col justify-center items-center gap-4 ">
                 <label className="label">
                   <span className="label-text">{displayQuestion}</span>
                 </label>
@@ -246,61 +243,47 @@ const PreviewSurvey = ({ isPreview, surveyID }) => {
     </div>
   );
 
+  const SizedAndStyledContent = (
+    <div
+      className={`${
+        showDeviceToggles
+          ? (previewMode === 'smartphone'
+              ? 'w-[340px] h-[568px]'
+              : 'w-[600px] h-[400px]')
+          : 'w-full h-full ' // No fixed w/h if not showing device toggles; innerContent is w-full h-full
+      } flex flex-col justify-center items-center gap-2 transition-all duration-300 bg-white `}
+    >
+      {innerContent}
+    </div>
+  );
+
   return (
-    <div className=" " data-theme="" >
-      {!isVisible ? (
-        <button
-          onClick={() => setIsVisible(true)}
-          className="btn btn-primary rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
-        >
-          <MessageSquare className="w-5 h-5" />
-          <span>Feedback2</span>
-        </button>
-      ) : (
-        <div  className="relative">
-          <div className="flex flex-col items-center justify-center  ">
-
-
-            {isPreview ? (
-              <div role="tablist" className="tabs tabs-box mb-4 tabs-sm">
-                <a
-                  role="tab"
-                  className={`tab ${previewMode === 'smartphone' ? 'tab-active' : ''}`}
-                  onClick={() => setPreviewMode('smartphone')}
-                >
-                  <Smartphone className="w-4 h-4" />
-                </a>
-                <a
-                  role="tab"
-                  className={`tab ${previewMode === 'monitor' ? 'tab-active' : ''}`}
-                  onClick={() => setPreviewMode('monitor')}
-                >
-                  <Monitor className="w-4 h-4" />
-                </a>
-              </div>
-            ) : (
-              ""
-            )}
-
-            {isPreview ? (
-              <div className="overflow-auto border border-base-300 rounded-lg p-2">
-                <div className="flex flex-col justify-center items-center gap-2">
-                  <div
-                    className={`${
-                      previewMode === 'smartphone'
-                        ? 'w-[340px] h-[568px] flex flex-col justify-center items-center gap-2'
-                        : 'w-[600px] h-[400px] flex flex-col justify-center items-center gap-2'
-                    } transition-all duration-300 bg-white`}
-                  >
-                    {innerContent}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              innerContent
-            )}
-          </div>
+    <div className="flex flex-col items-center justify-center w-full h-full">
+      {showDeviceToggles && (
+        <div role="tablist" className="tabs tabs-box mb-4 tabs-sm">
+          <a
+            role="tab"
+            className={`tab ${previewMode === 'smartphone' ? 'tab-active' : ''}`}
+            onClick={() => setPreviewMode('smartphone')}
+          >
+            <Smartphone className="w-4 h-4" />
+          </a>
+          <a
+            role="tab"
+            className={`tab ${previewMode === 'monitor' ? 'tab-active' : ''}`}
+            onClick={() => setPreviewMode('monitor')}
+          >
+            <Monitor className="w-4 h-4" />
+          </a>
         </div>
+      )}
+
+      {isPreview ? (
+        <div className="overflow-auto border border-base-300 rounded-lg p-2">
+          {SizedAndStyledContent}
+        </div>
+      ) : (
+        SizedAndStyledContent
       )}
     </div>
   );

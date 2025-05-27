@@ -52,8 +52,8 @@
       surveyIframe.style.top = '50%';
       surveyIframe.style.left = '50%';
       surveyIframe.style.transform = 'translate(-50%, -50%)';
-      surveyIframe.style.width = '500px';
-      surveyIframe.style.height = '500px';
+      surveyIframe.style.width = '450px';
+      surveyIframe.style.height = '350px';
       surveyIframe.style.border = 'none';
       surveyIframe.style.borderRadius = '8px';
       surveyIframe.style.background = 'unset';

@@ -16,7 +16,7 @@ export default async function Survey({ params }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen ">
       
-        <PreviewSurvey isPreview={false} surveyID={params.surveyID} />
+        <PreviewSurvey isPreview={false} surveyID={params.surveyID} showDeviceToggles={false} />
       
     </div>
   );
