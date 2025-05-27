@@ -50,7 +50,7 @@ export const generateReview = async () => {
   // Create the review data
   const reviewData = {
     name,
-    rating,
+    rating, 
     review,
     survey: surveyId,
     page,

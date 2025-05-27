@@ -37,7 +37,7 @@
   // Handle messages from the iframe
   window.addEventListener('message', function(event) {
     // Verify the origin of the message
-    if (event.origin !== 'http://localhost:3001') return; // Replace with your actual domain
+    if (event.origin !== 'http://localhost:3000') return; // Replace with your actual domain
     
     // Handle widget interactions
     if (event.data.type === 'widget-ready') {
