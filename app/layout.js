@@ -2,9 +2,16 @@ import { Inter } from "next/font/google";
 import PlausibleProvider from "next-plausible";
 import { getSEOTags } from "@/libs/seo";
 import ClientLayout from "@/components/LayoutClient";
+import Clarity from '@microsoft/clarity';
 import config from "@/config";
 import "./globals.css";
 import { SurveyProvider } from "./context/SurveyContext";
+
+
+// Make sure to add your actual project id instead of "yourProjectId".
+const projectId = "rwxrulgbze"
+
+Clarity.init(projectId);
 
 const font = Inter({ subsets: ["latin"] });
 

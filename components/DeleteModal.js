@@ -21,7 +21,7 @@ const DeleteModal = ({ object, objectID, objectTitle, onDeleteSuccess }) => {
 
     if (error) {
       console.error(`Error deleting ${object}:`, error);
-      toast.error(`Failed to delete ${capitalize(object)}`);
+      toast.error(`Failed to delete ${capitalize(object)}: ${error.message}`);
     } else {
       toast.success(`${capitalize(object)} deleted successfully`);
       onDeleteSuccess(objectID);

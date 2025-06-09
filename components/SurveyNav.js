@@ -18,7 +18,6 @@ const SurveyNav = () => {
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);
-  const [responseCounts, setResponseCounts] = useState({});
   const [updatingSurvey, setUpdatingSurvey] = useState(null);
   const [deletingSurvey, setDeletingSurvey] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
@@ -46,29 +45,25 @@ const SurveyNav = () => {
       try {
         const { data, error } = await supabase
           .from("surveys")
-          .select("survey_title, id, created_at, is_active")
+          .select("survey_title, id, created_at, is_active, reviews(count)")
           .eq("user_id", userId)
           .order("created_at", { ascending: false });
 
         if (error) {
           console.error("Error fetching surveys:", error);
+          toast.error("Error fetching surveys");
           return;
         }
 
-        setSurveys(data);
+        const formattedSurveys = data.map((survey) => ({
+          ...survey,
+          response_count: survey.reviews[0]?.count || 0,
+        }));
 
-        const counts = {};
-        for (const survey of data) {
-          const { count, error: countError } = await supabase
-            .from("reviews")
-            .select("id", { count: "exact", head: true })
-            .eq("survey", survey.id);
-
-          counts[survey.id] = count || 0;
-        }
-        setResponseCounts(counts);
+        setSurveys(formattedSurveys);
       } catch (err) {
         console.error("Unexpected error:", err);
+        toast.error("An unexpected error occurred while fetching surveys.");
       } finally {
         setLoading(false);
       }
@@ -146,8 +141,8 @@ const SurveyNav = () => {
     
     return [...surveys].sort((a, b) => {
       if (sortConfig.key === 'responses') {
-        const countA = responseCounts[a.id] || 0;
-        const countB = responseCounts[b.id] || 0;
+        const countA = a.response_count || 0;
+        const countB = b.response_count || 0;
         return sortConfig.direction === 'asc' ? countA - countB : countB - countA;
       }
       
@@ -240,7 +235,7 @@ const SurveyNav = () => {
           </tr>
         </thead>
         <tbody>
-          {getSortedSurveys().map(({ id, survey_title, created_at, is_active }) => (
+          {getSortedSurveys().map(({ id, survey_title, created_at, is_active, response_count }) => (
             <tr key={id} className="border-t">
               <td>
                 <input
@@ -260,7 +255,7 @@ const SurveyNav = () => {
                   {dayjs(created_at).fromNow()}
                 </span>
               </td>
-              <td>{responseCounts[id] || 0}</td>
+              <td>{response_count || 0}</td>
               <td>
                 <a
                   href={`/survey/${id}`}
@@ -294,24 +289,26 @@ const SurveyNav = () => {
                   className="dropdown menu w-52 rounded-box bg-base-100 shadow-sm"
                   popover="auto"
                   id={`popover-${id}`} // unique id for each item
-                  style={
-                    {
-                      positionAnchor: `--anchor-${id}`, // matching style for the dropdown
-                    } /* as React.CSSProperties */
-                  }
+                  style={{
+                    positionAnchor: `--anchor-${id}`, // matching style for the dropdown
+                  }}
                 >
                   <li>
                     <DeleteModal
                       object="survey"
                       objectID={id}
                       objectTitle={survey_title}
-                      onDeleteSuccess={(deletedId) =>
-                        setSurveys((prevSurveys) =>
-                          prevSurveys.filter(
+                      onDeleteSuccess={(deletedId) => {
+                        console.log('[SurveyNav] onDeleteSuccess called with deletedId:', deletedId);
+                        setSurveys((prevSurveys) => {
+                          console.log('[SurveyNav] prevSurveys:', prevSurveys);
+                          const newSurveys = prevSurveys.filter(
                             (survey) => survey.id !== deletedId
-                          )
-                        )
-                      }
+                          );
+                          console.log('[SurveyNav] newSurveys after filter:', newSurveys);
+                          return newSurveys;
+                        });
+                      }}
                     />
                   </li>
                 </ul>
