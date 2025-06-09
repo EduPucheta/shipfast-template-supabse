@@ -1,17 +1,11 @@
 import { Inter } from "next/font/google"; 
 import PlausibleProvider from "next-plausible";
+import Script from "next/script";
 import { getSEOTags } from "@/libs/seo";
 import ClientLayout from "@/components/LayoutClient";
-import Clarity from '@microsoft/clarity';
 import config from "@/config";
 import "./globals.css";
 import { SurveyProvider } from "./context/SurveyContext";
-
-
-// Make sure to add your actual project id instead of "yourProjectId".
-const projectId = "rwxrulgbze"
-
-Clarity.init(projectId);
 
 const font = Inter({ subsets: ["latin"] });
 
@@ -36,7 +30,12 @@ export default function RootLayout({ children }) {
       >
         {config.domainName && (
           <head>
+            
             <PlausibleProvider domain={config.domainName} />
+            
+            <Script id="microsoft-clarity" strategy="beforeInteractive">
+              {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window, document, "clarity", "script", "rwxrulgbze")}`}
+            </Script>
           </head>
         )}
         <body  data-theme="emerald"  >

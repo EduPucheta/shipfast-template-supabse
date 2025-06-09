@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
-    "@microsoft/clarity": "^1.0.0",
+
     "@modelcontextprotocol/server-postgres": "^0.6.2",
     "@supabase/auth-helpers-nextjs": "^0.8.1",
     "@supabase/supabase-js": "^2.38.3",
