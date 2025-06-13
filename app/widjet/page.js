@@ -12,6 +12,7 @@ export default function WidgetPage() {
   const [activeSurveyId, setActiveSurveyId] = useState(null);
   const [userId, setUserId] = useState(null);
   const [pageUrl, setPageUrl] = useState(null);
+  const [browser, setBrowser] = useState(null);
 
   useEffect(() => {
     const getUser = async () => {
@@ -56,9 +57,13 @@ export default function WidgetPage() {
     const params = new URLSearchParams(window.location.search);
     const expanded = params.get("expanded") === "true";
     const url = params.get("pageUrl");
+    const browserInfo = params.get("browser");
     setIsExpanded(expanded);
     if(url) {
       setPageUrl(url);
+    }
+    if (browserInfo) {
+      setBrowser(browserInfo);
     }
     console.log("[WidgetPage] useEffect (expanded check), expanded:", expanded);
 
@@ -90,7 +95,7 @@ export default function WidgetPage() {
           >
             ✕
           </button>
-          {activeSurveyId && <PreviewSurvey isPreview={false} surveyID={activeSurveyId} showDeviceToggles={false} pageUrl={pageUrl}/>}
+          {activeSurveyId && <PreviewSurvey isPreview={false} surveyID={activeSurveyId} showDeviceToggles={false} pageUrl={pageUrl} browser={browser}/>}
         </div>
       ) : (
         <>
