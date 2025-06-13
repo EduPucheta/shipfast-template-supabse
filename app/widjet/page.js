@@ -7,7 +7,8 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 const supabase = createClientComponentClient();
 
 export default function WidgetPage() {
-  const [isExpanded, setIsExpanded] = useState(false);
+  console.log("[WidgetPage] Render");
+  const [isExpanded, setIsExpanded] = useState(true);
   const [activeSurveyId, setActiveSurveyId] = useState(null);
   const [userId, setUserId] = useState(null);
 
@@ -20,6 +21,7 @@ export default function WidgetPage() {
     };
 
     getUser();
+    console.log("[WidgetPage] useEffect (getUser) ran");
   }, []);
 
   useEffect(() => {
@@ -42,7 +44,10 @@ export default function WidgetPage() {
       }
     };
 
-    fetchActiveSurvey();
+    if (userId) {
+      console.log("[WidgetPage] useEffect (fetchActiveSurvey) ran, userId:", userId);
+      fetchActiveSurvey();
+    }
   }, [userId]);
 
   useEffect(() => {
@@ -50,19 +55,23 @@ export default function WidgetPage() {
     const expanded =
       new URLSearchParams(window.location.search).get("expanded") === "true";
     setIsExpanded(expanded);
+    console.log("[WidgetPage] useEffect (expanded check), expanded:", expanded);
 
     if (!expanded) {
       // If not expanded, we're in the small button mode
       // Notify parent that widget is ready
       window.parent.postMessage({ type: "widget-ready" }, "*");
+      console.log("[WidgetPage] postMessage: widget-ready");
     }
   }, []);
 
   const handleExpand = () => {
+    console.log("[WidgetPage] handleExpand clicked");
     window.parent.postMessage({ type: "expand-survey" }, "*");
   };
 
   const handleCollapse = () => {
+    console.log("[WidgetPage] handleCollapse clicked");
     window.parent.postMessage({ type: "collapse-survey" }, "*");
   };
 
@@ -81,7 +90,10 @@ export default function WidgetPage() {
       ) : (
         <>
           <button
-            onClick={handleExpand}
+            onClick={() => {
+              console.log("[WidgetPage] Feedback 2 button clicked");
+              handleExpand();
+            }}
             className="btn btn-primary cursor-pointer rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-row  items-center gap-2"
           >
             <MessageSquare className="w-5 h-5" />

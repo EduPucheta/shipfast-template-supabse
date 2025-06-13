@@ -34,7 +34,8 @@ const config = {
             name: "200 monthly responses",
           },
           { name: "Unlimited surveys" },
-          { name: "Some tokens to talk to the AI" },
+          { name: "Fully customizable" },
+          { name: "1 million tokens to talk to the AI" },
           
         ],
       },
@@ -47,14 +48,15 @@ const config = {
             : "price_456",
         name: "Advanced",
         description: "You need more power",
-        price: 29,
-        priceAnchor: 49,
+        price: 49,
+        priceAnchor: 79,
         features: [
           {
-            name: "Unlimited responses",
+            name: "5,000 monthly responses",
           },
           { name: "Unlimited surveys" },
-          { name: "10 million tokens to talk to the AI" },
+          { name: "Fully customizable" },
+          { name: "100 million monthly tokens to talk to the AI" },
           { name: "Remove Feedbackr branding" },
 
         ],
@@ -73,10 +75,7 @@ const config = {
           { name: "Everything in Advanced plan" },
           { name: "Unlimited team members" },
           { name: "Client management dashboard" },
-        
-          { name: "Priority support" },
-    
-          { name: "Dedicated account manager" }
+
         ],
       }
     ],

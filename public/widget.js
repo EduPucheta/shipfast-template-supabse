@@ -1,4 +1,6 @@
 (function() {
+  if (document.getElementById('feedback-widget-container')) return; // <--- Previene duplicados
+
   // Create a container for the widget
   const container = document.createElement('div');
   container.id = 'feedback-widget-container';
