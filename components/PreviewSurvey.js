@@ -10,7 +10,7 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles }) => {
+const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl }) => {
   const { question1, surveyTheme, reactionType } = useSurvey();
   const [surveyData, setSurveyData] = useState(null);
   const [rating, setRating] = useState(null);
@@ -102,8 +102,10 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles }) => {
     setIsSubmitting(true);
     setError(null);
 
-    // Get the current page URL
-    const pageUrl = window.location.href;
+    // Get the parent page URL from the referrer
+    const pageUrlToSubmit = pageUrl || document.referrer;
+
+    console.log('Page URL:', pageUrlToSubmit);
 
     const { error: submitError } = await supabase
       .from("reviews")
@@ -111,7 +113,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles }) => {
         rating, 
         review, 
         survey: surveyID,
-        page: pageUrl 
+        page: pageUrlToSubmit 
       }]); 
 
     if (submitError) {
@@ -123,7 +125,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles }) => {
       setShowThankYou(true);
     }
     setIsSubmitting(false);
-  }, [rating, review, surveyID]);
+  }, [rating, review, surveyID, pageUrl]);
 
   const displayQuestion = isPreview ? question1 : surveyData?.question1;
   const displayTheme = isPreview ? surveyTheme : surveyData?.survey_theme;

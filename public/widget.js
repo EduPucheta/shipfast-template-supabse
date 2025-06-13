@@ -48,6 +48,7 @@
     
     // Handle survey expansion
     if (event.data.type === 'expand-survey') {
+      const pageUrl = window.location.href;
       // Create a new iframe for the expanded survey
       const surveyIframe = document.createElement('iframe');
       surveyIframe.style.position = 'fixed';
@@ -60,7 +61,7 @@
       surveyIframe.style.borderRadius = '8px';
       surveyIframe.style.background = 'unset';
       surveyIframe.style.zIndex = '9999';
-      surveyIframe.src = 'http://localhost:3000/widjet?expanded=true';
+      surveyIframe.src = `http://localhost:3000/widjet?expanded=true&pageUrl=${encodeURIComponent(pageUrl)}`;
       
       expandedContainer.appendChild(surveyIframe);
       expandedContainer.style.display = 'block';
