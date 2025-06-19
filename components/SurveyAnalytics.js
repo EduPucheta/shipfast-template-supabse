@@ -144,7 +144,7 @@ export default function SurveyAnalytics({ id }) {
   }
 
   // Bubble chart dimensions
-  const width = 600;
+  const width = 400;
   const height = 400;
 
   // Prepare packed data for D3
@@ -195,139 +195,141 @@ export default function SurveyAnalytics({ id }) {
 
   return (
     <div className="bg-base-100 p-6">
-      {/* Rating Distribution Chart */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Rating Distribution</h2>
-        <div className="space-y-2">
-          {ratingData.map((item) => {
-            const percentage = ((item.count / totalResponses) * 100).toFixed(1);
-            return (
-              <div key={item.rating} className="flex items-center gap-4">
-                <span className="w-8 text-right">{item.rating} ★</span>
-                <div className="flex-1">
-                  <div className="h-6 bg-base-200 rounded-lg overflow-hidden">
-                    <div 
-                      className="tooltip tooltip-right h-full bg-primary transition-all duration-500"
-                      data-tip={`${item.count} responses (${percentage}% of total)`}
-                      style={{ width: `${percentage}%` }}
-                    />
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-8">
+        {/* Rating Distribution Chart */}
+        <div className="w-full">
+          <h2 className="text-2xl font-bold mb-4">Rating Distribution</h2>
+          <div className="space-y-2">
+            {ratingData.map((item) => {
+              const percentage = ((item.count / totalResponses) * 100).toFixed(1);
+              return (
+                <div key={item.rating} className="flex items-center gap-4">
+                  <span className="w-8 text-right">{item.rating} ★</span>
+                  <div className="flex-1">
+                    <div className="h-6 bg-base-200 rounded-lg overflow-hidden">
+                      <div 
+                        className="tooltip tooltip-right h-full bg-primary transition-all duration-500"
+                        data-tip={`${item.count} responses (${percentage}% of total)`}
+                        style={{ width: `${percentage}%` }}
+                      />
+                    </div>
                   </div>
+                  <span className="w-16 text-right">{item.count} ({percentage}%)</span>
                 </div>
-                <span className="w-16 text-right">{item.count} ({percentage}%)</span>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* Bubble Chart for Most Common Words */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Most Common Words</h2>
-        <div className="w-full flex justify-center">
-          <svg ref={svgRef} width={width} height={height}>
-            {packedWords.map((node, i) => (
-              <g key={i} transform={`translate(${node.x},${node.y})`}>
-                <circle
-                  r={node.r}
-                  fill={color(i)}
-                  fillOpacity={0.7}
-                  stroke="#fff"
-                  strokeWidth={2}
-                />
-                <text
-                  textAnchor="middle"
-                  dy="0.3em"
-                  fontSize={Math.max(10, node.r * 0.5)}
-                  fill="#222"
-                  style={{ pointerEvents: 'none', fontWeight: 600 }}
-                >
-                  {node.data.word}
-                </text>
-                <title>{`${node.data.word}: ${node.data.count} occurrences`}</title>
-              </g>
-            ))}
-          </svg>
-        </div>
-      </div>
-
-      {/* Reviews by Category Donut Chart */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Reviews by Category</h2>
-        <div className="w-full flex flex-row items-center justify-center gap-8 relative">
-          {categoryData.length === 0 ? (
-            <div className="text-center text-gray-500">No category data available.</div>
-          ) : (
-            <>
-              {/* Donut chart on the left */}
-              <div style={{ position: 'relative' }}>
-                <svg width={350} height={250} viewBox="0 0 350 250">
-                  <g transform="translate(175,125)">
-                    {(() => {
-                      const pie = d3.pie().value(d => d.count)(categoryData);
-                      const arc = d3.arc().innerRadius(60).outerRadius(100);
-                      return pie.map((d, i) => (
-                        <g key={d.data.category}>
-                          <path
-                            d={arc(d)}
-                            fill={color(i)}
-                            stroke="#fff"
-                            strokeWidth={2}
-                            onMouseEnter={() => setHoveredCategory({ category: d.data.category, count: d.data.count, x: arc.centroid(d)[0], y: arc.centroid(d)[1] })}
-                            onMouseLeave={() => setHoveredCategory(null)}
-                            style={{ cursor: 'pointer' }}
-                          />
-                          {/* Percentage label */}
-                          {d.endAngle - d.startAngle > 0.2 && (
-                            <text
-                              transform={`translate(${arc.centroid(d)})`}
-                              textAnchor="middle"
-                              alignmentBaseline="middle"
-                              fontSize={13}
-                              fill="#222"
-                              fontWeight={600}
-                            >
-                              {((d.data.count / categoryData.reduce((sum, c) => sum + c.count, 0)) * 100).toFixed(0)}%
-                            </text>
-                          )}
-                        </g>
-                      ));
-                    })()}
-                  </g>
-                </svg>
-                {/* Tooltip for hovered segment */}
-                {hoveredCategory && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: 175 + hoveredCategory.x,
-                      top: 125 + hoveredCategory.y - 40,
-                      background: 'rgba(0,0,0,0.85)',
-                      color: '#fff',
-                      padding: '6px 12px',
-                      borderRadius: 6,
-                      pointerEvents: 'none',
-                      whiteSpace: 'nowrap',
-                      fontSize: 14,
-                      fontWeight: 500,
-                      zIndex: 10,
-                      transform: 'translate(-50%, -100%)',
-                    }}
+        {/* Bubble Chart for Most Common Words */}
+        <div className="w-full">
+          <h2 className="text-2xl font-bold mb-4">Most Common Words</h2>
+          <div className="w-full flex justify-center">
+            <svg ref={svgRef} width={width} height={height}>
+              {packedWords.map((node, i) => (
+                <g key={i} transform={`translate(${node.x},${node.y})`}>
+                  <circle
+                    r={node.r}
+                    fill={color(i)}
+                    fillOpacity={0.7}
+                    stroke="#fff"
+                    strokeWidth={2}
+                  />
+                  <text
+                    textAnchor="middle"
+                    dy="0.3em"
+                    fontSize={Math.max(10, node.r * 0.5)}
+                    fill="#222"
+                    style={{ pointerEvents: 'none', fontWeight: 600 }}
                   >
-                    {hoveredCategory.category}: {hoveredCategory.count}
-                  </div>
-                )}
-              </div>
-              {/* Legend on the right */}
-              <div className="flex flex-col gap-2 min-w-[320px] max-w-[320px]">
-                {categoryData.map((item, i) => (
-                  <div key={item.category} className="flex items-center gap-2">
-                    <span className="inline-block w-4 h-4 rounded" style={{ background: color(i) }}></span>
-                    <span className="truncate max-w-[280px]" title={item.category}>{item.category}</span>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+                    {node.data.word}
+                  </text>
+                  <title>{`${node.data.word}: ${node.data.count} occurrences`}</title>
+                </g>
+              ))}
+            </svg>
+          </div>
+        </div>
+
+        {/* Reviews by Category Donut Chart */}
+        <div className="w-full">
+          <h2 className="text-2xl font-bold mb-4">Reviews by Category</h2>
+          <div className="w-full flex flex-col md:flex-row items-center justify-center gap-8 relative">
+            {categoryData.length === 0 ? (
+              <div className="text-center text-gray-500">No category data available.</div>
+            ) : (
+              <>
+                {/* Donut chart on the left */}
+                <div style={{ position: 'relative' }}>
+                  <svg width={300} height={250} viewBox="0 0 300 250">
+                    <g transform="translate(150,125)">
+                      {(() => {
+                        const pie = d3.pie().value(d => d.count)(categoryData);
+                        const arc = d3.arc().innerRadius(60).outerRadius(100);
+                        return pie.map((d, i) => (
+                          <g key={d.data.category}>
+                            <path
+                              d={arc(d)}
+                              fill={color(i)}
+                              stroke="#fff"
+                              strokeWidth={2}
+                              onMouseEnter={() => setHoveredCategory({ category: d.data.category, count: d.data.count, x: arc.centroid(d)[0], y: arc.centroid(d)[1] })}
+                              onMouseLeave={() => setHoveredCategory(null)}
+                              style={{ cursor: 'pointer' }}
+                            />
+                            {/* Percentage label */}
+                            {d.endAngle - d.startAngle > 0.2 && (
+                              <text
+                                transform={`translate(${arc.centroid(d)})`}
+                                textAnchor="middle"
+                                alignmentBaseline="middle"
+                                fontSize={13}
+                                fill="#222"
+                                fontWeight={600}
+                              >
+                                {((d.data.count / categoryData.reduce((sum, c) => sum + c.count, 0)) * 100).toFixed(0)}%
+                              </text>
+                            )}
+                          </g>
+                        ));
+                      })()}
+                    </g>
+                  </svg>
+                  {/* Tooltip for hovered segment */}
+                  {hoveredCategory && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        left: 150 + hoveredCategory.x,
+                        top: 125 + hoveredCategory.y - 40,
+                        background: 'rgba(0,0,0,0.85)',
+                        color: '#fff',
+                        padding: '6px 12px',
+                        borderRadius: 6,
+                        pointerEvents: 'none',
+                        whiteSpace: 'nowrap',
+                        fontSize: 14,
+                        fontWeight: 500,
+                        zIndex: 10,
+                        transform: 'translate(-50%, -100%)',
+                      }}
+                    >
+                      {hoveredCategory.category}: {hoveredCategory.count}
+                    </div>
+                  )}
+                </div>
+                {/* Legend on the right */}
+                <div className="flex flex-col gap-2 w-full">
+                  {categoryData.map((item, i) => (
+                    <div key={item.category} className="flex items-center gap-2">
+                      <span className="inline-block w-4 h-4 rounded" style={{ background: color(i) }}></span>
+                      <span className="truncate max-w-full" title={item.category}>{item.category}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 

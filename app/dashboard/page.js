@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import config from "@/config";
-import CardNpsScore from "@/components/CardNpsScore";
+
 
 // This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
 // It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
@@ -53,13 +53,7 @@ export default async function Dashboard() {
     <>
       <div className="container w-full min-h-screen flex flex-col justify-start items-center mx-auto gap-6 p-6">
         <div className="w-full mb-6">
-          <CardNpsScore 
-            npsScore={npsScore} 
-            totalReviews={totalReviews} 
-            promotersCount={promotersCount}
-            passivesCount={passivesCount}
-            detractorsCount={detractorsCount}
-          />
+
         </div>
 
         <div className="w-full flex justify-end mb-4">

@@ -40,7 +40,7 @@ const features = [
     description:
       "Comprehensive analytics dashboard that gives you deep insights into customer feedback. Track sentiment trends, identify key themes, and measure customer satisfaction over time. Make data-driven decisions with beautiful visualizations and detailed reports.",
     type: "image",
-    path: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
+    path: "/Distributioin-chart.png", 
     alt: "Analytics dashboard visualization",
     svg: (
       <svg
@@ -61,9 +61,9 @@ const features = [
   },
   {
     title: "AI Chat",
-    type: "video",
-    path: "https://d3m8mk7e1mf7xn.cloudfront.net/app/widget.webm",
-    format: "video/webm",
+    type: "image",
+    path: "/chat-image.png",
+ 
     description:
       "Utilizing advanced AI, our chat assistant analyzes collected data to provide deep insights into customer feedback. Ask questions to discover how you can improve your business and enhance customer satisfaction.",
     svg: (
@@ -88,7 +88,7 @@ const features = [
     description:
       "Receive intelligent recommendations for actions to take based on AI analysis of customer feedback. Improve your business processes and customer satisfaction with data-driven suggestions.",
     type: "image",
-    path: "https://images.unsplash.com/photo-1611095790444-1dfa36e3054b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3540&q=80",
+    path: "/Recommendations-image.png",
     alt: "AI recommending actions",
     svg: (
       <svg

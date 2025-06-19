@@ -8,9 +8,9 @@ const config = {
   domainName: "feedbackr.com",
   crisp: {
     // Crisp website ID. IF YOU DON'T USE CRISP: just remove this => Then add a support email in this config file (mailgun.supportEmail) otherwise customer support won't work.
-    id: "",
+    id: "04fa9fd0-49d0-4e4a-a417-f5091610da6f",
     // Hide Crisp by default, except on route "/". Crisp is toggled with <ButtonSupport/>. If you want to show Crisp on every routes, just remove this below
-    onlyShowOnRoutes: ["/"],
+    onlyShowOnRoutes: ["/none-pageaw,jfhakjsfas"],
   },
   stripe: {
     // Create multiple plans in your Stripe dashboard, then add them here. You can add as many plans as you want, just make sure to add the priceId
@@ -28,56 +28,182 @@ const config = {
         // The price you want to display, the one user will be charged on Stripe.
         price: 0,
         // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
-        priceAnchor: 19,
+        
         features: [
           {
             name: "200 monthly responses",
           },
           { name: "Unlimited surveys" },
           { name: "Fully customizable" },
-          { name: "1 million tokens to talk to the AI" },
+          { name: "Some tokens to talk to the AI" },
           
         ],
       },
       {
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
-        isFeatured: true,
+        isFeatured: false,
         priceId:
           process.env.NODE_ENV === "development"
             ? "price_1R2HPPIPjutGjJ5SoNiP5bgq"
             : "price_456",
-        name: "Advanced",
+        name: "Pro",
         description: "You need more power",
         price: 49,
         priceAnchor: 79,
         features: [
+          { name: "Everything in Starter plan" },
           {
-            name: "5,000 monthly responses",
+            name: "Unlimited responses",
           },
-          { name: "Unlimited surveys" },
-          { name: "Fully customizable" },
-          { name: "100 million monthly tokens to talk to the AI" },
+         
+        
+          { name: "100 million monthly AI tokens" },
           { name: "Remove Feedbackr branding" },
 
         ],
       },
       {
         isFeatured: false,
-        priceId:
-          process.env.NODE_ENV === "development"
-            ? "price_agency_dev"
-            : "price_agency_prod",
         name: "Scale",
         description: "For managing multiple sites",
-        price: "Custom",
+        isSlider: true,
+        features: [
+          { name: "Everything in Pro" },
+          { name: "Unlimited team members" },
+          
+          
+        ],
+        // tiers for the slider. Add as many as you want.
+        // IMPORTANT: The priceId for each tier must be created in your Stripe dashboard.
+        // You'll have a price for monthly and yearly for each tier.
+        tiers: [
+          {
+            websites: 5,
+            price: 99,
+            priceId:
+              process.env.NODE_ENV === "development"
+                ? "price_1P8S2APIPjutGjJ51c24nS23"
+                : "price_prod_scale_monthly_5",
+          },
+          {
+            websites: 10,
+            price: 149,
+            priceId:
+              process.env.NODE_ENV === "development"
+                ? "price_1P8S2PIPjutGjJ5p7N55ZLY"
+                : "price_prod_scale_monthly_10",
+          },
+          {
+            websites: 25,
+            price: 249,
+            priceId:
+              process.env.NODE_ENV === "development"
+                ? "price_1P8S2XPIPjutGjJ5k1a2wW1o"
+                : "price_prod_scale_monthly_25",
+          },
+          {
+            websites: 50,
+            price: 399,
+            priceId:
+              process.env.NODE_ENV === "development"
+                ? "price_1P8S2mPIPjutGjJ52v0zIuxu"
+                : "price_prod_scale_monthly_50",
+          },
+        ],
+      },
+    ],
+    plans_annual: [
+      {
+        // REQUIRED — we use this to find the plan in the webhook (for instance if you want to update the user's credits based on the plan)
+        priceId:
+          process.env.NODE_ENV === "development"
+            ? "price_starter_yearly_dev"
+            : "price_starter_yearly_prod",
+        //  REQUIRED - Name of the plan, displayed on the pricing page
+        name: "Starter",
+        // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
+        description: "Perfect for small projects",
+        // The price you want to display, the one user will be charged on Stripe.
+        price: 0,
+        // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
         
         features: [
-          { name: "Everything in Advanced plan" },
-          { name: "Unlimited team members" },
-          { name: "Client management dashboard" },
-
+          {
+            name: "200 monthly responses",
+          },
+          { name: "Unlimited surveys" },
+          { name: "Fully customizable" },
+          { name: "Some tokens to talk to the AI" },
         ],
-      }
+      },
+      {
+        // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
+        isFeatured: false,
+        priceId:
+          process.env.NODE_ENV === "development"
+            ? "price_advanced_yearly_dev"
+            : "price_advanced_yearly_prod",
+        name: "Pro",
+        description: "You need more power",
+        price: 49 * 10,
+        priceAnchor: 49 * 12,
+        features: [
+          { name: "Everything in Starter" },
+          {
+            name: "Unlimited responses",
+          },
+          { name: "100 million monthly AI tokens" },
+          { name: "Remove Feedbackr branding" },
+        ],
+      },
+      {
+        isFeatured: false,
+        name: "Scale",
+        description: "For managing multiple sites",
+        isSlider: true,
+        features: [
+          { name: "Unlimited team members" },
+          
+          
+        ],
+        // tiers for the slider. Add as many as you want.
+        // IMPORTANT: The priceId for each tier must be created in your Stripe dashboard.
+        // You'll have a price for monthly and yearly for each tier.
+        tiers: [
+          {
+            websites: 5,
+            price: 99 * 10,
+            priceId:
+              process.env.NODE_ENV === "development"
+                ? "price_1P8S3APIPjutGjJ5sZ9b3n8a"
+                : "price_prod_scale_yearly_5",
+          },
+          {
+            websites: 10,
+            price: 149 * 10,
+            priceId:
+              process.env.NODE_ENV === "development"
+                ? "price_1P8S3IPIPjutGjJ571z2M3S3"
+                : "price_prod_scale_yearly_10",
+          },
+          {
+            websites: 25,
+            price: 249 * 10,
+            priceId:
+              process.env.NODE_ENV === "development"
+                ? "price_1P8S3QPIPjutGjJ5eY3f4n1E"
+                : "price_prod_scale_yearly_25",
+          },
+          {
+            websites: 50,
+            price: 399 * 10,
+            priceId:
+              process.env.NODE_ENV === "development"
+                ? "price_1P8S3XPIPjutGjJ57a0b3A9S"
+                : "price_prod_scale_yearly_50",
+          },
+        ],
+      },
     ],
   },
   aws: {
