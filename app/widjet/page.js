@@ -13,6 +13,7 @@ export default function WidgetPage() {
   const [userId, setUserId] = useState(null);
   const [pageUrl, setPageUrl] = useState(null);
   const [browser, setBrowser] = useState(null);
+  const [parentOrigin, setParentOrigin] = useState('*');
 
   useEffect(() => {
     const getUser = async () => {
@@ -58,6 +59,7 @@ export default function WidgetPage() {
     const expanded = params.get("expanded") === "true";
     const url = params.get("pageUrl");
     const browserInfo = params.get("browser");
+    const origin = params.get("parentOrigin");
     setIsExpanded(expanded);
     if(url) {
       setPageUrl(url);
@@ -65,24 +67,27 @@ export default function WidgetPage() {
     if (browserInfo) {
       setBrowser(browserInfo);
     }
+    if (origin) {
+      setParentOrigin(origin);
+    }
     console.log("[WidgetPage] useEffect (expanded check), expanded:", expanded);
 
     if (!expanded) {
       // If not expanded, we're in the small button mode
       // Notify parent that widget is ready
-      window.parent.postMessage({ type: "widget-ready" }, "*");
+      window.parent.postMessage({ type: "widget-ready" }, origin || "*");
       console.log("[WidgetPage] postMessage: widget-ready");
     }
   }, []);
 
   const handleExpand = () => {
     console.log("[WidgetPage] handleExpand clicked");
-    window.parent.postMessage({ type: "expand-survey" }, "*");
+    window.parent.postMessage({ type: "expand-survey" }, parentOrigin);
   };
 
   const handleCollapse = () => {
     console.log("[WidgetPage] handleCollapse clicked");
-    window.parent.postMessage({ type: "collapse-survey" }, "*");
+    window.parent.postMessage({ type: "collapse-survey" }, parentOrigin);
   };
 
   return (

@@ -1,5 +1,11 @@
 (function() {
-  if (document.getElementById('feedback-widget-container')) return; // <--- Previene duplicados
+  if (window.feedbackWidgetLoaded || document.getElementById('feedback-widget-container')) {
+    return;
+  }
+  window.feedbackWidgetLoaded = true;
+
+  const scriptTag = document.currentScript;
+  const baseUrl = scriptTag ? new URL(scriptTag.src).origin : 'http://localhost:3000';
 
   // Create a container for the widget
   const container = document.createElement('div');
@@ -19,7 +25,7 @@
   iframe.style.pointerEvents = 'none';
   
   // Set the source to your widget URL
-  iframe.src = 'http://localhost:3000/widjet'; // Replace with your actual widget URL
+  iframe.src = `${baseUrl}/widjet?parentOrigin=${encodeURIComponent(window.location.origin)}`; // Replace with your actual widget URL
   
   container.appendChild(iframe);
 
@@ -30,8 +36,8 @@
   expandedContainer.style.position = 'fixed';
   expandedContainer.style.top = '0';
   expandedContainer.style.left = '0';
-  expandedContainer.style.width = '1px';
-  expandedContainer.style.height = '1px';
+  expandedContainer.style.width = '100%';
+  expandedContainer.style.height = '100%';
   expandedContainer.style.zIndex = '9998';
   expandedContainer.style.background = 'rgba(0, 0, 0, 0.5)';
   document.body.appendChild(expandedContainer);
@@ -39,7 +45,7 @@
   // Handle messages from the iframe
   window.addEventListener('message', function(event) {
     // Verify the origin of the message
-    if (event.origin !== 'http://localhost:3000') return; // Replace with your actual domain
+    if (event.origin !== baseUrl) return; // Replace with your actual domain
     
     // Handle widget interactions
     if (event.data.type === 'widget-ready') {
@@ -62,7 +68,7 @@
       surveyIframe.style.borderRadius = '8px';
       surveyIframe.style.background = 'unset';
       surveyIframe.style.zIndex = '9999';
-      surveyIframe.src = `http://localhost:3000/widjet?expanded=true&pageUrl=${encodeURIComponent(pageUrl)}&browser=${encodeURIComponent(browserInfo)}`;
+      surveyIframe.src = `${baseUrl}/widjet?expanded=true&pageUrl=${encodeURIComponent(pageUrl)}&browser=${encodeURIComponent(browserInfo)}&parentOrigin=${encodeURIComponent(window.location.origin)}`;
       
       expandedContainer.appendChild(surveyIframe);
       expandedContainer.style.display = 'block';
@@ -74,4 +80,18 @@
       expandedContainer.innerHTML = '';
     }
   });
+
+  // Cleanup function to remove the widget and reset the flag
+  // This is useful for development environments with hot-reloading
+  window.cleanupFeedbackWidget = function() {
+    const container = document.getElementById('feedback-widget-container');
+    if (container) {
+      container.remove();
+    }
+    const expandedContainer = document.getElementById('feedback-widget-expanded');
+    if (expandedContainer) {
+      expandedContainer.remove();
+    }
+    window.feedbackWidgetLoaded = false;
+  };
 })(); 

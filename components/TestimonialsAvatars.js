@@ -48,7 +48,7 @@ export default function TestimonialsAvatars({ subscriberCount }) {
         {/* RATING */}
         <div className="flex flex-col justify-center items-center md:items-start gap-1 pl-4 ">
           <p className="text-center text-base-content/80">
-            Join our <span className="font-semibold text-base-content">{subscriberCount}</span> subscribers and get 50% off when launch!
+            Join our <span className="font-semibold text-base-content">{subscriberCount}</span> subscribers and get <span className="font-semibold text-base-content">40% off</span> when launch!
           </p> 
         </div>
       </div>

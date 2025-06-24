@@ -42,7 +42,7 @@ const Pricing = () => {
             }
           />
 
-          <p
+          <p 
             className={`font-semibold transition-colors ${
               billing === "yearly" ? "text-primary" : "text-base-content/70"
             }`}
@@ -113,7 +113,12 @@ const Pricing = () => {
                   <div className="flex justify-center items-center gap-4">
                     <div className="w-full text-center">
                       <div className="badge badge-neutral mb-2">
-                        Up to {plan.tiers[tier].websites} websites
+                        Up to {plan.tiers[tier].websites}{" "}
+                        <span>
+                          {plan.tiers[tier].websites === 1
+                            ? "website"
+                            : "websites"}
+                        </span>
                       </div>
                       <input
                         type="range"
@@ -151,7 +156,14 @@ const Pricing = () => {
                         <span className="font-semibold">
                           {plan.tiers[tier].websites}
                         </span>{" "}
-                        websites
+                        <span
+                          className="tooltip underline cursor-pointer"
+                          data-tip="A website is a project with a unique domain and its subdomains."
+                        >
+                          {plan.tiers[tier].websites === 1
+                            ? "website"
+                            : "websites"}
+                        </span>
                       </span>
                     </li>
                     {plan.features.map((feature, i) => (
@@ -184,10 +196,10 @@ const Pricing = () => {
 
                     <p className="flex items-center justify-center gap-2 text-sm text-center text-base-content/80 font-medium relative">
                       {plan.tiers[tier].price === 0
-                        ? "No subscription needed.  No credit card required. "
+                        ? "No credit card required."
                         : billing === "monthly"
-                        ? "Monthly subscription. Cancel anytime."
-                        : "Yearly subscription. Cancel anytime."}
+                        ? "Billed monthly. Cancel anytime."
+                        : "Billed yearly . Cancel anytime."}
                     </p>
                   </div>
                 </div>
@@ -268,10 +280,10 @@ const Pricing = () => {
 
                     <p className="flex items-center justify-center gap-2 text-sm text-center text-base-content/80 font-medium relative">
                       {plan.price === 0
-                        ? "No subscription needed.  No credit card required. "
+                        ? "No credit card required."
                         : billing === "monthly"
-                        ? "Monthly subscription. Cancel anytime."
-                        : "Yearly subscription. Cancel anytime."}
+                        ? "Billed monthly. Cancel anytime."
+                        : "Billed yearly . Cancel anytime."}
                     </p>
                   </div>
                 </div>

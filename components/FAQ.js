@@ -31,6 +31,22 @@ const faqList = [
     ),
   },
   {
+    question: "We use a similar tool, do you help in migration?",
+    answer: (
+      <div className="space-y-2 leading-relaxed">
+        Yes, we can help with migration. Please log in to your account and contact our support team to request it. We will be happy to assist you with the process.
+      </div>
+    ),
+  },
+  {
+    question: "Would you help in setting up and onboarding?",
+    answer: (
+      <div className="space-y-2 leading-relaxed">
+        Absolutely! We offer dedicated support for setting up your account and onboarding your team. Please reach out to our support team after you have signed up, and we will be happy to guide you through the process.
+      </div>
+    ),
+  },
+  {
     question: "How do I get started?",
     answer: (
       <div className="space-y-2 leading-relaxed">
@@ -38,6 +54,7 @@ const faqList = [
       </div>
     ),
   },
+  
 ];
 
 const Item = ({ item }) => {
