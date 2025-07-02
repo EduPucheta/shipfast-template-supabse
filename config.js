@@ -79,14 +79,6 @@ const config = {
         // You'll have a price for monthly and yearly for each tier.
         tiers: [
           {
-            websites: 1,
-            price: 49,
-            priceId:
-              process.env.NODE_ENV === "development"
-                ? "price_dev_scale_monthly_1"
-                : "price_prod_scale_monthly_1",
-          },
-          {
             websites: 2,
             price: 69,
             priceId:
@@ -541,14 +533,6 @@ const config = {
         // IMPORTANT: The priceId for each tier must be created in your Stripe dashboard.
         // You'll have a price for monthly and yearly for each tier.
         tiers: [
-          {
-            websites: 1,
-            price: 490,
-            priceId:
-              process.env.NODE_ENV === "development"
-                ? "price_dev_scale_yearly_1"
-                : "price_prod_scale_yearly_1",
-          },
           {
             websites: 2,
             price: 690,

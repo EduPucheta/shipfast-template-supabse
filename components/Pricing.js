@@ -153,8 +153,9 @@ const Pricing = () => {
                       </svg>
 
                       <span>
+                      Up to{" "}
                         <span className="font-semibold">
-                          {plan.tiers[tier].websites}
+                         {plan.tiers[tier].websites}
                         </span>{" "}
                         <span
                           className="tooltip underline cursor-pointer"

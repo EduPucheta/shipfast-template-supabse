@@ -31,20 +31,19 @@ const HeroSection = () => {
         <div className="w-full lg:w-1/2 mb-12 lg:mb-0 text-center lg:text-left">
           <div className="flex justify-center lg:justify-start items-center gap-2 mb-5"></div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
-            Collect feedback
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-2 leading-tight">
+            Collect feedback on your website
             <br />
-            and talk to it{" "}
-            <span className="bg-[#CFCFCF] text-[#2E1A05] px-2">with AI</span>
+            and{" "}
+            <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed whitespace-nowrap">
+              talk to it with AI
+            </span>
           </h1>
-
-          <p className="text-base  mb-8 max-w-2xl mx-auto lg:mx-0">
-            Transform your survey responses into meaningful conversations. Ask
-            questions, get insights, and understand your data like never before.
-            Our AI assistant helps you make sense of feedback by analyzing
-            patterns and providing actionable insights - all through natural
-            dialogue.
+          <p className="text-2xl mb-6 max-w-2xl mx-auto lg:mx-0 text-gray-500">
+            The simplest way to get feedback
           </p>
+
+
 
           <SignUpPresale
             onSubscribeSuccess={() =>
