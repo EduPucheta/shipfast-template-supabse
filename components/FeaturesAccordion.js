@@ -2,6 +2,8 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
+import { useTranslation } from "@/app/i18n/client";
+import featuresData from "./features-data";
 
 // The features array is a list of features that will be displayed in the accordion.
 // - title: The title of the feature
@@ -195,6 +197,13 @@ const Media = ({ feature }) => {
 // By default, the first feature is selected. When a feature is clicked, the others are closed.
 const FeaturesAccordion = () => {
   const [featureSelected, setFeatureSelected] = useState(0);
+  const { t } = useTranslation();
+
+  const features = featuresData.map((feature, i) => ({
+    ...feature,
+    title: t(`featuresAccordion.features.${i}.title`),
+    description: t(`featuresAccordion.features.${i}.description`),
+  }));
 
   return (
     <section
@@ -203,9 +212,9 @@ const FeaturesAccordion = () => {
     >
       <div className="px-8">
         <h2 className="font-extrabold text-4xl lg:text-6xl tracking-tight mb-12 md:mb-24">
-          Transform customer feedback into
+          {t('featuresAccordion.title')}{' '}
           <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed whitespace-nowrap">
-            actionable insights
+            {t('featuresAccordion.titleHighlight')}
           </span>
         </h2>
         <div className=" flex flex-col md:flex-row gap-12 md:gap-24">

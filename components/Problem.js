@@ -1,3 +1,6 @@
+import { useTranslation } from "@/app/i18n";
+import { cookies } from "next/headers";
+
 const Arrow = ({ extraStyle }) => {
   return (
     <svg
@@ -39,27 +42,31 @@ const Step = ({ emoji, text }) => {
 // - Hero: "ShipFast helps developers launch startups fast"
 // - Problem Agitation: "Developers spend too much time adding features, get overwhelmed, and quit." (not about ShipFast at all)
 // - Features: "ShipFast has user auth, Stripe, emails all set up for you"
-const Problem = () => {
+const Problem = async () => {
+  const cookieStore = cookies();
+  const lng = cookieStore.get('i18next')?.value || 'en';
+  const { t } = await useTranslation(lng);
+
   return (
     <section className="bg-neutral text-neutral-content">
       <div className="max-w-7xl mx-auto px-8 py-16 md:py-32 text-center">
         <h2 className="max-w-3xl mx-auto font-extrabold text-4xl md:text-5xl tracking-tight mb-6 md:mb-8">
-          80% of businesses struggle to leverage customer feedback effectively
+          {t('problem.title')}
         </h2>
         <p className="max-w-xl mx-auto text-lg opacity-90 leading-relaxed mb-12 md:mb-20">
-          Sorting through responses, analyzing data, and implementing changes can feel like an endless cycle.
+          {t('problem.subtitle')}
         </p>
 
         <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-6">
-          <Step emoji="🧑‍💻" text="Spending hours on data analysis" />
+          <Step emoji="🧑‍💻" text={t('problem.step1')} />
 
           <Arrow extraStyle="max-md:-scale-x-100 md:-rotate-90" />
 
-          <Step emoji="😮‍💨" text="Overwhelmed by conflicting insights" />
+          <Step emoji="😮‍💨" text={t('problem.step2')} />
 
           <Arrow extraStyle="md:-scale-x-100 md:-rotate-90" />
 
-          <Step emoji="😔" text="Missing out on valuable opportunities" />
+          <Step emoji="😔" text={t('problem.step3')} />
         </div>
       </div>
     </section>

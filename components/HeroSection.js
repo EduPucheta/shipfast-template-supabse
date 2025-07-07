@@ -8,10 +8,12 @@ import SignUpPresale from "@/components/SignUpPresale";
 import TestimonialsAvatars from "@/components/TestimonialsAvatars";
 import { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useTranslation } from "@/app/i18n/client";
 
 const HeroSection = () => {
   const [subscriberCount, setSubscriberCount] = useState("...");
   const supabase = createClientComponentClient();
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function fetchSubscriberCount() {
@@ -32,15 +34,15 @@ const HeroSection = () => {
           <div className="flex justify-center lg:justify-start items-center gap-2 mb-5"></div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-2 leading-tight">
-            Collect feedback on your website
+            {t('heroSection.title')}
             <br />
             and{" "}
             <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed whitespace-nowrap">
-              talk to it with AI
+              {t('heroSection.titleHighlight')}
             </span>
           </h1>
           <p className="text-2xl mb-6 max-w-2xl mx-auto lg:mx-0 text-gray-500">
-            The simplest way to get feedback
+            {t('heroSection.subtitle')}
           </p>
 
 

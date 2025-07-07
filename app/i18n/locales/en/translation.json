@@ -1,0 +1,45 @@
+{
+  "hero": {
+    "title": "You just launched a new product and you want to...",
+    "subtitle": "Get user feedback before you run out of money.",
+    "cta": "Get started"
+  },
+  "heroSection": {
+    "title": "Collect feedback on your website",
+    "titleHighlight": "talk to it with AI",
+    "subtitle": "The simplest way to get feedback"
+  },
+  "problem": {
+    "title": "80% of businesses struggle to leverage customer feedback effectively",
+    "subtitle": "Sorting through responses, analyzing data, and implementing changes can feel like an endless cycle.",
+    "step1": "Spending hours on data analysis",
+    "step2": "Overwhelmed by conflicting insights",
+    "step3": "Missing out on valuable opportunities"
+  },
+  "featuresAccordion": {
+    "title": "Transform customer feedback into",
+    "titleHighlight": "actionable insights",
+    "features": [
+      {
+        "title": "Website Widget",
+        "description": "Seamlessly collect customer reviews directly on your website with our beautiful, customizable widget. Easy to integrate, mobile-responsive, and designed to maximize customer engagement. Get real-time feedback while customers are still on your site."
+      },
+      {
+        "title": "Analytics Dashboard",
+        "description": "Comprehensive analytics dashboard that gives you deep insights into customer feedback. Track sentiment trends, identify key themes, and measure customer satisfaction over time. Make data-driven decisions with beautiful visualizations and detailed reports."
+      },
+      {
+        "title": "AI Chat",
+        "description": "Utilizing advanced AI, our chat assistant analyzes collected data to provide deep insights into customer feedback. Ask questions to discover how you can improve your business and enhance customer satisfaction."
+      },
+      {
+        "title": "AI Actions Recommendations",
+        "description": "Receive intelligent recommendations for actions to take based on AI analysis of customer feedback. Improve your business processes and customer satisfaction with data-driven suggestions."
+      }
+    ]
+  },
+  "buttonSignin": {
+    "login": "Login",
+    "account": "Account"
+  }
+} 

@@ -8,6 +8,8 @@ import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "react-hot-toast";
 import { Tooltip } from "react-tooltip";
 import config from "@/config";
+import { useTranslation } from '../app/i18n/client';
+import { CookiesProvider } from "react-cookie";
 
 // Crisp customer chat support:
 // This component is separated from ClientLayout because it needs to be wrapped with <SessionProvider> to use useSession() hook
@@ -60,36 +62,46 @@ const CrispChat = () => {
   return null;
 };
 
+// This component is needed to call the useTranslation hook, because the CookiesProvider needs to be above it in the component tree.
+const I18nProvider = ({ children, lng }) => {
+  useTranslation(lng);
+  return children;
+}
+
 // All the client wrappers are here (they can't be in server components)
 // 1. NextTopLoader: Show a progress bar at the top when navigating between pages
 // 2. Toaster: Show Success/Error messages anywhere from the app with toast()
 // 3. Tooltip: Show tooltips if any JSX elements has these 2 attributes: data-tooltip-id="tooltip" data-tooltip-content=""
 // 4. CrispChat: Set Crisp customer chat support (see above)
-const ClientLayout = ({ children }) => {
+const ClientLayout = ({ children, lng }) => {
   return (
-    <>
-      {/* Show a progress bar at the top when navigating between pages */}
-      <NextTopLoader color={config.colors.main} showSpinner={false} />
+    <CookiesProvider>
+      <I18nProvider lng={lng}>
+        <>
+          {/* Show a progress bar at the top when navigating between pages */}
+          <NextTopLoader color={config.colors.main} showSpinner={false} />
 
-      {/* Content inside app/page.js files  */}
-      {children}
+          {/* Content inside app/page.js files  */}
+          {children}
 
-      {/* Show Success/Error messages anywhere from the app with toast() */}
-      <Toaster
-        toastOptions={{
-          duration: 3000,
-        }}
-      />
+          {/* Show Success/Error messages anywhere from the app with toast() */}
+          <Toaster
+            toastOptions={{
+              duration: 3000,
+            }}
+          />
 
-      {/* Show tooltips if any JSX elements has these 2 attributes: data-tooltip-id="tooltip" data-tooltip-content="" */}
-      <Tooltip
-        id="tooltip"
-        className="z-[60] !opacity-100 max-w-sm shadow-lg"
-      />
+          {/* Show tooltips if any JSX elements has these 2 attributes: data-tooltip-id="tooltip" data-tooltip-content="" */}
+          <Tooltip
+            id="tooltip"
+            className="z-[60] !opacity-100 max-w-sm shadow-lg"
+          />
 
-      {/* Set Crisp customer chat support */}
-      <CrispChat />
-    </>
+          {/* Set Crisp customer chat support */}
+          <CrispChat />
+        </>
+      </I18nProvider>
+    </CookiesProvider>
   );
 };
 

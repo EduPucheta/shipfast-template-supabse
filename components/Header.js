@@ -8,6 +8,8 @@ import ButtonSignin from "./ButtonSignin";
 import logo from "@/app/icon.png";
 import config from "@/config";
 import ButtonAccount from "./ButtonAccount";
+import ButtonLang from "./ButtonLang";
+import { useTranslation } from "@/app/i18n/client";
 
 const links = [
 
@@ -20,6 +22,7 @@ const links = [
 const Header = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
+  const { i18n } = useTranslation();
 
   // setIsOpen(false) when the route changes (i.e: when the user clicks on a link on mobile)
   useEffect(() => {
@@ -91,8 +94,10 @@ const Header = () => {
         </div>
 
         {/* CTA on large screens */}
-        
-        <ButtonSignin/>
+        <div className="hidden lg:flex lg:items-center lg:gap-4">
+          <ButtonLang lng={i18n.language} />
+          <ButtonSignin/>
+        </div>
       </nav>
  
       {/* Mobile menu, show/hide based on menu state. */}
@@ -159,7 +164,10 @@ const Header = () => {
             </div>
             <div className="divider"></div>
             {/* Your CTA on small screens */}
-            <ButtonSignin/>
+            <div className="flex flex-col items-start gap-4">
+              <ButtonLang lng={i18n.language} />
+              <ButtonSignin/>
+            </div>
           </div>
         </div>
       </div>

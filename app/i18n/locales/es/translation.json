@@ -1,0 +1,45 @@
+{
+  "hero": {
+    "title": "Acabas de lanzar un nuevo producto y quieres...",
+    "subtitle": "Obtén comentarios de los usuarios antes de quedarte sin dinero.",
+    "cta": "Empezar"
+  },
+  "heroSection": {
+    "title": "Recopila comentarios en tu sitio web",
+    "titleHighlight": "y habla con ellos con IA",
+    "subtitle": "La forma más sencilla de obtener comentarios"
+  },
+  "problem": {
+    "title": "El 80% de las empresas luchan por aprovechar los comentarios de los clientes de manera efectiva",
+    "subtitle": "Clasificar las respuestas, analizar los datos e implementar cambios puede parecer un ciclo sin fin.",
+    "step1": "Pasar horas en análisis de datos",
+    "step2": "Abrumado por ideas contradictorias",
+    "step3": "Perder oportunidades valiosas"
+  },
+  "featuresAccordion": {
+    "title": "Transforma los comentarios de los clientes en",
+    "titleHighlight": "información procesable",
+    "features": [
+      {
+        "title": "Widget para sitio web",
+        "description": "Recopila sin problemas las opiniones de los clientes directamente en tu sitio web con nuestro widget personalizable y atractivo. Fácil de integrar, adaptable a dispositivos móviles y diseñado para maximizar la participación del cliente. Obtén comentarios en tiempo real mientras los clientes todavía están en tu sitio."
+      },
+      {
+        "title": "Panel de análisis",
+        "description": "Panel de análisis completo que te brinda información detallada sobre los comentarios de los clientes. Realiza un seguimiento de las tendencias de sentimiento, identifica temas clave y mide la satisfacción del cliente a lo largo del tiempo. Toma decisiones basadas en datos con visualizaciones atractivas e informes detallados."
+      },
+      {
+        "title": "Chat con IA",
+        "description": "Utilizando IA avanzada, nuestro asistente de chat analiza los datos recopilados para proporcionar información detallada sobre los comentarios de los clientes. Haz preguntas para descubrir cómo puedes mejorar tu negocio y aumentar la satisfacción del cliente."
+      },
+      {
+        "title": "Recomendaciones de acciones con IA",
+        "description": "Recibe recomendaciones inteligentes de acciones a tomar basadas en el análisis de IA de los comentarios de los clientes. Mejora tus procesos de negocio y la satisfacción del cliente con sugerencias basadas en datos."
+      }
+    ]
+  },
+  "buttonSignin": {
+    "login": "Iniciar Sesión",
+    "account": "Cuenta"
+  }
+} 
