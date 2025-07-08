@@ -42,10 +42,8 @@ const Step = ({ emoji, text }) => {
 // - Hero: "ShipFast helps developers launch startups fast"
 // - Problem Agitation: "Developers spend too much time adding features, get overwhelmed, and quit." (not about ShipFast at all)
 // - Features: "ShipFast has user auth, Stripe, emails all set up for you"
-const Problem = async () => {
-  const cookieStore = cookies();
-  const lng = cookieStore.get('i18next')?.value || 'en';
-  const { t } = await getTranslation(lng);
+const Problem = async ({ lang }) => {
+  const { t } = await getTranslation(lang);
 
   return (
     <section className="bg-neutral text-neutral-content">
