@@ -3,9 +3,10 @@
 import { useTranslation } from '@/app/i18n/client';
 import { languages } from '@/app/i18n/settings';
 import { useRouter } from 'next/navigation';
+import { ChevronDown } from 'lucide-react';
 
 export default function ButtonLang({ lng }) {
-  const { t, i18n } = useTranslation(lng);
+  const { i18n } = useTranslation(lng);
   const router = useRouter();
 
   const changeLanguage = (newLng) => {
@@ -14,20 +15,28 @@ export default function ButtonLang({ lng }) {
   };
 
   return (
-    <div className="flex items-center space-x-2">
-      {languages.map((lang) => (
-        <button
-          key={lang}
-          onClick={() => changeLanguage(lang)}
-          className={`px-3 py-1 rounded-md text-sm font-medium ${
-            i18n.language === lang
-              ? 'bg-primary text-primary-content'
-              : 'bg-base-200 text-base-content'
-          }`}
-        >
-          {lang.toUpperCase()}
-        </button>
-      ))}
+    <div className="dropdown dropdown-end">
+      <div tabIndex={0} role="button" className="btn btn-ghost">
+        {i18n.language.toUpperCase()}
+        <ChevronDown size={16} />
+      </div>
+      <ul
+        tabIndex={0}
+        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-24"
+      >
+        {languages
+          .filter((l) => i18n.language !== l)
+          .map((lang) => (
+            <li key={lang}>
+              <button
+                className="btn btn-sm btn-ghost w-full"
+                onClick={() => changeLanguage(lang)}
+              >
+                {lang.toUpperCase()}
+              </button>
+            </li>
+          ))}
+      </ul>
     </div>
   );
 } 
