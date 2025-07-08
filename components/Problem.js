@@ -1,4 +1,4 @@
-import { useTranslation } from "@/app/i18n";
+import { useTranslation as getTranslation } from "@/app/i18n";
 import { cookies } from "next/headers";
 
 const Arrow = ({ extraStyle }) => {
@@ -45,7 +45,7 @@ const Step = ({ emoji, text }) => {
 const Problem = async () => {
   const cookieStore = cookies();
   const lng = cookieStore.get('i18next')?.value || 'en';
-  const { t } = await useTranslation(lng);
+  const { t } = await getTranslation(lng);
 
   return (
     <section className="bg-neutral text-neutral-content">
