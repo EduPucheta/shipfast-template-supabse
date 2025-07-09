@@ -80,11 +80,11 @@ const Pricing = ({ lang }) => {
                   <div className="flex justify-between items-center gap-4">
                     <div>
                       <p className="text-lg lg:text-xl font-bold">
-                        {plan.name}
+                        {t(plan.name)}
                       </p>
                       {plan.description && (
                         <p className="text-base-content/80 mt-2">
-                          {plan.description}
+                          {t(plan.description)}
                         </p>
                       )}
                     </div>
@@ -184,7 +184,7 @@ const Pricing = ({ lang }) => {
                           />
                         </svg>
 
-                        <span>{feature.name} </span>
+                        <span>{t(feature.name)} </span>
                       </li>
                     ))}
                   </ul>
@@ -228,10 +228,10 @@ const Pricing = ({ lang }) => {
                 <div className="relative flex flex-col h-full gap-5 lg:gap-8 z-10 bg-base-100 p-8 rounded-lg">
                   <div className="flex justify-between items-center gap-4">
                     <div>
-                      <p className="text-lg lg:text-xl font-bold">{plan.name}</p>
+                      <p className="text-lg lg:text-xl font-bold">{t(plan.name)}</p>
                       {plan.description && (
                         <p className="text-base-content/80 mt-2">
-                          {plan.description}
+                          {t(plan.description)}
                         </p>
                       )}
                     </div>
@@ -248,7 +248,7 @@ const Pricing = ({ lang }) => {
                       </div>
                     )}
                     <p className={`text-5xl tracking-tight font-extrabold`}>
-                      ${plan.price}
+                      {typeof plan.price === "number" ? "$" + plan.price : plan.price}
                     </p>
                     <div className="flex flex-col justify-end mb-[4px]">
                       <p className="text-xs text-base-content/60 uppercase font-semibold">
@@ -256,28 +256,28 @@ const Pricing = ({ lang }) => {
                       </p>
                     </div>
                   </div>
-                  {plan.features && (
-                    <ul className="space-y-2.5 leading-relaxed text-base flex-1">
-                      {plan.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            className="w-[18px] h-[18px] opacity-80 shrink-0"
-                          >
+
+                  <ul className="space-y-2.5 leading-relaxed text-base flex-1">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-center gap-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                             className="w-[18px] h-[18px] opacity-80 shrink-0"
+                        >
                             <path
                               fillRule="evenodd"
                               d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                               clipRule="evenodd"
                             />
-                          </svg>
+                        </svg>
 
-                          <span>{feature.name} </span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                        <span>{t(feature.name)}</span>
+                      </li>
+                    ))}
+                  </ul>
+
                   <div className="space-y-2">
                     <ButtonCheckout priceId={plan.priceId} />
 

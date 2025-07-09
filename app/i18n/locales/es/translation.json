@@ -22,7 +22,7 @@
     "features": [
       {
         "title": "Widget para sitio web",
-        "description": "Recopila sin problemas las opiniones de los clientes directamente en tu sitio web con nuestro widget personalizable y atractivo. Fácil de integrar, adaptable a dispositivos móviles y diseñado para maximizar la participación del cliente. Obtén comentarios en tiempo real mientras los clientes todavía están en tu sitio."
+        "description": "Recopila las opiniones de los clientes sin problemas con nuestro atractivo widget personalizable en tu sitio web, o comparte un enlace directo a tu encuesta. Es adaptable a dispositivos móviles y está diseñado para maximizar la participación, para que puedas obtener comentarios en tiempo real de tus usuarios dondequiera que estén."
       },
       {
         "title": "Panel de análisis",
@@ -52,7 +52,37 @@
     "noCreditCard": "No se requiere tarjeta de crédito.",
     "billedMonthly": "Facturado mensualmente. Cancela en cualquier momento.",
     "billedYearly": "Facturado anualmente. Cancela en cualquier momento.",
-    "websiteTooltip": "Un sitio web es un proyecto con un dominio único y sus subdominios."
+    "websiteTooltip": "Un sitio web es un proyecto con un dominio único y sus subdominios.",
+    "plans": {
+      "free": {
+        "name": "Gratis",
+        "description": "Perfecto para pequeños proyectos",
+        "features": {
+          "0": "200 respuestas mensuales",
+          "1": "Encuestas ilimitadas",
+          "2": "Totalmente personalizable",
+          "3": "Algunos tokens para hablar con la IA"
+        }
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Necesitas más potencia",
+        "features": {
+          "0": "Todo en Gratis",
+          "1": "Respuestas ilimitadas",
+          "2": "100 millones de tokens de IA mensuales",
+          "3": "Eliminar la marca Feedbackr",
+          "4": "Miembros de equipo ilimitados"
+        }
+      },
+      "scale": {
+        "name": "Scale",
+        "description": "Para gestionar múltiples sitios",
+        "features": {
+          "0": "Todo en Pro"
+        }
+      }
+    }
   },
   "faq": {
     "title": "Preguntas Frecuentes",

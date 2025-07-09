@@ -22,20 +22,20 @@ const config = {
             ? "price_1Niyy5AxyNprDp7iZIqEyD2h"
             : "price_456",
         //  REQUIRED - Name of the plan, displayed on the pricing page
-        name: "Free",
+        name: "pricing.plans.free.name",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
-        description: "Perfect for small projects",
+        description: "pricing.plans.free.description",
         // The price you want to display, the one user will be charged on Stripe.
         price: 0,
         // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
         
         features: [
           {
-            name: "200 monthly responses",
+            name: "pricing.plans.free.features.0",
           },
-          { name: "Unlimited surveys" },
-          { name: "Fully customizable" },
-          { name: "Some tokens to talk to the AI" },
+          { name: "pricing.plans.free.features.1" },
+          { name: "pricing.plans.free.features.2" },
+          { name: "pricing.plans.free.features.3" },
           
         ],
       },
@@ -46,30 +46,30 @@ const config = {
           process.env.NODE_ENV === "development"
             ? "price_1R2HPPIPjutGjJ5SoNiP5bgq"
             : "price_456",
-        name: "Pro",
-        description: "You need more power",
+        name: "pricing.plans.pro.name",
+        description: "pricing.plans.pro.description",
         price: 49,
         priceAnchor: 79,
         features: [
-          { name: "Everything in Free" },
+          { name: "pricing.plans.pro.features.0" },
           {
-            name: "Unlimited responses",
+            name: "pricing.plans.pro.features.1",
           },
          
         
-          { name: "100 million monthly AI tokens" },
-          { name: "Remove Feedbackr branding" },
-          { name: "Unlimited team members" },
+          { name: "pricing.plans.pro.features.2" },
+          { name: "pricing.plans.pro.features.3" },
+          { name: "pricing.plans.pro.features.4" },
 
         ],
       },
       {
         isFeatured: false,
-        name: "Scale",
-        description: "For managing multiple sites",
+        name: "pricing.plans.scale.name",
+        description: "pricing.plans.scale.description",
         isSlider: true,
         features: [
-          { name: "Everything in Pro" },
+          { name: "pricing.plans.scale.features.0" },
         
           
           
@@ -481,20 +481,20 @@ const config = {
             ? "price_starter_yearly_dev"
             : "price_starter_yearly_prod",
         //  REQUIRED - Name of the plan, displayed on the pricing page
-        name: "Free",
+        name: "pricing.plans.free.name",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
-        description: "Perfect for small projects",
+        description: "pricing.plans.free.description",
         // The price you want to display, the one user will be charged on Stripe.
         price: 0,
         // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
         
         features: [
           {
-            name: "200 monthly responses",
+            name: "pricing.plans.free.features.0",
           },
-          { name: "Unlimited surveys" },
-          { name: "Fully customizable" },
-          { name: "Some tokens to talk to the AI" },
+          { name: "pricing.plans.free.features.1" },
+          { name: "pricing.plans.free.features.2" },
+          { name: "pricing.plans.free.features.3" },
         ],
       },
       {
@@ -504,27 +504,27 @@ const config = {
           process.env.NODE_ENV === "development"
             ? "price_advanced_yearly_dev"
             : "price_advanced_yearly_prod",
-        name: "Pro",
-        description: "You need more power",
+        name: "pricing.plans.pro.name",
+        description: "pricing.plans.pro.description",
         price: 49 * 10,
         priceAnchor: 49 * 12,
         features: [
-          { name: "Everything in Free" },
+          { name: "pricing.plans.pro.features.0" },
           {
-            name: "Unlimited responses",
+            name: "pricing.plans.pro.features.1",
           },
-          { name: "100 million monthly AI tokens" },
-          { name: "Remove Feedbackr branding" },
-           { name: "Unlimited team members" },
+          { name: "pricing.plans.pro.features.2" },
+          { name: "pricing.plans.pro.features.3" },
+           { name: "pricing.plans.pro.features.4" },
         ],
       },
       {
         isFeatured: false,
-        name: "Scale",
-        description: "For managing multiple sites",
+        name: "pricing.plans.scale.name",
+        description: "pricing.plans.scale.description",
         isSlider: true,
         features: [
-          { name: "Everything in Pro" },
+          { name: "pricing.plans.scale.features.0" },
          
           
           

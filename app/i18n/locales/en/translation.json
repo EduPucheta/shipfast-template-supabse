@@ -22,7 +22,7 @@
     "features": [
       {
         "title": "Website Widget",
-        "description": "Seamlessly collect customer reviews directly on your website with our beautiful, customizable widget. Easy to integrate, mobile-responsive, and designed to maximize customer engagement. Get real-time feedback while customers are still on your site."
+        "description": "Seamlessly collect customer reviews with our beautiful, customizable widget on your website, or share a direct link to your survey. It's mobile-responsive and designed for maximum engagement, so you can get real-time feedback from your users wherever they are."
       },
       {
         "title": "Analytics Dashboard",
@@ -52,7 +52,37 @@
     "noCreditCard": "No credit card required.",
     "billedMonthly": "Billed monthly. Cancel anytime.",
     "billedYearly": "Billed yearly. Cancel anytime.",
-    "websiteTooltip": "A website is a project with a unique domain and its subdomains."
+    "websiteTooltip": "A website is a project with a unique domain and its subdomains.",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "description": "Perfect for small projects",
+        "features": {
+          "0": "200 monthly responses",
+          "1": "Unlimited surveys",
+          "2": "Fully customizable",
+          "3": "Some tokens to talk to the AI"
+        }
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "You need more power",
+        "features": {
+          "0": "Everything in Free",
+          "1": "Unlimited responses",
+          "2": "100 million monthly AI tokens",
+          "3": "Remove Feedbackr branding",
+          "4": "Unlimited team members"
+        }
+      },
+      "scale": {
+        "name": "Scale",
+        "description": "For managing multiple sites",
+        "features": {
+          "0": "Everything in Pro"
+        }
+      }
+    }
   },
   "faq": {
     "title": "FAQ",
