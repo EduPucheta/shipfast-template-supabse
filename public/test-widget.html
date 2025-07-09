@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .content {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .test-button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .test-button:hover {
+            background: #005a8b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Widget Test Page</h1>
+    
+    <div class="content">
+        <h2>Testing the Feedback Widget</h2>
+        <p>This page is used to test the feedback widget functionality. The widget should appear as a button in the bottom-right corner of the page.</p>
+        
+        <p>Features to test:</p>
+        <ul>
+            <li>Widget button appears in bottom-right corner</li>
+            <li>Clicking the button expands the widget</li>
+            <li>Widget shows the survey form</li>
+            <li>Clicking the close button or backdrop collapses the widget</li>
+            <li>Widget is responsive and works on different screen sizes</li>
+        </ul>
+        
+        <button class="test-button" onclick="testCleanup()">Test Cleanup Function</button>
+        <button class="test-button" onclick="reloadWidget()">Reload Widget</button>
+    </div>
+    
+    <div class="content">
+        <h2>Sample Content</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+
+    <script>
+        function testCleanup() {
+            if (window.cleanupFeedbackWidget) {
+                window.cleanupFeedbackWidget();
+                console.log('Widget cleanup function called');
+            } else {
+                console.log('Cleanup function not available');
+            }
+        }
+
+        function reloadWidget() {
+            testCleanup();
+            setTimeout(() => {
+                const script = document.createElement('script');
+                script.src = 'http://localhost:3000/widget.js';
+                document.body.appendChild(script);
+                console.log('Widget reloaded');
+            }, 100);
+        }
+    </script>
+
+    <!-- Load the widget script -->
+    <script src="http://localhost:3000/widget.js"></script>
+</body>
+</html> 

@@ -1,120 +1,202 @@
 "use client";
 import PreviewSurvey from "@/components/PreviewSurvey";
 import { useEffect, useState } from "react";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Loader2 } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const supabase = createClientComponentClient();
 
 export default function WidgetPage() {
-  console.log("[WidgetPage] Render");
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [activeSurveyId, setActiveSurveyId] = useState(null);
   const [userId, setUserId] = useState(null);
   const [pageUrl, setPageUrl] = useState(null);
   const [browser, setBrowser] = useState(null);
   const [parentOrigin, setParentOrigin] = useState('*');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Handle client-side mounting
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!isMounted) return;
+
+    // This effect runs once on mount to set up the widget
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get("pageUrl");
+    const browserInfo = params.get("browser");
+    const origin = params.get("parentOrigin");
+
+    if(url) setPageUrl(url);
+    if (browserInfo) setBrowser(browserInfo);
+    if (origin) setParentOrigin(origin);
+
     const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      if (data?.user) {
-        setUserId(data.user.id);
+      try {
+        const { data } = await supabase.auth.getUser();
+        if (data?.user) {
+          setUserId(data.user.id);
+        } else {
+          setError("No authenticated user found");
+        }
+      } catch (err) {
+        console.error("Error getting user:", err);
+        setError("Failed to authenticate user");
+      } finally {
+        setIsLoading(false);
       }
     };
 
     getUser();
-    console.log("[WidgetPage] useEffect (getUser) ran");
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
+    if (!userId) return;
+
     const fetchActiveSurvey = async () => {
-      if (!userId) return;
+      try {
+        const { data, error } = await supabase
+          .from("surveys")
+          .select("id")
+          .eq("user_id", userId)
+          .eq("is_active", true)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
 
-      const { data, error } = await supabase
-        .from("surveys")
-        .select("id")
-        .eq("user_id", userId)
-        .eq("is_active", true)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .single();
-
-      if (error) {
-        console.error("Error fetching active survey:", error);
-      } else if (data) {
-        setActiveSurveyId(data.id);
+        if (error) {
+          console.error("Error fetching active survey:", error);
+          setError("No active survey found");
+        } else if (data) {
+          setActiveSurveyId(data.id);
+          setError(null);
+        }
+      } catch (err) {
+        console.error("Error in fetchActiveSurvey:", err);
+        setError("Failed to load survey");
       }
     };
 
-    if (userId) {
-      console.log("[WidgetPage] useEffect (fetchActiveSurvey) ran, userId:", userId);
-      fetchActiveSurvey();
-    }
+    fetchActiveSurvey();
   }, [userId]);
 
+  // Notify parent when widget is ready
   useEffect(() => {
-    // Check if we're in expanded mode
-    const params = new URLSearchParams(window.location.search);
-    const expanded = params.get("expanded") === "true";
-    const url = params.get("pageUrl");
-    const browserInfo = params.get("browser");
-    const origin = params.get("parentOrigin");
-    setIsExpanded(expanded);
-    if(url) {
-      setPageUrl(url);
-    }
-    if (browserInfo) {
-      setBrowser(browserInfo);
-    }
-    if (origin) {
-      setParentOrigin(origin);
-    }
-    console.log("[WidgetPage] useEffect (expanded check), expanded:", expanded);
+    if (!isMounted || isLoading) return;
 
-    if (!expanded) {
-      // If not expanded, we're in the small button mode
-      // Notify parent that widget is ready
-      window.parent.postMessage({ type: "widget-ready" }, origin || "*");
-      console.log("[WidgetPage] postMessage: widget-ready");
-    }
-  }, []);
+    // Use setTimeout to ensure this runs after hydration
+    const timer = setTimeout(() => {
+      if (window.parent) {
+        window.parent.postMessage({ type: "widget-ready" }, parentOrigin);
+        
+        // Also send height information for dynamic sizing
+        const height = activeSurveyId ? 60 : 40;
+        window.parent.postMessage({ 
+          type: "widget-height-change", 
+          height 
+        }, parentOrigin);
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [isMounted, isLoading, activeSurveyId, parentOrigin]);
+
+  // Listen for messages from parent
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const handleMessage = (event) => {
+      if (event.origin !== parentOrigin && parentOrigin !== '*') return;
+      
+      if (event.data.type === 'close-widget') {
+        handleCollapse();
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [isMounted, parentOrigin]);
 
   const handleExpand = () => {
-    console.log("[WidgetPage] handleExpand clicked");
-    window.parent.postMessage({ type: "expand-survey" }, parentOrigin);
+    if (window.parent) {
+      window.parent.postMessage({ type: "expand-widget" }, parentOrigin);
+    }
+    setIsExpanded(true);
   };
 
   const handleCollapse = () => {
-    console.log("[WidgetPage] handleCollapse clicked");
-    window.parent.postMessage({ type: "collapse-survey" }, parentOrigin);
+    if (window.parent) {
+      window.parent.postMessage({ type: "collapse-widget" }, parentOrigin);
+    }
+    setIsExpanded(false);
   };
 
+  // Prevent hydration issues by not rendering until mounted
+  if (!isMounted) {
+    return (
+      <div className="bg-transparent w-full h-full flex items-center justify-center">
+        <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="bg-transparent w-full h-full flex items-center justify-center">
+        <div className="flex items-center gap-2 text-gray-500">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          <span className="text-sm">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state or hide widget if no survey
+  if (error || !activeSurveyId) {
+    return (
+      <div className="bg-transparent w-full h-full flex items-center justify-center">
+        <div className="text-xs text-gray-400 text-center px-2">
+          {error || "No active survey"}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-transparent">
+    <div className="bg-transparent w-full h-full">
       {isExpanded ? (
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full bg-white rounded-lg shadow-lg">
           <button
             onClick={handleCollapse}
-            className="absolute top-4 right-4 text-base-300 cursor-pointer z-10"
+            className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 cursor-pointer z-10 p-1 rounded-full hover:bg-gray-100 transition-colors"
           >
-            ✕
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
-          {activeSurveyId && <PreviewSurvey isPreview={false} surveyID={activeSurveyId} showDeviceToggles={false} pageUrl={pageUrl} browser={browser}/>}
+          <div className="p-4 h-full">
+            <PreviewSurvey 
+              isPreview={false} 
+              surveyID={activeSurveyId} 
+              showDeviceToggles={false} 
+              pageUrl={pageUrl} 
+              browser={browser}
+            />
+          </div>
         </div>
       ) : (
-        <>
-          <button
-            onClick={() => {
-              console.log("[WidgetPage] Feedback 2 button clicked");
-              handleExpand();
-            }}
-            className="btn btn-primary cursor-pointer rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-row  items-center gap-2"
-          >
-            <MessageSquare className="w-5 h-5" />
-            Feedback
-          </button>
-        </>
+        <button
+          onClick={handleExpand}
+          className="btn btn-primary cursor-pointer rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-row items-center gap-2 text-sm"
+        >
+          <MessageSquare className="w-4 h-4" />
+          Feedback
+        </button>
       )}
     </div>
   );

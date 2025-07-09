@@ -13,6 +13,16 @@ export const config = {
 // The middleware is used to refresh the user's session before loading Server Component routes
 export async function middleware(req) {
   const res = NextResponse.next();
+  
+  // Add CORS headers for widget endpoints
+  if (req.nextUrl.pathname === '/widjet' || req.nextUrl.pathname.startsWith('/widget')) {
+    res.headers.set('Access-Control-Allow-Origin', '*');
+    res.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.headers.set('X-Frame-Options', 'ALLOWALL');
+    res.headers.set('Content-Security-Policy', "frame-ancestors *");
+  }
+  
   const supabase = createMiddlewareClient({ req, res });
   await supabase.auth.getSession();
 

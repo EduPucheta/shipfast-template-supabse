@@ -1,97 +1,157 @@
 (function() {
+  // Prevent multiple widget instances
   if (window.feedbackWidgetLoaded || document.getElementById('feedback-widget-container')) {
     return;
   }
+
+  // Prevent widget from loading on its own page
+  if (window.location.pathname === '/widjet') {
+    return;
+  }
+
   window.feedbackWidgetLoaded = true;
 
   const scriptTag = document.currentScript;
   const baseUrl = scriptTag ? new URL(scriptTag.src).origin : 'http://localhost:3000';
 
-  // Create a container for the widget
+  const pageUrl = window.location.href;
+  const browserInfo = window.navigator.userAgent;
+  const parentOrigin = window.location.origin;
+
+  // Create a container for the widget iframe
   const container = document.createElement('div');
   container.id = 'feedback-widget-container';
+  container.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    pointer-events: none;
+  `;
   document.body.appendChild(container);
 
-  // Create an iframe to load the widget
+  // Create a single iframe to host the widget
   const iframe = document.createElement('iframe');
-  iframe.style.position = 'fixed';
-  iframe.style.bottom = '20px';  
-  iframe.style.right = '20px';
-  iframe.style.width = '160px'; // Reduced size for just the button
-  iframe.style.height = '60px'; // Reduced size for just the button
-  iframe.style.border = 'none';
-  iframe.style.zIndex = '9999';
-  iframe.style.background = 'transparent';
-  iframe.style.pointerEvents = 'none';
   
-  // Set the source to your widget URL
-  iframe.src = `${baseUrl}/widjet?parentOrigin=${encodeURIComponent(window.location.origin)}`; // Replace with your actual widget URL
+  // Initial styles for the collapsed button
+  const initialStyles = {
+    width: '160px',
+    height: '60px',
+    border: 'none',
+    background: 'transparent',
+    pointerEvents: 'none',
+    borderRadius: '0px'
+  };
+  Object.assign(iframe.style, initialStyles);
+
+  iframe.src = `${baseUrl}/widjet?parentOrigin=${encodeURIComponent(parentOrigin)}&pageUrl=${encodeURIComponent(pageUrl)}&browser=${encodeURIComponent(browserInfo)}`;
   
   container.appendChild(iframe);
 
-  // Create a container for the expanded survey
-  const expandedContainer = document.createElement('div');
-  expandedContainer.id = 'feedback-widget-expanded';
-  expandedContainer.style.display = 'none';
-  expandedContainer.style.position = 'fixed';
-  expandedContainer.style.top = '0';
-  expandedContainer.style.left = '0';
-  expandedContainer.style.width = '100%';
-  expandedContainer.style.height = '100%';
-  expandedContainer.style.zIndex = '9998';
-  expandedContainer.style.background = 'rgba(0, 0, 0, 0.5)';
-  document.body.appendChild(expandedContainer);
+  // Create a backdrop for the expanded view
+  const backdrop = document.createElement('div');
+  backdrop.id = 'feedback-widget-backdrop';
+  Object.assign(backdrop.style, {
+    display: 'none',
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    background: 'rgba(0, 0, 0, 0.5)',
+    zIndex: '9998',
+    pointerEvents: 'none'
+  });
+  
+  // Add click handler to backdrop to close widget
+  backdrop.addEventListener('click', function(e) {
+    if (e.target === backdrop) {
+      iframe.contentWindow.postMessage({ type: 'close-widget' }, baseUrl);
+    }
+  });
+  
+  document.body.appendChild(backdrop);
+
+  // Store widget state
+  let isExpanded = false;
+  let isReady = false;
 
   // Handle messages from the iframe
   window.addEventListener('message', function(event) {
-    // Verify the origin of the message
-    if (event.origin !== baseUrl) return; // Replace with your actual domain
-    
-    // Handle widget interactions
-    if (event.data.type === 'widget-ready') {
-      iframe.style.pointerEvents = 'auto';
-    }
-    
-    // Handle survey expansion
-    if (event.data.type === 'expand-survey') {
-      const pageUrl = window.location.href;
-      const browserInfo = window.navigator.userAgent;
-      // Create a new iframe for the expanded survey
-      const surveyIframe = document.createElement('iframe');
-      surveyIframe.style.position = 'fixed';
-      surveyIframe.style.top = '50%';
-      surveyIframe.style.left = '50%';
-      surveyIframe.style.transform = 'translate(-50%, -50%)';
-      surveyIframe.style.width = '450px';
-      surveyIframe.style.height = '350px';
-      surveyIframe.style.border = 'none';
-      surveyIframe.style.borderRadius = '8px';
-      surveyIframe.style.background = 'unset';
-      surveyIframe.style.zIndex = '9999';
-      surveyIframe.src = `${baseUrl}/widjet?expanded=true&pageUrl=${encodeURIComponent(pageUrl)}&browser=${encodeURIComponent(browserInfo)}&parentOrigin=${encodeURIComponent(window.location.origin)}`;
-      
-      expandedContainer.appendChild(surveyIframe);
-      expandedContainer.style.display = 'block';
-    }
-    
-    // Handle survey collapse
-    if (event.data.type === 'collapse-survey') {
-      expandedContainer.style.display = 'none';
-      expandedContainer.innerHTML = '';
+    if (event.origin !== baseUrl) return;
+
+    const { type } = event.data;
+
+    switch (type) {
+      case 'widget-ready':
+        isReady = true;
+        iframe.style.pointerEvents = 'auto';
+        container.style.pointerEvents = 'auto';
+        break;
+
+      case 'expand-widget':
+        if (!isReady) return;
+        
+        isExpanded = true;
+        backdrop.style.display = 'block';
+        backdrop.style.pointerEvents = 'auto';
+        
+        // Move container to center and resize
+        Object.assign(container.style, {
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bottom: 'auto',
+          right: 'auto'
+        });
+        
+        Object.assign(iframe.style, {
+          width: '450px',
+          height: '350px',
+          borderRadius: '8px',
+          boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
+        });
+        break;
+
+      case 'collapse-widget':
+        if (!isReady) return;
+        
+        isExpanded = false;
+        backdrop.style.display = 'none';
+        backdrop.style.pointerEvents = 'none';
+        
+        // Reset container position
+        Object.assign(container.style, {
+          top: 'auto',
+          left: 'auto',
+          transform: 'none',
+          bottom: '20px',
+          right: '20px'
+        });
+        
+        Object.assign(iframe.style, {
+          ...initialStyles,
+          pointerEvents: 'auto'
+        });
+        break;
+
+      case 'widget-height-change':
+        if (!isExpanded && event.data.height) {
+          iframe.style.height = event.data.height + 'px';
+        }
+        break;
     }
   });
 
-  // Cleanup function to remove the widget and reset the flag
-  // This is useful for development environments with hot-reloading
+  // Cleanup function for development
   window.cleanupFeedbackWidget = function() {
-    const container = document.getElementById('feedback-widget-container');
-    if (container) {
-      container.remove();
-    }
-    const expandedContainer = document.getElementById('feedback-widget-expanded');
-    if (expandedContainer) {
-      expandedContainer.remove();
-    }
+    document.getElementById('feedback-widget-container')?.remove();
+    document.getElementById('feedback-widget-backdrop')?.remove();
     window.feedbackWidgetLoaded = false;
   };
+
+  // Handle page unload
+  window.addEventListener('beforeunload', function() {
+    window.cleanupFeedbackWidget();
+  });
 })(); 
