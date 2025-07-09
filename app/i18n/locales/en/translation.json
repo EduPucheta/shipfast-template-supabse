@@ -38,8 +38,85 @@
       }
     ]
   },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Choose the perfect plan for your growth journey",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "monthsFree": "2 months free",
+    "popular": "POPULAR",
+    "website": "website",
+    "websites": "websites",
+    "upTo": "Up to",
+    "contactUs": "Contact us",
+    "noCreditCard": "No credit card required.",
+    "billedMonthly": "Billed monthly. Cancel anytime.",
+    "billedYearly": "Billed yearly. Cancel anytime.",
+    "websiteTooltip": "A website is a project with a unique domain and its subdomains."
+  },
+  "faq": {
+    "title": "FAQ",
+    "subtitle": "Frequently Asked Questions",
+    "questions": [
+      {
+        "question": "How does the AI analysis of feedback work?",
+        "answer": "Our AI analyzes your survey responses to identify patterns, trends, and key insights. You can have natural conversations with the AI to dive deeper into specific aspects of your feedback, ask follow-up questions, and get actionable recommendations based on the data."
+      },
+      {
+        "question": "What types of feedback can I collect?",
+        "answer": "You can collect various types of feedback including customer satisfaction surveys, product feedback, employee feedback, market research, and more. Our platform supports multiple question types and can handle both structured and unstructured responses."
+      },
+      {
+        "question": "Is my feedback data secure?",
+        "answer": "Yes, we take data security seriously. All feedback is encrypted in transit and at rest. We use industry-standard security practices and comply with data protection regulations. Your data is never shared with third parties without your explicit consent."
+      },
+      {
+        "question": "We use a similar tool, do you help in migration?",
+        "answer": "Yes, we can help with migration. Please log in to your account and contact our support team to request it. We will be happy to assist you with the process."
+      },
+      {
+        "question": "Would you help in setting up and onboarding?",
+        "answer": "Absolutely! We offer dedicated support for setting up your account and onboarding your team. Please reach out to our support team after you have signed up, and we will be happy to guide you through the process."
+      },
+      {
+        "question": "How do I get started?",
+        "answer": "Getting started is easy! Simply sign up for an account, create your first survey, and start collecting feedback. Our AI assistant will automatically analyze responses as they come in, and you can start asking questions about your data right away."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Transform your feedback into actionable insights",
+    "subtitle": "Stop spending hours analyzing survey responses manually. Let AI help you understand what your users are really saying."
+  },
+  "footer": {
+    "copyright": "Copyright © 2025 - All rights reserved",
+    "links": "LINKS",
+    "legal": "LEGAL",
+    "pricing": "Pricing",
+    "termsOfService": "Terms of services",
+    "privacyPolicy": "Privacy policy"
+  },
   "buttonSignin": {
     "login": "Login",
     "account": "Account"
+  },
+  "buttonSupport": {
+    "support": "Support"
+  },
+  "buttonLead": {
+    "joinWaitlist": "Join waitlist",
+    "emailPlaceholder": "tom@cruise.com",
+    "successMessage": "Thanks for joining the waitlist!"
+  },
+  "signUpPresale": {
+    "alreadySubscribed": "This email is already subscribed!",
+    "success": "Thanks for subscribing!",
+    "error": "Something went wrong. Please try again later.",
+    "emailPlaceholder": "Enter your email",
+    "subscribing": "Subscribing...",
+    "joinWaitlist": "Join Waitlist"
+  },
+  "testimonialsAvatars": {
+    "joinAndGetDiscount": "Join our <1>{{subscriberCount}}</1> subscribers and get <3>40% off</3> when launch!"
   }
 } 

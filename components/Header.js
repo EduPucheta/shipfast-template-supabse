@@ -96,7 +96,7 @@ const Header = () => {
         {/* CTA on large screens */}
         <div className="hidden lg:flex lg:items-center lg:gap-4">
           <ButtonLang lng={i18n.language} />
-          <ButtonSignin/>
+          <ButtonSignin className="hidden"/>
         </div>
       </nav>
  
@@ -166,7 +166,7 @@ const Header = () => {
             {/* Your CTA on small screens */}
             <div className="flex flex-col items-start gap-4">
               <ButtonLang lng={i18n.language} />
-              <ButtonSignin/>
+              <ButtonSignin className="!hidden"/>
             </div>
           </div>
         </div>

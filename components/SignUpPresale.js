@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useTranslation } from "@/app/i18n/client";
 
 const SignUpPresale = ({ onSubscribeSuccess }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState({ type: "", message: "" });
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,7 @@ const SignUpPresale = ({ onSubscribeSuccess }) => {
       if (existingEmails?.length > 0) {
         setStatus({
           type: "error",
-          message: "This email is already subscribed!",
+          message: t("signUpPresale.alreadySubscribed"),
         });
         setLoading(false);
         return;
@@ -50,7 +52,7 @@ const SignUpPresale = ({ onSubscribeSuccess }) => {
 
       setStatus({
         type: "success",
-        message: "Thanks for subscribing!",
+        message: t("signUpPresale.success"),
       });
       setEmail("");
       onSubscribeSuccess?.();
@@ -58,7 +60,7 @@ const SignUpPresale = ({ onSubscribeSuccess }) => {
       console.error("Error:", error);
       setStatus({
         type: "error",
-        message: "Something went wrong. Please try again later.",
+        message: t("signUpPresale.error"),
       });
     } finally {
       setLoading(false);
@@ -72,18 +74,18 @@ const SignUpPresale = ({ onSubscribeSuccess }) => {
           <div className="join w-full">
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder={t("signUpPresale.emailPlaceholder")}
               className="input input-bordered join-item flex-1"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <button 
+            <button
               className={`btn join-item btn-primary ${loading ? "loading" : ""}`}
               type="submit"
               disabled={loading}
             >
-              {loading ? "Subscribing..." : "Join Waitlist"}
+              {loading ? t("signUpPresale.subscribing") : t("signUpPresale.joinWaitlist")}
             </button>
           </div>
         </div>

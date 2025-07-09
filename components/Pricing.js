@@ -2,12 +2,14 @@
 import config from "@/config";
 import ButtonCheckout from "./ButtonCheckout";
 import { useState } from "react";
+import { useTranslation } from '@/app/i18n/client';
 
 // <Pricing/> displays the pricing plans for your app
 // It's your Stripe config in config.js.stripe.plans[] that will be used to display the plans
 // <ButtonCheckout /> renders a button that will redirect the user to Stripe checkout called the /api/stripe/create-checkout API endpoint with the correct priceId
 
-const Pricing = () => {
+const Pricing = ({ lang }) => {
+  const { t } = useTranslation(lang);
   const [billing, setBilling] = useState("monthly");
   const [tier, setTier] = useState(0);
 
@@ -18,9 +20,9 @@ const Pricing = () => {
     <section className="bg-base-200 overflow-hidden" id="pricing">
       <div className="py-24 px-8 max-w-5xl mx-auto">
         <div className="flex flex-col text-center w-full mb-20">
-          <p className="font-medium text-primary mb-8">Pricing</p>
+          <p className="font-medium text-primary mb-8">{t('pricing.title')}</p>
           <h2 className="font-bold text-3xl lg:text-5xl tracking-tight">
-          Choose the perfect plan for your growth journey
+            {t('pricing.subtitle')}
           </h2>
         </div>
         <div className="flex justify-center items-center gap-4 mb-12">
@@ -29,7 +31,7 @@ const Pricing = () => {
               billing === "monthly" ? "text-primary" : "text-base-content/70"
             }`}
           >
-            Monthly
+            {t('pricing.monthly')}
           </p>
 
           <input
@@ -47,10 +49,10 @@ const Pricing = () => {
               billing === "yearly" ? "text-primary" : "text-base-content/70"
             }`}
           >
-            Yearly
+            {t('pricing.yearly')}
           </p>
           <span className="badge badge-primary animate-pulse tracking-wide">
-            2 months free
+            {t('pricing.monthsFree')}
           </span>
         </div>
 
@@ -63,7 +65,7 @@ const Pricing = () => {
                     <span
                       className={`badge text-xs text-primary-content font-semibold border-0 bg-primary`}
                     >
-                      POPULAR
+                      {t('pricing.popular')}
                     </span>
                   </div>
                 )}
@@ -113,11 +115,11 @@ const Pricing = () => {
                   <div className="flex justify-center items-center gap-4">
                     <div className="w-full text-center">
                       <div className="badge badge-neutral mb-2">
-                        Up to {plan.tiers[tier].websites}{" "}
+                        {t('pricing.upTo')} {plan.tiers[tier].websites}{" "}
                         <span>
                           {plan.tiers[tier].websites === 1
-                            ? "website"
-                            : "websites"}
+                            ? t('pricing.website')
+                            : t('pricing.websites')}
                         </span>
                       </div>
                       <input
@@ -153,17 +155,17 @@ const Pricing = () => {
                       </svg>
 
                       <span>
-                      Up to{" "}
+                        {t('pricing.upTo')}{" "}
                         <span className="font-semibold">
                          {plan.tiers[tier].websites}
                         </span>{" "}
                         <span
                           className="tooltip underline cursor-pointer"
-                          data-tip="A website is a project with a unique domain and its subdomains."
+                          data-tip={t('pricing.websiteTooltip')}
                         >
                           {plan.tiers[tier].websites === 1
-                            ? "website"
-                            : "websites"}
+                            ? t('pricing.website')
+                            : t('pricing.websites')}
                         </span>
                       </span>
                     </li>
@@ -191,16 +193,16 @@ const Pricing = () => {
                       <ButtonCheckout priceId={plan.tiers[tier].priceId} />
                     ) : (
                       <button className="btn btn-primary btn-block" disabled>
-                        Contact us
+                        {t('pricing.contactUs')}
                       </button>
                     )}
 
                     <p className="flex items-center justify-center gap-2 text-sm text-center text-base-content/80 font-medium relative">
                       {plan.tiers[tier].price === 0
-                        ? "No credit card required."
+                        ? t('pricing.noCreditCard')
                         : billing === "monthly"
-                        ? "Billed monthly. Cancel anytime."
-                        : "Billed yearly . Cancel anytime."}
+                        ? t('pricing.billedMonthly')
+                        : t('pricing.billedYearly')}
                     </p>
                   </div>
                 </div>
@@ -212,7 +214,7 @@ const Pricing = () => {
                     <span
                       className={`badge text-xs text-primary-content font-semibold border-0 bg-primary`}
                     >
-                      POPULAR
+                      {t('pricing.popular')}
                     </span>
                   </div>
                 )}
@@ -281,10 +283,10 @@ const Pricing = () => {
 
                     <p className="flex items-center justify-center gap-2 text-sm text-center text-base-content/80 font-medium relative">
                       {plan.price === 0
-                        ? "No credit card required."
+                        ? t('pricing.noCreditCard')
                         : billing === "monthly"
-                        ? "Billed monthly. Cancel anytime."
-                        : "Billed yearly . Cancel anytime."}
+                        ? t('pricing.billedMonthly')
+                        : t('pricing.billedYearly')}
                     </p>
                   </div>
                 </div>

@@ -2,6 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
+import { useTranslation } from "@/app/i18n/client";
+import { Trans } from "react-i18next";
 
 const avatars = [
   {
@@ -27,7 +29,9 @@ const avatars = [
   },
 ];
 
-export default function TestimonialsAvatars({ subscriberCount }) {
+export default function TestimonialsAvatars({ subscriberCount, lng }) {
+  const { t } = useTranslation(lng, "translation");
+
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-center -space-x-4">
@@ -48,8 +52,16 @@ export default function TestimonialsAvatars({ subscriberCount }) {
         {/* RATING */}
         <div className="flex flex-col justify-center items-center md:items-start gap-1 pl-4 ">
           <p className="text-center text-base-content/80">
-            Join our <span className="font-semibold text-base-content">{subscriberCount}</span> subscribers and get <span className="font-semibold text-base-content">40% off</span> when launch!
-          </p> 
+            <Trans
+              i18nKey="testimonialsAvatars.joinAndGetDiscount"
+              t={t}
+              values={{ subscriberCount }}
+              components={{
+                1: <span className="font-semibold text-base-content" />,
+                3: <span className="font-semibold text-base-content" />,
+              }}
+            />
+          </p>
         </div>
       </div>
     </div>

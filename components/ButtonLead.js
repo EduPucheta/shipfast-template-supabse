@@ -3,12 +3,14 @@
 import { useState, useRef } from "react";
 import { toast } from "react-hot-toast";
 import apiClient from "@/libs/api";
+import { useTranslation } from "@/app/i18n/client";
 
 // This component is used to collect the emails from the landing page
 // You'd use this if your product isn't ready yet or you want to collect leads
 // For instance: A popup to send a freebie, joining a waitlist, etc.
 // It calls the /api/lead/route.js route and store a Lead document in the database
-const ButtonLead = ({ extraStyle }) => {
+const ButtonLead = ({ extraStyle, lang }) => {
+  const { t } = useTranslation(lang, "translation");
   const inputRef = useRef(null);
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +23,7 @@ const ButtonLead = ({ extraStyle }) => {
     try {
       await apiClient.post("/lead", { email });
 
-      toast.success("Thanks for joining the waitlist!");
+      toast.success(t("buttonLead.successMessage"));
 
       // just remove the focus on the input
       inputRef.current.blur();
@@ -44,7 +46,7 @@ const ButtonLead = ({ extraStyle }) => {
         value={email}
         ref={inputRef}
         autoComplete="email"
-        placeholder="tom@cruise.com"
+        placeholder={t("buttonLead.emailPlaceholder")}
         className="input input-bordered w-full placeholder:opacity-60"
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -54,7 +56,7 @@ const ButtonLead = ({ extraStyle }) => {
         type="submit"
         disabled={isDisabled}
       >
-        Join waitlist
+        {t("buttonLead.joinWaitlist")}
         {isLoading ? (
           <span className="loading loading-spinner loading-xs"></span>
         ) : (

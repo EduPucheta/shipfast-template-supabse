@@ -1,7 +1,12 @@
 import Image from "next/image";
 import config from "@/config";
+import { useTranslation as getTranslation } from "@/app/i18n";
+import { cookies } from "next/headers";
 
-const CTA = () => {
+const CTA = async ({ lang }) => {
+  const lng = lang || cookies().get("i18next")?.value || 'en';
+  const { t } = await getTranslation(lng);
+
   return (
     <section className="relative hero overflow-hidden min-h-screen">
       <Image
@@ -14,10 +19,10 @@ const CTA = () => {
       <div className="relative hero-content text-center text-neutral-content p-8">
         <div className="flex flex-col items-center max-w-xl p-8 md:p-0">
           <h2 className="font-bold text-3xl md:text-5xl tracking-tight mb-8 md:mb-12">
-            Transform your feedback into actionable insights
+            {t('cta.title')}
           </h2>
           <p className="text-lg opacity-80 mb-12 md:mb-16">
-            Stop spending hours analyzing survey responses manually. Let AI help you understand what your users are really saying.
+            {t('cta.subtitle')}
           </p>
         </div>
       </div>

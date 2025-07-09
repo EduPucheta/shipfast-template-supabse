@@ -38,8 +38,85 @@
       }
     ]
   },
+  "pricing": {
+    "title": "Precios",
+    "subtitle": "Elige el plan perfecto para tu crecimiento",
+    "monthly": "Mensual",
+    "yearly": "Anual",
+    "monthsFree": "2 meses gratis",
+    "popular": "POPULAR",
+    "website": "sitio web",
+    "websites": "sitios web",
+    "upTo": "Hasta",
+    "contactUs": "Contáctanos",
+    "noCreditCard": "No se requiere tarjeta de crédito.",
+    "billedMonthly": "Facturado mensualmente. Cancela en cualquier momento.",
+    "billedYearly": "Facturado anualmente. Cancela en cualquier momento.",
+    "websiteTooltip": "Un sitio web es un proyecto con un dominio único y sus subdominios."
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Preguntas Más Frecuentes",
+    "questions": [
+      {
+        "question": "¿Cómo funciona el análisis de IA de los comentarios?",
+        "answer": "Nuestra IA analiza las respuestas de tus encuestas para identificar patrones, tendencias y conocimientos clave. Puedes tener conversaciones naturales con la IA para profundizar en aspectos específicos de tus comentarios, hacer preguntas de seguimiento y obtener recomendaciones accionables basadas en los datos."
+      },
+      {
+        "question": "¿Qué tipos de comentarios puedo recopilar?",
+        "answer": "Puedes recopilar varios tipos de comentarios incluyendo encuestas de satisfacción del cliente, comentarios sobre productos, comentarios de empleados, investigación de mercado y más. Nuestra plataforma admite múltiples tipos de preguntas y puede manejar respuestas tanto estructuradas como no estructuradas."
+      },
+      {
+        "question": "¿Están seguros los datos de mis comentarios?",
+        "answer": "Sí, nos tomamos la seguridad de los datos en serio. Todos los comentarios están encriptados en tránsito y en reposo. Utilizamos prácticas de seguridad estándar de la industria y cumplimos con las regulaciones de protección de datos. Tus datos nunca se comparten con terceros sin tu consentimiento explícito."
+      },
+      {
+        "question": "Usamos una herramienta similar, ¿ayudan con la migración?",
+        "answer": "Sí, podemos ayudar con la migración. Inicia sesión en tu cuenta y contacta a nuestro equipo de soporte para solicitarlo. Estaremos encantados de ayudarte con el proceso."
+      },
+      {
+        "question": "¿Ayudarían con la configuración e incorporación?",
+        "answer": "¡Absolutamente! Ofrecemos soporte dedicado para configurar tu cuenta e incorporar a tu equipo. Comunícate con nuestro equipo de soporte después de registrarte, y estaremos encantados de guiarte a través del proceso."
+      },
+      {
+        "question": "¿Cómo empiezo?",
+        "answer": "¡Empezar es fácil! Simplemente regístrate para obtener una cuenta, crea tu primera encuesta y comienza a recopilar comentarios. Nuestro asistente de IA analizará automáticamente las respuestas a medida que lleguen, y podrás comenzar a hacer preguntas sobre tus datos de inmediato."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Transforma tus comentarios en información procesable",
+    "subtitle": "Deja de pasar horas analizando respuestas de encuestas manualmente. Deja que la IA te ayude a entender lo que realmente dicen tus usuarios."
+  },
+  "footer": {
+    "copyright": "Copyright © 2025 - Todos los derechos reservados",
+    "links": "ENLACES",
+    "legal": "LEGAL",
+    "pricing": "Precios",
+    "termsOfService": "Términos de servicio",
+    "privacyPolicy": "Política de privacidad"
+  },
   "buttonSignin": {
     "login": "Iniciar Sesión",
     "account": "Cuenta"
+  },
+  "buttonSupport": {
+    "support": "Soporte"
+  },
+  "buttonLead": {
+    "joinWaitlist": "Unirse a la lista de espera",
+    "emailPlaceholder": "juan@correo.com",
+    "successMessage": "¡Gracias por unirte a la lista de espera!"
+  },
+  "signUpPresale": {
+    "alreadySubscribed": "¡Este correo electrónico ya está suscrito!",
+    "success": "¡Gracias por suscribirte!",
+    "error": "Algo salió mal. Por favor, inténtalo de nuevo más tarde.",
+    "emailPlaceholder": "Ingresa tu correo electrónico",
+    "subscribing": "Suscribiendo...",
+    "joinWaitlist": "Unirse a la lista de espera"
+  },
+  "testimonialsAvatars": {
+    "joinAndGetDiscount": "¡Únete a nuestros <1>{{subscriberCount}}</1> suscriptores y obtén un <3>40% de descuento</3> en el lanzamiento!"
   }
 } 

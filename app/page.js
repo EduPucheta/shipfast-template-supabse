@@ -9,25 +9,28 @@ import Footer from "@/components/Footer";
 import SignUpPresale from "@/components/SignUpPresale"; 
 import Problem from "@/components/Problem";
 import FeaturesAccordion from "@/components/FeaturesAccordion";
+import { cookies } from "next/headers";
 
 
 export default function Page() {
+  const lng = cookies().get("i18next")?.value || "en";
+
   return (
     <>
       <div className="bg-base-100">
         <Suspense fallback={<div className="h-16 bg-base-100" />}>
-          <Header/>
+          <Header lang={lng}/>
         </Suspense>
        
 
-        <HeroSection/>
-        <Problem/> 
-        <FeaturesAccordion/>
-        <Pricing/>
-        <FAQ/>
+        <HeroSection lang={lng}/>
+        <Problem lang={lng}/> 
+        <FeaturesAccordion lang={lng}/>
+        <Pricing lang={lng}/>
+        <FAQ lang={lng}/>
        
-        <CTA/>
-        <Footer/>
+        <CTA lang={lng}/>
+        <Footer lang={lng}/>
       </div>
     </> 
   );

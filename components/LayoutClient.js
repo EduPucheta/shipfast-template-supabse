@@ -64,7 +64,15 @@ const CrispChat = () => {
 
 // This component is needed to call the useTranslation hook, because the CookiesProvider needs to be above it in the component tree.
 const I18nProvider = ({ children, lng }) => {
-  useTranslation(lng);
+  const { i18n } = useTranslation(lng);
+
+  // Sync the client-side language with the server-side language
+  useEffect(() => {
+    if (i18n.language !== lng) {
+      i18n.changeLanguage(lng);
+    }
+  }, [lng, i18n]);
+
   return children;
 }
 

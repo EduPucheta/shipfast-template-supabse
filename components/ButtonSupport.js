@@ -2,10 +2,12 @@
 
 import { Crisp } from "crisp-sdk-web";
 import config from "@/config";
+import { useTranslation } from "@/app/i18n/client";
 
 // Use this button if chat is hidden on some routes. config.js has onlyShowOnRoutes set to ["/"] so it will be hidden on all routes except the home page.
 // If Crisp is not enable, it will open the support email in the default email client.
-const ButtonSupport = () => {
+const ButtonSupport = ({ lng }) => {
+  const { t } = useTranslation(lng);
   const handleClick = () => {
     if (config.crisp?.id) {
       Crisp.chat.show();
@@ -26,8 +28,7 @@ const ButtonSupport = () => {
  
 
     >
-
-      Support
+      {t('buttonSupport.support')}
     </button>
   );
 };

@@ -9,9 +9,17 @@ export default function ButtonLang({ lng }) {
   const { i18n } = useTranslation(lng);
   const router = useRouter();
 
-  const changeLanguage = (newLng) => {
+  const changeLanguage = async (newLng) => {
+    // Set the cookie immediately
+    document.cookie = `i18next=${newLng}; path=/; max-age=31536000`; // 1 year
+    
+    // Change the language in i18next
     i18n.changeLanguage(newLng);
-    router.refresh();
+    
+    // Force a complete page reload to ensure server components get the new language
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   return (

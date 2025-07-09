@@ -1,61 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useTranslation } from '@/app/i18n/client';
 
 // <FAQ> component is a lsit of <Item> component
 // Just import the FAQ & add your FAQ content to the const faqList
-
-const faqList = [
-  {
-    question: "How does the AI analysis of feedback work?",
-    answer: (
-      <div className="space-y-2 leading-relaxed">
-        Our AI analyzes your survey responses to identify patterns, trends, and key insights. You can have natural conversations with the AI to dive deeper into specific aspects of your feedback, ask follow-up questions, and get actionable recommendations based on the data.
-      </div>
-    ),
-  },
-  {
-    question: "What types of feedback can I collect?",
-    answer: (
-      <div className="space-y-2 leading-relaxed">
-        You can collect various types of feedback including customer satisfaction surveys, product feedback, employee feedback, market research, and more. Our platform supports multiple question types and can handle both structured and unstructured responses.
-      </div>
-    ),
-  },
-  {
-    question: "Is my feedback data secure?",
-    answer: (
-      <div className="space-y-2 leading-relaxed">
-        Yes, we take data security seriously. All feedback is encrypted in transit and at rest. We use industry-standard security practices and comply with data protection regulations. Your data is never shared with third parties without your explicit consent.
-      </div>
-    ),
-  },
-  {
-    question: "We use a similar tool, do you help in migration?",
-    answer: (
-      <div className="space-y-2 leading-relaxed">
-        Yes, we can help with migration. Please log in to your account and contact our support team to request it. We will be happy to assist you with the process.
-      </div>
-    ),
-  },
-  {
-    question: "Would you help in setting up and onboarding?",
-    answer: (
-      <div className="space-y-2 leading-relaxed">
-        Absolutely! We offer dedicated support for setting up your account and onboarding your team. Please reach out to our support team after you have signed up, and we will be happy to guide you through the process.
-      </div>
-    ),
-  },
-  {
-    question: "How do I get started?",
-    answer: (
-      <div className="space-y-2 leading-relaxed">
-        Getting started is easy! Simply sign up for an account, create your first survey, and start collecting feedback. Our AI assistant will automatically analyze responses as they come in, and you can start asking questions about your data right away.
-      </div>
-    ),
-  },
-  
-];
 
 const Item = ({ item }) => {
   const accordion = useRef(null);
@@ -117,14 +66,17 @@ const Item = ({ item }) => {
   );
 };
 
-const FAQ = () => {
+const FAQ = ({ lang }) => {
+  const { t } = useTranslation(lang);
+  const faqList = t('faq.questions', { returnObjects: true });
+
   return (
     <section className="bg-base-100" id="faq">
       <div className="py-24 px-8 max-w-7xl mx-auto flex flex-col md:flex-row gap-12">
         <div className="flex flex-col text-left basis-1/2">
-          <p className="inline-block font-semibold text-primary mb-4">FAQ</p>
+          <p className="inline-block font-semibold text-primary mb-4">{t('faq.title')}</p>
           <p className="sm:text-4xl text-3xl font-extrabold text-base-content">
-            Frequently Asked Questions
+            {t('faq.subtitle')}
           </p>
         </div>
 

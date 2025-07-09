@@ -18,7 +18,7 @@ i18next
     ...getOptions(),
     lng: undefined, // let detect the language on client side
     detection: {
-      order: ['path', 'htmlTag', 'cookie', 'navigator'],
+      order: ['cookie', 'navigator', 'htmlTag'],
     },
     preload: runsOnServerSide ? languages : []
   })
@@ -44,9 +44,10 @@ export function useTranslation(lng, ns, options) {
     }, [lng, i18n])
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-      if (cookies.i18next === lng) return
-      setCookie(cookieName, lng, { path: '/' })
-    }, [lng, cookies.i18next, setCookie])
+      if (i18n.resolvedLanguage && cookies.i18next !== i18n.resolvedLanguage) {
+        setCookie(cookieName, i18n.resolvedLanguage, { path: '/' })
+      }
+    }, [i18n.resolvedLanguage, cookies.i18next, setCookie])
   }
   return ret
 } 
