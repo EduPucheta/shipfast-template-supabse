@@ -36,7 +36,7 @@
   // Initial styles for the collapsed button
   const initialStyles = {
     width: '160px',
-    height: '60px',
+    height: '70px',
     border: 'none',
     background: 'transparent',
     pointerEvents: 'none',
