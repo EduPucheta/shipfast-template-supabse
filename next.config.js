@@ -11,6 +11,16 @@ const nextConfig = {
       "https://shipfast-template-supabse-k6pc.vercel.app"
     ],
   },
+  // Suppress hydration warnings in development
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error']
+    } : false,
+  },
+  // Enable experimental features to help with widget loading
+  experimental: {
+    optimizeCss: true,
+  },
 };
 
 module.exports = nextConfig;

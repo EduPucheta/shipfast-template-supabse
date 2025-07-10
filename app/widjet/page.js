@@ -20,12 +20,8 @@ export default function WidgetPage() {
   // Handle client-side mounting
   useEffect(() => {
     setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted) return;
-
-    // This effect runs once on mount to set up the widget
+    
+    // Only access browser APIs after mounting
     const params = new URLSearchParams(window.location.search);
     const url = params.get("pageUrl");
     const browserInfo = params.get("browser");
@@ -52,7 +48,7 @@ export default function WidgetPage() {
     };
 
     getUser();
-  }, [isMounted]);
+  }, []);
 
   useEffect(() => {
     if (!userId) return;
@@ -138,7 +134,7 @@ export default function WidgetPage() {
   // Prevent hydration issues by not rendering until mounted
   if (!isMounted) {
     return (
-      <div className="bg-transparent w-full h-full flex items-center justify-center">
+      <div className="bg-transparent w-full h-full flex items-center justify-center" suppressHydrationWarning={true}>
         <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
       </div>
     );
@@ -147,7 +143,7 @@ export default function WidgetPage() {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="bg-transparent w-full h-full flex items-center justify-center">
+      <div className="bg-transparent w-full h-full flex items-center justify-center" suppressHydrationWarning={true}>
         <div className="flex items-center gap-2 text-gray-500">
           <Loader2 className="w-4 h-4 animate-spin" />
           <span className="text-sm">Loading...</span>
@@ -159,7 +155,7 @@ export default function WidgetPage() {
   // Show error state or hide widget if no survey
   if (error || !activeSurveyId) {
     return (
-      <div className="bg-transparent w-full h-full flex items-center justify-center">
+      <div className="bg-transparent w-full h-full flex items-center justify-center" suppressHydrationWarning={true}>
         <div className="text-xs text-gray-400 text-center px-2">
           {error || "No active survey"}
         </div>
@@ -168,7 +164,7 @@ export default function WidgetPage() {
   }
 
   return (
-    <div className="bg-transparent w-full h-full">
+    <div className="bg-transparent w-full h-full" suppressHydrationWarning={true}>
       {isExpanded ? (
         <div className="relative w-full h-full bg-white rounded-lg shadow-lg">
           <button

@@ -7,8 +7,8 @@ const font = Inter({ subsets: ["latin"] });
 export default function WidgetLayout({ children }) {
   return (
     <html lang="en" className={font.className}>
-      <body data-theme="emerald" className="bg-transparent">
-        <div className="widget-container">
+      <body data-theme="emerald" className="bg-transparent" suppressHydrationWarning={true}>
+        <div className="widget-container" suppressHydrationWarning={true}>
           {children}
         </div>
       </body>

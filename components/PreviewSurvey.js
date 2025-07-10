@@ -20,9 +20,11 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
   const [previewMode, setPreviewMode] = useState("smartphone");
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Function to detect device type
+  // Function to detect device type (only call after mounting)
   const detectDeviceType = () => {
+    if (typeof window === 'undefined') return 'desktop';
     const width = window.innerWidth;
     if (width < 768) return 'mobile';
     if (width < 1024) return 'tablet';
@@ -30,21 +32,24 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
   };
 
   useEffect(() => {
-    // Notify parent window that widget is ready
-    if (window.parent !== window) {
+    setIsMounted(true);
+    
+    // Notify parent window that widget is ready (only after mounting)
+    if (typeof window !== 'undefined' && window.parent !== window) {
       window.parent.postMessage({ type: "widget-ready" }, "*");
     }
   }, []);
 
   useEffect(() => {
+    if (!isMounted) return;
+    
     const fetchSurvey = async () => {
       if (surveyID) {
         setLoading(true);
         
-        // Detect device type
-        const width = window.innerWidth;
-        const deviceType = width < 768 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop';
-        console.log('Current device type:', deviceType, 'Window width:', width);
+        // Detect device type (safely after mounting)
+        const deviceType = detectDeviceType();
+        console.log('Current device type:', deviceType, 'Window width:', typeof window !== 'undefined' ? window.innerWidth : 'N/A');
         
         const { data, error } = await supabase
           .from("surveys")
@@ -74,7 +79,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
     };
 
     fetchSurvey();
-  }, [surveyID]);
+  }, [surveyID, isMounted]);
 
   useEffect(() => {
     if (showThankYou) {
@@ -102,9 +107,9 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
     setIsSubmitting(true);
     setError(null);
 
-    // Get the parent page URL from the referrer
-    const pageUrlToSubmit = pageUrl || document.referrer;
-    const browserToSubmit = browser || navigator.userAgent;
+    // Get the parent page URL from the referrer (safely after mounting)
+    const pageUrlToSubmit = pageUrl || (typeof document !== 'undefined' ? document.referrer : '');
+    const browserToSubmit = browser || (typeof navigator !== 'undefined' ? navigator.userAgent : '');
 
     console.log('Page URL:', pageUrlToSubmit);
 
@@ -133,10 +138,22 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
   const displayTheme = isPreview ? surveyTheme : surveyData?.survey_theme;
   const displayReaction = isPreview ? reactionType : surveyData?.reactionType;
 
+  // Prevent hydration issues by not rendering until mounted
+  if (!isMounted) {
+    return (
+      <div className="card !bg-base-200 shrink-0 p-4 flex flex-col justify-center items-center gap-4 w-full h-full shadow-lg" suppressHydrationWarning={true}>
+        <div className="flex justify-center items-center py-4">
+          <span className="loading loading-spinner loading-md"></span>
+        </div>
+      </div>
+    );
+  }
+
   const innerContent = (
     <div
       data-theme={displayTheme}
-      className="card !bg-base-200  shrink-0 p-4 flex flex-col justify-center items-center gap-4 w-full h-full shadow-lg"  
+      className="card !bg-base-200  shrink-0 p-4 flex flex-col justify-center items-center gap-4 w-full h-full shadow-lg"
+      suppressHydrationWarning={true}
     >
       {loading ? (
         <div className="flex justify-center items-center py-4 ">
