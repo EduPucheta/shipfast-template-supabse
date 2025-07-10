@@ -109,7 +109,7 @@
           width: '450px',
           height: '350px',
           borderRadius: '8px',
-          boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
+         
         });
         break;
 

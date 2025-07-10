@@ -152,7 +152,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
   const innerContent = (
     <div
       data-theme={displayTheme}
-      className="card !bg-base-200  shrink-0 p-4 flex flex-col justify-center items-center gap-4 w-full h-full shadow-lg"
+      className="card shrink-0 p-4 flex flex-col justify-center items-center gap-4 w-full h-full "
       suppressHydrationWarning={true}
     >
       {loading ? (
