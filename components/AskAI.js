@@ -107,7 +107,7 @@ export default function AskAI({ id }) {
         <div className="p-6">
           <p className="text-base text-gray-600 mb-6">Ask questions about your survey responses and get AI-powered insights. The AI will analyze patterns, trends, and key themes from your feedback to help you make data-driven decisions.</p>
         </div>
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-base-200">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-base-200 min-h-80">
           {messages.map((msg, index) => (
             <div
               key={index}

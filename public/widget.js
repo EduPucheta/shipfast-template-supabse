@@ -107,7 +107,7 @@
         
         Object.assign(iframe.style, {
           width: '450px',
-          height: '350px',
+          height: '380px',
           borderRadius: '8px',
          
         });

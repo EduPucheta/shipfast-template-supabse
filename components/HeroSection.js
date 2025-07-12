@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Zap } from "lucide-react";
-import Image from "next/image";
 import config from "@/config";
 import SignUpPresale from "@/components/SignUpPresale";
 import TestimonialsAvatars from "@/components/TestimonialsAvatars";
@@ -36,7 +35,7 @@ const HeroSection = () => {
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-2 leading-tight">
             {t('heroSection.title')}
             <br />
-            and{" "}
+            {" "}
             <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed whitespace-nowrap">
               {t('heroSection.titleHighlight')}
             </span>
@@ -55,12 +54,13 @@ const HeroSection = () => {
           <TestimonialsAvatars subscriberCount={subscriberCount} />
         </div>
         <div className="w-full lg:w-2/5 flex justify-center lg:justify-end">
-          <Image
-            src="/image.png"
-            alt="Hero image"
-            width={500}
-            height={500}
-            className="w-full max-w-md lg:max-w-full h-auto"
+          <video
+            src="/HeroVideo.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full max-w-md lg:max-w-full h-auto rounded-lg"
           />
         </div>
       </div>

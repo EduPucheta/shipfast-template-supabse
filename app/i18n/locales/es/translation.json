@@ -18,7 +18,7 @@
   },
   "featuresAccordion": {
     "title": "Transforma los comentarios de los clientes en",
-    "titleHighlight": "información procesable",
+    "titleHighlight": "información accionable",
     "features": [
       {
         "title": "Widget para sitio web",
@@ -115,7 +115,7 @@
     ]
   },
   "cta": {
-    "title": "Transforma tus comentarios en información procesable",
+    "title": "Transforma tus comentarios en información accionable",
     "subtitle": "Deja de pasar horas analizando respuestas de encuestas manualmente. Deja que la IA te ayude a entender lo que realmente dicen tus usuarios."
   },
   "footer": {

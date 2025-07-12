@@ -1,8 +1,8 @@
 const featuresData = [
   {
-    type: "image",
-    path: "/widget.png",
-    alt: "Website Widget Screenshot",
+    type: "video",
+    path: "/WidgetVideo.mp4",
+    format: "video/mp4",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
