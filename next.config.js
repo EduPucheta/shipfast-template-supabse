@@ -1,14 +1,27 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: [
-      // NextJS <Image> component needs to whitelist domains for src={}
-      "lh3.googleusercontent.com",
-      "pbs.twimg.com",
-      "images.unsplash.com",
-      "logos-world.net",
-  
-      "https://shipfast-template-supabse-k6pc.vercel.app"
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "pbs.twimg.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "logos-world.net",
+      },
+      {
+        protocol: "https",
+        hostname: "shipfast-template-supabse-k6pc.vercel.app",
+      },
     ],
   },
   // Suppress hydration warnings in development
