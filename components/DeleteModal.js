@@ -17,14 +17,24 @@ const DeleteModal = ({ object, objectID, objectTitle, onDeleteSuccess }) => {
 
   const handleDelete = async () => {
     setLoading(true);
-    const { error } = await supabase.from(table).delete().eq("id", objectID);
+    const { data, error } = await supabase
+      .from(table)
+      .delete()
+      .eq("id", objectID)
+      .select();
 
     if (error) {
       console.error(`Error deleting ${object}:`, error);
       toast.error(`Failed to delete ${capitalize(object)}: ${error.message}`);
-    } else {
+    } else if (data?.length > 0) {
       toast.success(`${capitalize(object)} deleted successfully`);
       onDeleteSuccess(objectID);
+    } else {
+      toast.error(
+        `Failed to delete ${capitalize(
+          object
+        )}. You might not have permission.`
+      );
     }
 
     setLoading(false);
