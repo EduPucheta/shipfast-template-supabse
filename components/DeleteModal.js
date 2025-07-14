@@ -17,6 +17,23 @@ const DeleteModal = ({ object, objectID, objectTitle, onDeleteSuccess }) => {
 
   const handleDelete = async () => {
     setLoading(true);
+
+    if (object === "survey") {
+      const { error: reviewsError } = await supabase
+        .from("reviews")
+        .delete()
+        .eq("survey", objectID);
+
+      if (reviewsError) {
+        toast.error(
+          `Failed to delete survey's reviews: ${reviewsError.message}`
+        );
+        setLoading(false);
+        closeModal();
+        return;
+      }
+    }
+
     const { data, error } = await supabase
       .from(table)
       .delete()
