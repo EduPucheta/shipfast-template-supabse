@@ -10,6 +10,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import logo from "@/app/icon.png";
 import config from "@/config";
 import ButtonAccount from "./ButtonAccount";
+import SpaceSelector from './SpaceSelector';
 
 const links = [
   {
@@ -24,65 +25,20 @@ const links = [
     href: "/dashboard/configuration",
     label: "Configuration"
   },
-  {
-    href: "/dashboard/users",
-    label: "Users"
-  }
 ];
 
-// Initialize Supabase client using the config object
-// Ensure config.supabase.url and config.supabase.anonKey are defined in your @/config.js
 const supabase = createClientComponentClient({
   supabaseUrl: config.supabase?.url,
   supabaseKey: config.supabase?.anonKey,
 });
 
-// A header with a logo on the left, links in the center (like Pricing, etc...), and a CTA (like Get Started or Login) on the right.
-// The header is responsive, and on mobile, the links are hidden behind a burger button.
 const HeaderDashboard = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
-  const [userSpaces, setUserSpaces] = useState([]);
-  const [selectedSpace, setSelectedSpace] = useState('');
-  const [currentUser, setCurrentUser] = useState(null);
 
-  useEffect(() => {
-    const getUserAndSpaces = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        setCurrentUser(session.user);
-        const { data: spaces, error } = await supabase
-          .from('spaces')
-          .select('id, organization_name')
-          .eq('profile_id', session.user.id);
-
-        if (error) {
-          console.error('Error fetching spaces:', error);
-          setUserSpaces([]);
-        } else {
-          setUserSpaces(spaces || []);
-          if (spaces && spaces.length > 0) {
-            setSelectedSpace(spaces[0].id);
-          }
-        }
-      } else {
-        setCurrentUser(null);
-        setUserSpaces([]);
-      }
-    };
-
-    getUserAndSpaces();
-  }, []);
-
-  // setIsOpen(false) when the route changes (i.e: when the user clicks on a link on mobile)
   useEffect(() => {
     setIsOpen(false);
   }, [searchParams]);
-
-  const handleSpaceChange = (event) => {
-    setSelectedSpace(event.target.value);
-    console.log("Selected Space ID:", event.target.value);
-  };
 
   return (
     <>
@@ -166,23 +122,9 @@ const HeaderDashboard = () => {
           </div>
 
           {/* Spaces Dropdown */}
-          {currentUser && userSpaces.length > 0 && (
-            <div className="p-4 border-b border-base-300">
-              <select
-                id="spaces-dropdown"
-                name="spaces-dropdown"
-                className="select select-bordered w-full"
-                value={selectedSpace}
-                onChange={handleSpaceChange}
-              >
-                {userSpaces.map((space) => (
-                  <option key={space.id} value={space.id}>
-                    {space.organization_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          <div className="p-4 border-b border-base-300">
+            <SpaceSelector />
+          </div>
 
           {/* Navigation Links */}
           <nav className="flex-1 p-4 space-y-2">

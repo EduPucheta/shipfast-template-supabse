@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useSurvey } from "../app/context/SurveyContext";
+import { useSpace } from "@/app/context/SpaceContext";
 import { toast } from "react-hot-toast";
 
 const supabase = createClientComponentClient();
@@ -18,6 +19,7 @@ const reactionOptions = ["Stars", "Hearts", "Emojis"];
 const CreateSurvey = () => {
   // Using defaults from context or initial values
   const { question1, setQuestion1, surveyTheme, setSurveyTheme, reactionType, setreactionType } = useSurvey();
+  const { selectedSpace } = useSpace();
 
   const [surveyTitle, setSurveyTitle] = useState("");
   const [surveyDescription, setDescription] = useState("");
@@ -52,6 +54,10 @@ const CreateSurvey = () => {
     // --- Validation --- 
     if (!userId) {
         setError("User information not available. Please refresh or log in again.");
+        return;
+    }
+    if (!selectedSpace) {
+        setError("No space selected. Please select or create a space first.");
         return;
     }
     if (!question1.trim()) {
@@ -150,6 +156,7 @@ const CreateSurvey = () => {
                     reactionType: reactionType,
                     question1: question1,
                     user_id: userId,
+                    space_id: selectedSpace.id,
                     target_devices: selectedDevices,
                     targeting_type: targetingType,
                     target_urls: targetingType === 'specific_pages' ? targetUrls : null,

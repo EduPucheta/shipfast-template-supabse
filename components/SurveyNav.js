@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import { EllipsisVertical } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import DeleteModal from "./DeleteModal";
+import { useSpace } from "@/app/context/SpaceContext";
 
 dayjs.extend(relativeTime);
 
@@ -21,6 +22,7 @@ const SurveyNav = () => {
   const [updatingSurvey, setUpdatingSurvey] = useState(null);
   const [deletingSurvey, setDeletingSurvey] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
+  const { selectedSpace } = useSpace();
 
   useEffect(() => {
     const getUser = async () => {
@@ -38,7 +40,7 @@ const SurveyNav = () => {
   }, []);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !selectedSpace) return;
 
     const fetchSurveys = async () => {
       setLoading(true);
@@ -47,6 +49,7 @@ const SurveyNav = () => {
           .from("surveys")
           .select("survey_title, id, created_at, is_active, reviews(count)")
           .eq("user_id", userId)
+          .eq("space_id", selectedSpace.id)
           .order("created_at", { ascending: false });
 
         if (error) {
@@ -70,7 +73,7 @@ const SurveyNav = () => {
     };
 
     fetchSurveys();
-  }, [userId]);
+  }, [userId, selectedSpace]);
 
   const handleToggle = async (surveyId, currentStatus) => {
     setUpdatingSurvey(surveyId);
