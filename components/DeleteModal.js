@@ -11,7 +11,7 @@ const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 const DeleteModal = ({ object, objectID, objectTitle, onDeleteSuccess }) => {
   const [loading, setLoading] = useState(false);
   const modalRef = useRef(null);
-  const table = object === "review" ? "reviews" : "surveys";
+  const table = object === "review" ? "reviews" : object === "space" ? "spaces" : "surveys";
 
   const closeModal = () => modalRef.current.close();
 
@@ -19,39 +19,37 @@ const DeleteModal = ({ object, objectID, objectTitle, onDeleteSuccess }) => {
     setLoading(true);
 
     if (object === "survey") {
-      const { error: reviewsError } = await supabase
-        .from("reviews")
-        .delete()
-        .eq("survey", objectID);
+      const { error } = await supabase.rpc("delete_survey_and_reviews", {
+        survey_id_to_delete: objectID,
+      });
 
-      if (reviewsError) {
-        toast.error(
-          `Failed to delete survey's reviews: ${reviewsError.message}`
-        );
-        setLoading(false);
-        closeModal();
-        return;
+      if (error) {
+        console.error(`Error deleting ${object}:`, error);
+        toast.error(`Failed to delete ${capitalize(object)}: ${error.message}`);
+      } else {
+        toast.success(`${capitalize(object)} deleted successfully`);
+        onDeleteSuccess(objectID);
       }
-    }
-
-    const { data, error } = await supabase
-      .from(table)
-      .delete()
-      .eq("id", objectID)
-      .select();
-
-    if (error) {
-      console.error(`Error deleting ${object}:`, error);
-      toast.error(`Failed to delete ${capitalize(object)}: ${error.message}`);
-    } else if (data?.length > 0) {
-      toast.success(`${capitalize(object)} deleted successfully`);
-      onDeleteSuccess(objectID);
     } else {
-      toast.error(
-        `Failed to delete ${capitalize(
-          object
-        )}. You might not have permission.`
-      );
+      const { data, error } = await supabase
+        .from(table)
+        .delete()
+        .eq("id", objectID)
+        .select();
+
+      if (error) {
+        console.error(`Error deleting ${object}:`, error);
+        toast.error(`Failed to delete ${capitalize(object)}: ${error.message}`);
+      } else if (data?.length > 0) {
+        toast.success(`${capitalize(object)} deleted successfully`);
+        onDeleteSuccess(objectID);
+      } else {
+        toast.error(
+          `Failed to delete ${capitalize(
+            object
+          )}. You might not have permission.`
+        );
+      }
     }
 
     setLoading(false);

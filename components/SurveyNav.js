@@ -22,7 +22,10 @@ const SurveyNav = () => {
   const [updatingSurvey, setUpdatingSurvey] = useState(null);
   const [deletingSurvey, setDeletingSurvey] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
-  const { selectedSpace } = useSpace();
+  const { selectedSpace, addSpace, loading: spacesLoading } = useSpace();
+  const [spaceName, setSpaceName] = useState("");
+  const [spaceDomain, setSpaceDomain] = useState("");
+  const [isCreatingSpace, setIsCreatingSpace] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -39,8 +42,37 @@ const SurveyNav = () => {
     getUser();
   }, []);
 
+  const handleCreateSpace = async (e) => {
+    e.preventDefault();
+    if (!spaceName.trim()) {
+      toast.error("Space name cannot be empty.");
+      return;
+    }
+    if (!spaceDomain.trim()) {
+      toast.error("Domain cannot be empty.");
+      return;
+    }
+    setIsCreatingSpace(true);
+    try {
+      await addSpace(spaceName, spaceDomain);
+      setSpaceName('');
+      setSpaceDomain('');
+      toast.success("Space created successfully!");
+      // The context will handle re-fetching and re-rendering.
+    } catch (error) {
+      toast.error("Failed to create space.");
+      console.error("Error creating space:", error);
+    } finally {
+      setIsCreatingSpace(false);
+    }
+  };
+
   useEffect(() => {
-    if (!userId || !selectedSpace) return;
+    if (!userId || !selectedSpace) {
+      setSurveys([]);
+      setLoading(false);
+      return;
+    }
 
     const fetchSurveys = async () => {
       setLoading(true);
@@ -167,6 +199,59 @@ const SurveyNav = () => {
         : new Date(b.created_at) - new Date(a.created_at);
     });
   };
+
+  if (spacesLoading) {
+    return (
+      <div className="flex justify-center items-center mt-5">
+        <span className="loading loading-spinner loading-md"></span>
+      </div>
+    );
+  }
+
+  if (!selectedSpace) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 px-4 text-center border border-base-content/5 bg-base-100 rounded-box">
+        <div className="mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto text-primary" width="64" height="64" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M9 11l-4 4l-1.5 -1.5" />
+                <path d="M14 4l-4 4l-1.5 -1.5" />
+                <path d="M20 11l-4 4l-1.5 -1.5" />
+                <path d="M9 21l-4 -4" />
+                <path d="M14 11l-4 4" />
+                <path d="M20 21l-4 -4" />
+            </svg>
+        </div>
+        <h3 className="text-xl font-semibold mb-2">No spaces yet</h3>
+        <p className="text-base-content/70 mb-6 max-w-md">Create your first space to organize your surveys.</p>
+        <form onSubmit={handleCreateSpace} className="flex flex-col items-center gap-4 w-full max-w-xs">
+          <input
+            type="text"
+            value={spaceName}
+            onChange={(e) => setSpaceName(e.target.value)}
+            placeholder="Your new space name"
+            className="input input-bordered w-full"
+            disabled={isCreatingSpace}
+          />
+          <input
+            type="text"
+            value={spaceDomain}
+            onChange={(e) => setSpaceDomain(e.target.value)}
+            placeholder="https://your-domain.com"
+            className="input input-bordered w-full"
+            disabled={isCreatingSpace}
+          />
+          <button type="submit" className="btn btn-primary w-full" disabled={isCreatingSpace}>
+            {isCreatingSpace ? (
+              <span className="loading loading-spinner"></span>
+            ) : (
+              "Create your first space"
+            )}
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

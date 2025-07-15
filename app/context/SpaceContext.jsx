@@ -25,7 +25,9 @@ export const SpaceProvider = ({ children }) => {
         } else {
           setSpaces(userSpaces);
           if (userSpaces.length > 0) {
-            setSelectedSpace(userSpaces[0]);
+            const lastSelectedSpaceId = localStorage.getItem('selectedSpaceId');
+            const lastSelected = userSpaces.find(s => s.id === lastSelectedSpaceId);
+            setSelectedSpace(lastSelected || userSpaces[0]);
           }
         }
       }
@@ -35,14 +37,37 @@ export const SpaceProvider = ({ children }) => {
     fetchSpaces();
   }, [supabase]);
 
-  const addSpace = (space) => {
-    setSpaces(prevSpaces => [...prevSpaces, space]);
+  const addSpace = async (name, domain) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("User not found");
+
+    const { data: newSpace, error } = await supabase
+      .from('spaces')
+      .insert([
+        { organization_name: name, organization_url: domain, profile_id: user.id }
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error creating space:', error);
+      throw error;
+    }
+
+    setSpaces(prevSpaces => [...prevSpaces, newSpace]);
+    setSelectedSpace(newSpace);
+    return newSpace;
+  };
+
+  const switchSpace = (space) => {
+    setSelectedSpace(space);
+    localStorage.setItem('selectedSpaceId', space.id);
   };
   
   const value = {
     spaces,
     selectedSpace,
-    setSelectedSpace,
+    setSelectedSpace: switchSpace,
     loading,
     addSpace
   };
