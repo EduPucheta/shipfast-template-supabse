@@ -5,6 +5,8 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Pencil } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import DeleteModal from '@/components/DeleteModal';
+import { Crisp } from 'crisp-sdk-web';
+import config from '@/config';
 
 export default function ConfigurationPage() {
   const [isCopied, setIsCopied] = useState(false);
@@ -15,6 +17,18 @@ export default function ConfigurationPage() {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const supabase = createClientComponentClient();
+
+  const handleSupportClick = () => {
+    if (config.crisp?.id) {
+      Crisp.chat.show();
+      Crisp.chat.open();
+    } else if (config.mailgun?.supportEmail) {
+      window.open(
+        `mailto:${config.mailgun.supportEmail}?subject=Need help with ${config.appName}`,
+        '_blank'
+      );
+    }
+  };
 
   const trackingCode = `<script src="https://shipfast-template-supabse-k6pc.vercel.app/widget.js"></script>`;
 
@@ -104,6 +118,12 @@ export default function ConfigurationPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Configuration</h1>
+        <button onClick={handleSupportClick} className="btn btn-sm">
+          💬 Support
+        </button>
+      </div>
       <div className="grid gap-6">
         {/* Setup Instructions */}
         <div className="p-6">
