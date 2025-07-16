@@ -9,7 +9,6 @@ const supabase = createClientComponentClient();
 export default function WidgetPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeSurveyId, setActiveSurveyId] = useState(null);
-  const [userId, setUserId] = useState(null);
   const [pageUrl, setPageUrl] = useState(null);
   const [browser, setBrowser] = useState(null);
   const [parentOrigin, setParentOrigin] = useState('*');
@@ -31,34 +30,12 @@ export default function WidgetPage() {
     if (browserInfo) setBrowser(browserInfo);
     if (origin) setParentOrigin(origin);
 
-    const getUser = async () => {
-      try {
-        const { data } = await supabase.auth.getUser();
-        if (data?.user) {
-          setUserId(data.user.id);
-        } else {
-          setError("No authenticated user found");
-        }
-      } catch (err) {
-        console.error("Error getting user:", err);
-        setError("Failed to authenticate user");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getUser();
-  }, []);
-
-  useEffect(() => {
-    if (!userId) return;
-
+    // Fetch active survey without authentication
     const fetchActiveSurvey = async () => {
       try {
         const { data, error } = await supabase
           .from("surveys")
           .select("id")
-          .eq("user_id", userId)
           .eq("is_active", true)
           .order("created_at", { ascending: false })
           .limit(1)
@@ -74,11 +51,13 @@ export default function WidgetPage() {
       } catch (err) {
         console.error("Error in fetchActiveSurvey:", err);
         setError("Failed to load survey");
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchActiveSurvey();
-  }, [userId]);
+  }, []);
 
   // Notify parent when widget is ready
   useEffect(() => {
