@@ -5,7 +5,7 @@ const config = {
   appDescription:
     "Survey analysis, AI boosted",
   // REQUIRED (no https://, not trialing slash at the end, just the naked domain)
-  domainName: "feedbackr.com",
+  domainName: "feedbackito.com",
   crisp: {
     // Crisp website ID. IF YOU DON'T USE CRISP: just remove this => Then add a support email in this config file (mailgun.supportEmail) otherwise customer support won't work.
     id: "04fa9fd0-49d0-4e4a-a417-f5091610da6f",
