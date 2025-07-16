@@ -1,6 +1,6 @@
 const config = { 
   // REQUIRED
-  appName: "Feedbackr",
+  appName: "Feedbackito",
   // REQUIRED: a short description of your app for SEO tags (can be overwritten)
   appDescription:
     "Survey analysis, AI boosted",

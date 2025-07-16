@@ -6,7 +6,7 @@ export const EmailTemplate = ({
   <div style={{ fontFamily: 'system-ui, -apple-system, sans-serif', maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
     <div style={{ textAlign: 'center', marginBottom: '30px' }}>
       <h1 style={{ color: '#1a1a1a', fontSize: '24px', fontWeight: 'bold', marginBottom: '10px' }}>
-        Welcome to Feedbackr, {firstName}! 🎉
+        Welcome to Feedbackito, {firstName}! 🎉
       </h1>
       <p style={{ color: '#4a4a4a', fontSize: '16px', lineHeight: '1.5' }}>
         We&apos;re excited to have you on board and can&apos;t wait to help you gather valuable insights through surveys.
@@ -45,10 +45,10 @@ export const EmailTemplate = ({
     <div style={{ textAlign: 'center', padding: '20px 0', borderTop: '1px solid #eaeaea' }}>
       <p style={{ color: '#666666', fontSize: '14px', marginBottom: '10px' }}>
         Best regards,<br />
-        The Feedbackr Team
+        The Feedbackito Team
       </p>
       <p style={{ color: '#999999', fontSize: '12px' }}>
-        © {new Date().getFullYear()} Feedbackr. All rights reserved.
+        © {new Date().getFullYear()} Feedbackito. All rights reserved.
       </p>
     </div>
   </div>
