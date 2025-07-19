@@ -1,5 +1,3 @@
-import Image from "next/image";
-import TestimonialsAvatars from "./TestimonialsAvatars";
 import config from "@/config";
 
 const Hero = () => {

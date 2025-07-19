@@ -6,7 +6,13 @@
     "es6": true
   },
   "rules": {
-    // Your specific rules.
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "prefer-const": "error",
+    "no-var": "error",
+    "eqeqeq": ["error", "always"],
+    "no-duplicate-imports": "error",
+    "no-unreachable": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

@@ -29,8 +29,8 @@ export async function POST(req) {
     return NextResponse.json({ error: err.message }, { status: 400 });
   }
 
-  data = event.data;
-  eventType = event.type;
+  const data = event.data;
+  const eventType = event.type;
 
   // Create a private supabase client using the secret service_role API key
   const supabase = new SupabaseClient(

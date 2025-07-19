@@ -15,13 +15,15 @@ const Table = ({id}) => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
 
-      console.log(data.user);
+      if (process.env.NODE_ENV === 'development') {
+        console.log(data.user);
+      }
      
       setUserId(data.user.id);
     };
 
     getUser();
-  }, [supabase]);
+  }, []);
 
   useEffect(() => {
    
@@ -48,7 +50,7 @@ const Table = ({id}) => {
     };
 
     fetchReviews();
-  }, [userId]);
+  }, [userId, id.surveyID, supabase]);
 
   const ratings = reviews.map((review) => review.rating);
   const averageRating = ratings.length === 0 ? "No ratings yet" : (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(2);

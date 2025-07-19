@@ -1,8 +1,5 @@
 export const dynamic = "force-dynamic";
-import TableReviews from "@/components/TableReviews";
 import SurveyNav from "@/components/SurveyNav";
-import MetricSummary from "@/components/MetricSummary";
-import CreateSurvey from "@/components/CreateSurvey";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';

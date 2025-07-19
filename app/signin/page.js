@@ -43,7 +43,9 @@ export default function Login() {
         setIsDisabled(true);
       }
     } catch (error) {
-      console.log(error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error(error);
+      }
     } finally {
       setIsLoading(false);
     }

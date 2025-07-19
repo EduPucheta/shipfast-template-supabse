@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { Zap } from "lucide-react";
 import config from "@/config";
 import SignUpPresale from "@/components/SignUpPresale";
 import TestimonialsAvatars from "@/components/TestimonialsAvatars";
