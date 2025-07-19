@@ -22,16 +22,14 @@ const CrispChat = () => {
   // This is used to get the user data from Supabase Auth (if logged in) => user ID is used to identify users in Crisp
   useEffect(() => {
     const getUser = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+      const { data } = await supabase.auth.getSession();
 
-      if (session) {
-        setData(session.user);
+      if (data.session) {
+        setData(data.session.user);
       }
     };
     getUser();
-  }, []);
+  }, [supabase.auth]);
 
   useEffect(() => {
     if (config?.crisp?.id) {

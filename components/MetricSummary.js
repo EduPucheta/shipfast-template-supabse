@@ -21,7 +21,7 @@ const Table = ({id}) => {
     };
 
     getUser();
-  }, [supabase]);
+  }, []);
 
   useEffect(() => {
    
@@ -48,7 +48,7 @@ const Table = ({id}) => {
     };
 
     fetchReviews();
-  }, [userId]);
+  }, [userId, id.surveyID]);
 
   const ratings = reviews.map((review) => review.rating);
   const averageRating = ratings.length === 0 ? "No ratings yet" : (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(2);
