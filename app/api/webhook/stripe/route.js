@@ -48,8 +48,10 @@ export async function POST(req) {
         const customerId = session?.customer;
         const priceId = session?.line_items?.data[0]?.price.id;
         const userId = data.object.client_reference_id;
-        const plan = configFile.stripe.plans.find((p) => p.priceId === priceId);
-
+        
+        // Find the plan in your config file
+        const plan = configFile.stripe.plans.find((p) => p.priceId === priceId) || configFile.stripe.plans_annual.find((p) => p.priceId === priceId) || configFile.stripe.plans.find(p => p.tiers?.some(t => t.priceId === priceId)) || configFile.stripe.plans_annual.find(p => p.tiers?.some(t => t.priceId === priceId));
+        
         if (!plan) break;
 
         // Update the profile where id equals the userId (in table called 'profiles') and update the customer_id, price_id, and has_access (provisioning)
@@ -59,6 +61,7 @@ export async function POST(req) {
             customer_id: customerId,
             price_id: priceId,
             has_access: true,
+            plan: plan.name,
           })
           .eq("id", userId);
 
@@ -106,6 +109,8 @@ export async function POST(req) {
         const priceId = data.object.lines.data[0].price.id;
         const customerId = data.object.customer;
 
+        const plan = configFile.stripe.plans.find((p) => p.priceId === priceId) || configFile.stripe.plans_annual.find((p) => p.priceId === priceId) || configFile.stripe.plans.find(p => p.tiers?.some(t => t.priceId === priceId)) || configFile.stripe.plans_annual.find(p => p.tiers?.some(t => t.priceId === priceId));
+
         // Find profile where customer_id equals the customerId (in table called 'profiles')
         const { data: profile } = await supabase
           .from("profiles")
@@ -119,7 +124,7 @@ export async function POST(req) {
         // Grant the profile access to your product. It's a boolean in the database, but could be a number of credits, etc...
         await supabase
           .from("profiles")
-          .update({ has_access: true })
+          .update({ has_access: true, plan: plan.name })
           .eq("customer_id", customerId);
 
         break;

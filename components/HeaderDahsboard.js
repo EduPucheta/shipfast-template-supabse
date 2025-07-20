@@ -142,7 +142,7 @@ const HeaderDashboard = () => {
 
           {/* Account Button */}
           <div className="p-4 border-t border-base-300">
-            <ButtonAccount />
+            <ButtonAccount showPlan={true} />
           </div>
         </div>
       </aside>
