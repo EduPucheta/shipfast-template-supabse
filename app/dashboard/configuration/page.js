@@ -30,7 +30,7 @@ export default function ConfigurationPage() {
     }
   };
 
-  const trackingCode = `<script src="https://shipfast-template-supabse-k6pc.vercel.app/widget.js"></script>`;
+  const trackingCode = `<script src="https://feedbackito.com/widget.js"></script>`;
 
   useEffect(() => {
     const fetchSpaces = async () => {

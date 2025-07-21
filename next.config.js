@@ -22,6 +22,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "shipfast-template-supabse-k6pc.vercel.app",
       },
+      {
+        protocol: "https",
+        hostname: "feedbackito.com",
+      }
     ],
   },
   // Suppress hydration warnings in development

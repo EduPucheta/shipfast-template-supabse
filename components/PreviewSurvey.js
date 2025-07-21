@@ -265,7 +265,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
       {/* Feedbackito branding */}
       <div className="mt-4 pt-2 border-t border-base-300">
         <a 
-          href="https://feedbackr-supabase-shipfast-git-mainv2-edupuchetas-projects.vercel.app/" 
+          href="https://feedbackito.com/" 
           target="_blank" 
           rel="noopener noreferrer"
           className="text-xs text-base-content/60 hover:text-base-content/80 transition-colors duration-200 flex items-center justify-center gap-1"
