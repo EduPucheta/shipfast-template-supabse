@@ -475,29 +475,6 @@ const config = {
     ],
     plans_annual: [
       {
-        // REQUIRED — we use this to find the plan in the webhook (for instance if you want to update the user's credits based on the plan)
-        priceId:
-          process.env.NODE_ENV === "development"
-            ? "price_starter_yearly_dev"
-            : "price_starter_yearly_prod",
-        //  REQUIRED - Name of the plan, displayed on the pricing page
-        name: "pricing.plans.free.name",
-        // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
-        description: "pricing.plans.free.description",
-        // The price you want to display, the one user will be charged on Stripe.
-        price: 0,
-        // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
-        
-        features: [
-          {
-            name: "pricing.plans.free.features.0",
-          },
-          { name: "pricing.plans.free.features.1" },
-          { name: "pricing.plans.free.features.2" },
-          { name: "pricing.plans.free.features.3" },
-        ],
-      },
-      {
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
         isFeatured: false,
         priceId:

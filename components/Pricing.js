@@ -13,8 +13,13 @@ const Pricing = ({ lang }) => {
   const [billing, setBilling] = useState("monthly");
   const [tier, setTier] = useState(0);
 
-  const plans =
-    billing === "monthly" ? config.stripe.plans : config.stripe.plans_annual;
+  const freePlan = config.stripe.plans.find((plan) => plan.price === 0);
+  const paidPlans =
+    billing === "monthly"
+      ? config.stripe.plans.filter((plan) => plan.price > 0)
+      : config.stripe.plans_annual.filter((plan) => plan.price > 0);
+
+  const plans = [freePlan, ...paidPlans].filter(Boolean);
 
   return (
     <section className="bg-base-200 overflow-hidden" id="pricing">
