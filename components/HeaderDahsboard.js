@@ -18,10 +18,6 @@ const links = [
     label: "Dashboard"
   },
   {
-    href: "/dashboard/space-analytics",
-    label: "Space Analytics"
-  },
-  {
     href: "/dashboard/configuration",
     label: "Configuration"
   },
