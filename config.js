@@ -45,7 +45,7 @@ const config = {
         priceId:
           process.env.NODE_ENV === "development"
             ? "price_1R2HPPIPjutGjJ5SoNiP5bgq"
-            : "price_1RnQuaIPjutGjJ5SWhDIor7k",
+            : "price_1RnQuaIPjutGjJ5SWhDIor7k",  
         name: "pricing.plans.pro.name",
         description: "pricing.plans.pro.description",
         price: 29,
