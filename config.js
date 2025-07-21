@@ -45,10 +45,10 @@ const config = {
         priceId:
           process.env.NODE_ENV === "development"
             ? "price_1R2HPPIPjutGjJ5SoNiP5bgq"
-            : "price_456",
+            : "price_1RnQuaIPjutGjJ5SWhDIor7k",
         name: "pricing.plans.pro.name",
         description: "pricing.plans.pro.description",
-        price: 49,
+        price: 29,
         priceAnchor: 79,
         features: [
           { name: "pricing.plans.pro.features.0" },
