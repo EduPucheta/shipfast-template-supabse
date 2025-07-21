@@ -16,8 +16,8 @@ const Pricing = ({ lang }) => {
   const freePlan = config.stripe.plans.find((plan) => plan.price === 0);
   const paidPlans =
     billing === "monthly"
-      ? config.stripe.plans.filter((plan) => plan.price > 0)
-      : config.stripe.plans_annual.filter((plan) => plan.price > 0);
+      ? config.stripe.plans.filter((plan) => plan.price !== 0)
+      : config.stripe.plans_annual.filter((plan) => plan.price !== 0);
 
   const plans = [freePlan, ...paidPlans].filter(Boolean);
 
