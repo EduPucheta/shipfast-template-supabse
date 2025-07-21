@@ -12,31 +12,16 @@ import apiClient from "@/libs/api";
 //     This is only available if the customer has a customerId (they made a purchase previously)
 //  2. Logout: sign out and go back to homepage
 // See more at https://shipfa.st/docs/components/buttonAccount
-const ButtonAccount = ({ showPlan }) => {
+const ButtonAccount = () => {
   const supabase = createClientComponentClient();
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
-  const [plan, setPlan] = useState(null);
 
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
+
       setUser(data.user);
-
-      if (data.user) {
-        // Fetch user profile to get the plan
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('plan')
-          .eq('id', data.user.id)
-          .single();
-
-        if (error) {
-          console.error('Error fetching profile:', error);
-        } else {
-          setPlan(profile.plan);
-        }
-      }
     };
 
     getUser();
@@ -84,12 +69,9 @@ const ButtonAccount = ({ showPlan }) => {
               </span>
             )}
 
-            <div className="flex flex-col items-start">
-              <span className="font-semibold">
-                {user?.user_metadata?.name || user?.email?.split("@")[0] || "Account"}
-              </span>
-              {showPlan && plan && <span className="text-xs text-gray-500">{plan}</span>}
-            </div>
+            {user?.user_metadata?.name ||
+              user?.email?.split("@")[0] ||
+              "Account"}
 
             {isLoading ? (
               <span className="loading loading-spinner loading-xs"></span>

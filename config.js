@@ -23,7 +23,6 @@ const config = {
             : "price_456",
         //  REQUIRED - Name of the plan, displayed on the pricing page
         name: "pricing.plans.free.name",
-        planName: "Free",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
         description: "pricing.plans.free.description",
         // The price you want to display, the one user will be charged on Stripe.
@@ -48,7 +47,6 @@ const config = {
             ? "price_1R2HPPIPjutGjJ5SoNiP5bgq"
             : "price_456",
         name: "pricing.plans.pro.name",
-        planName: "Pro",
         description: "pricing.plans.pro.description",
         price: 49,
         priceAnchor: 79,
@@ -68,7 +66,6 @@ const config = {
       {
         isFeatured: false,
         name: "pricing.plans.scale.name",
-        planName: "Scale",
         description: "pricing.plans.scale.description",
         isSlider: true,
         features: [
@@ -485,7 +482,6 @@ const config = {
             : "price_starter_yearly_prod",
         //  REQUIRED - Name of the plan, displayed on the pricing page
         name: "pricing.plans.free.name",
-        planName: "Free",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
         description: "pricing.plans.free.description",
         // The price you want to display, the one user will be charged on Stripe.
@@ -509,7 +505,6 @@ const config = {
             ? "price_advanced_yearly_dev"
             : "price_advanced_yearly_prod",
         name: "pricing.plans.pro.name",
-        planName: "Pro",
         description: "pricing.plans.pro.description",
         price: 49 * 10,
         priceAnchor: 49 * 12,
@@ -526,7 +521,6 @@ const config = {
       {
         isFeatured: false,
         name: "pricing.plans.scale.name",
-        planName: "Scale",
         description: "pricing.plans.scale.description",
         isSlider: true,
         features: [
