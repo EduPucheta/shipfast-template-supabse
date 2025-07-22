@@ -154,7 +154,7 @@ export default function ConfigurationPage() {
 
         {/* Display Spaces */}
         <div className="p-6">
-          <h3 className="text-lg font-medium mb-4">Your Spaces</h3>
+          <h3 className="text-lg font-medium mb-4">Your Websites</h3>
           {isLoading && <p>Loading spaces...</p>}
           {error && <p className="text-error">Error: {error}</p>}
           {!isLoading && !error && spaces.length === 0 && (
