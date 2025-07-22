@@ -49,7 +49,7 @@ const config = {
         name: "pricing.plans.pro.name",
         description: "pricing.plans.pro.description",
         price: 29,
-        priceAnchor: 79,
+        priceAnchor: 49,
         features: [
           { name: "pricing.plans.pro.features.0" },
           {
@@ -480,10 +480,10 @@ const config = {
         priceId:
           process.env.NODE_ENV === "development"
             ? "price_advanced_yearly_dev"
-            : "price_advanced_yearly_prod",
+            : "price_1Rnmz2IPjutGjJ5SX65BYoE0",
         name: "pricing.plans.pro.name",
         description: "pricing.plans.pro.description",
-        price: 49 * 10,
+        price: 29 * 10,
         priceAnchor: 49 * 12,
         features: [
           { name: "pricing.plans.pro.features.0" },
