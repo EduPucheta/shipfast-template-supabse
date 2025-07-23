@@ -80,11 +80,11 @@ const config = {
         tiers: [
           {
             websites: 2,
-            price: 69,
+            price: 48,
             priceId:
               process.env.NODE_ENV === "development"
                 ? "price_dev_scale_monthly_2"
-                : "price_prod_scale_monthly_2",
+                : "price_1Ro7z6IPjutGjJ5S7563eAKt",
           },
           {
             websites: 3,
@@ -92,7 +92,7 @@ const config = {
             priceId:
               process.env.NODE_ENV === "development"
                 ? "price_dev_scale_monthly_3"
-                : "price_prod_scale_monthly_3",
+                : "price_1Ro80GIPjutGjJ5SeNLzrVuW",
           },
           {
             websites: 4,
