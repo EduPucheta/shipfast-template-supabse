@@ -52,6 +52,7 @@
     "noCreditCard": "No credit card required.",
     "billedMonthly": "Billed monthly. Cancel anytime.",
     "billedYearly": "Billed yearly. Cancel anytime.",
+    "getStarted": "Get Started",
     "websiteTooltip": "A website is a project with a unique domain and its subdomains.",
     "plans": {
       "free": {

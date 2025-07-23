@@ -50,8 +50,9 @@
     "upTo": "Hasta",
     "contactUs": "Contáctanos",
     "noCreditCard": "No se requiere tarjeta de crédito.",
-    "billedMonthly": "Facturado mensualmente. Cancela en cualquier momento.",
-    "billedYearly": "Facturado anualmente. Cancela en cualquier momento.",
+    "billedMonthly": "Facturado mensualmente",
+    "billedYearly": "Facturado anualmente",
+    "getStarted": "Empezar",
     "websiteTooltip": "Un sitio web es un proyecto con un dominio único y sus subdominios.",
     "plans": {
       "free": {

@@ -1,6 +1,7 @@
 "use client";
 import config from "@/config";
 import ButtonCheckout from "./ButtonCheckout";
+import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from '@/app/i18n/client';
 
@@ -194,7 +195,14 @@ const Pricing = ({ lang }) => {
                     ))}
                   </ul>
                   <div className="space-y-2">
-                    {plan.tiers[tier].priceId ? (
+                    {plan.tiers[tier].price === 0 ? (
+                      <Link
+                        href={`/${lang}/signin`}
+                        className="btn btn-primary btn-block"
+                      >
+                        {t('pricing.getStarted')}
+                      </Link>
+                    ) : plan.tiers[tier].priceId ? (
                       <ButtonCheckout priceId={plan.tiers[tier].priceId} />
                     ) : (
                       <button className="btn btn-primary btn-block" disabled>
@@ -284,7 +292,16 @@ const Pricing = ({ lang }) => {
                   </ul>
 
                   <div className="space-y-2">
-                    <ButtonCheckout priceId={plan.priceId} />
+                    {plan.price === 0 ? (
+                      <Link
+                        href={`/${lang}/signin`}
+                        className="btn btn-primary btn-block"
+                      >
+                        {t('pricing.getStarted')}
+                      </Link>
+                    ) : (
+                      <ButtonCheckout priceId={plan.priceId} />
+                    )}
 
                     <p className="flex items-center justify-center gap-2 text-sm text-center text-base-content/80 font-medium relative">
                       {plan.price === 0
