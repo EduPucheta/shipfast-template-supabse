@@ -197,7 +197,7 @@ const Pricing = ({ lang }) => {
                   <div className="space-y-2">
                     {plan.tiers[tier].price === 0 ? (
                       <Link
-                        href={`/${lang}/signin`}
+                        href={`/signin`}
                         className="btn btn-primary btn-block"
                       >
                         {t('pricing.getStarted')}
