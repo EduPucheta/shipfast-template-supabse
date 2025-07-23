@@ -25,7 +25,7 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    const { priceId, mode, successUrl, cancelUrl } = body;
+    const { priceId, quantity, mode, successUrl, cancelUrl } = body;
 
     if (!priceId) {
       return NextResponse.json(
@@ -67,6 +67,7 @@ export async function POST(req) {
 
     const stripeSessionURL = await createCheckout({
       priceId,
+      quantity,
       mode,
       successUrl,
       cancelUrl,

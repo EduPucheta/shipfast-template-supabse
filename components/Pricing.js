@@ -12,15 +12,29 @@ import { useTranslation } from '@/app/i18n/client';
 const Pricing = ({ lang }) => {
   const { t } = useTranslation(lang);
   const [billing, setBilling] = useState("monthly");
-  const [tier, setTier] = useState(0);
+  // State for the slider quantity
+  const [quantity, setQuantity] = useState(config.stripe.plans.find(p => p.isSlider)?.slider.min || 2);
 
   const freePlan = config.stripe.plans.find((plan) => plan.price === 0);
   const paidPlans =
     billing === "monthly"
-      ? config.stripe.plans.filter((plan) => plan.price !== 0)
-      : config.stripe.plans_annual.filter((plan) => plan.price !== 0);
+      ? config.stripe.plans.filter((plan) => plan.price !== 0 && !plan.isSlider)
+      : config.stripe.plans_annual.filter((plan) => !plan.isSlider && plan.price !== 0);
 
+  const sliderPlan =
+    billing === "monthly"
+      ? config.stripe.plans.find((plan) => plan.isSlider)
+      : config.stripe.plans_annual.find((plan) => plan.isSlider);
+
+  // The rendering order of the plans is determined by the order in the config file.
+  // The free plan is always first.
   const plans = [freePlan, ...paidPlans].filter(Boolean);
+
+  // If a slider plan exists, it's rendered separately
+  if (sliderPlan) {
+    plans.push(sliderPlan);
+  }
+
 
   return (
     <section className="bg-base-200 overflow-hidden" id="pricing">
@@ -62,10 +76,11 @@ const Pricing = ({ lang }) => {
           </span>
         </div>
 
-        <div className="relative flex justify-center flex-col lg:flex-row items-center lg:items-stretch gap-8">
-          {plans.map((plan) =>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+          {plans.map((plan) => (
             plan.isSlider ? (
-              <div key={plan.name} className="relative w-full max-w-lg">
+              <div key={plan.name} className="relative w-full max-w-lg mx-auto lg:col-span-1">
                 {plan.isFeatured && (
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                     <span
@@ -81,8 +96,8 @@ const Pricing = ({ lang }) => {
                     className={`absolute -inset-[1px] rounded-[9px] bg-primary z-10`}
                   ></div>
                 )}
+                
                 <div className="relative flex flex-col h-full gap-5 lg:gap-8 z-10 bg-base-100 p-8 rounded-lg">
-
                   <div className="flex justify-between items-center gap-4">
                     <div>
                       <p className="text-lg lg:text-xl font-bold">
@@ -96,56 +111,49 @@ const Pricing = ({ lang }) => {
                     </div>
                   </div>
                   
-                  <div className="flex gap-2">
-                    {plan.tiers[tier].priceAnchor && (
-                      <div className="flex flex-col justify-end mb-[4px] text-lg ">
-                        <p className="relative">
-                          <span className="absolute bg-base-content h-[1.5px] inset-x-0 top-[53%]"></span>
-                          <span className="text-base-content/80">
-                            ${plan.tiers[tier].priceAnchor}
-                          </span>
-                        </p>
-                      </div>
-                    )}
-                    <p className={`text-5xl tracking-tight font-extrabold`}>
-                      {typeof plan.tiers[tier].price === "number"
-                        ? "$" + plan.tiers[tier].price
-                        : plan.tiers[tier].price}
-                    </p>
-                    <div className="flex flex-col justify-end mb-[4px]">
+                  <div>
+                    <div className="flex items-baseline gap-2">
+                      <p className={`text-5xl tracking-tight font-extrabold`}>
+                        ${plan.pricing(quantity)}
+                      </p>
                       <p className="text-xs text-base-content/60 uppercase font-semibold">
                         USD
                       </p>
                     </div>
+                    {quantity > 0 && (
+                      <p className="text-sm text-base-content/70">
+                        ${(plan.pricing(quantity) / quantity).toFixed(2)} / {t('pricing.website')}
+                      </p>
+                    )}
                   </div>
-                  <div className="flex justify-center items-center gap-4">
+                  
+                  <div className="w-full">
                     <div className="w-full text-center">
                       <div className="badge badge-neutral mb-2">
-                        {t('pricing.upTo')} {plan.tiers[tier].websites}{" "}
+                        {t('pricing.upTo')} {quantity}{" "}
                         <span>
-                          {plan.tiers[tier].websites === 1
+                          {quantity === 1
                             ? t('pricing.website')
                             : t('pricing.websites')}
                         </span>
                       </div>
                       <input
                         type="range"
-                        min={0}
-                        max={plan.tiers.length - 1}
-                        value={tier}
-                        onChange={(e) => setTier(e.target.value)}
+                        min={plan.slider.min}
+                        max={plan.slider.max}
+                        value={quantity}
+                        onChange={(e) => setQuantity(parseInt(e.target.value))}
                         className="range range-primary"
-                        step={1}
+                        step={plan.slider.step}
                       />
                       <div className="w-full flex justify-between text-xs px-2 mt-2">
-                        <span>{plan.tiers[0].websites}</span>
-                        <span>
-                          {plan.tiers[plan.tiers.length - 1].websites}
-                        </span>
+                        <span>{plan.slider.min}</span>
+                        <span>{plan.slider.max}</span>
                       </div>
                     </div>
                   </div>
-                  <ul className="space-y-2.5 leading-relaxed text-base flex-1">
+                  
+                  <ul className="space-y-4">
                     <li className="flex items-center gap-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -163,18 +171,19 @@ const Pricing = ({ lang }) => {
                       <span>
                         {t('pricing.upTo')}{" "}
                         <span className="font-semibold">
-                         {plan.tiers[tier].websites}
+                         {quantity}
                         </span>{" "}
                         <span
                           className="tooltip underline cursor-pointer"
                           data-tip={t('pricing.websiteTooltip')}
                         >
-                          {plan.tiers[tier].websites === 1
+                          {quantity === 1
                             ? t('pricing.website')
                             : t('pricing.websites')}
                         </span>
                       </span>
                     </li>
+                    
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-center gap-2">
                         <svg
@@ -194,16 +203,10 @@ const Pricing = ({ lang }) => {
                       </li>
                     ))}
                   </ul>
+                  
                   <div className="space-y-2">
-                    {plan.tiers[tier].price === 0 ? (
-                      <Link
-                        href={`/signin`}
-                        className="btn btn-primary btn-block"
-                      >
-                        {t('pricing.getStarted')}
-                      </Link>
-                    ) : plan.tiers[tier].priceId ? (
-                      <ButtonCheckout priceId={plan.tiers[tier].priceId} />
+                    {plan.priceId ? (
+                      <ButtonCheckout priceId={plan.priceId} quantity={quantity} />
                     ) : (
                       <button className="btn btn-primary btn-block" disabled>
                         {t('pricing.contactUs')}
@@ -211,9 +214,7 @@ const Pricing = ({ lang }) => {
                     )}
 
                     <p className="flex items-center justify-center gap-2 text-sm text-center text-base-content/80 font-medium relative">
-                      {plan.tiers[tier].price === 0
-                        ? t('pricing.noCreditCard')
-                        : billing === "monthly"
+                      {billing === "monthly"
                         ? t('pricing.billedMonthly')
                         : t('pricing.billedYearly')}
                     </p>
@@ -221,7 +222,7 @@ const Pricing = ({ lang }) => {
                 </div>
               </div>
             ) : (
-              <div key={plan.priceId} className="relative w-full max-w-lg">
+              <div key={plan.priceId || plan.name} className="relative w-full max-w-lg mx-auto lg:col-span-1">
                 {plan.isFeatured && (
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                     <span
@@ -260,12 +261,12 @@ const Pricing = ({ lang }) => {
                         </p>
                       </div>
                     )}
-                    <p className={`text-5xl tracking-tight font-extrabold`}>
-                      {typeof plan.price === "number" ? "$" + plan.price : plan.price}
-                    </p>
-                    <div className="flex flex-col justify-end mb-[4px]">
+                    <div className="flex items-baseline gap-2">
+                      <p className={`text-5xl tracking-tight font-extrabold`}>
+                        {typeof plan.price === "number" ? "$" + plan.price : plan.price}
+                      </p>
                       <p className="text-xs text-base-content/60 uppercase font-semibold">
-                        USD
+                        USD 
                       </p>
                     </div>
                   </div>
@@ -314,7 +315,7 @@ const Pricing = ({ lang }) => {
                 </div>
               </div>
             )
-          )}
+          ))}
         </div>
       </div>
     </section>

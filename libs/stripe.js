@@ -3,6 +3,7 @@ import Stripe from "stripe";
 // This is used to create a Stripe Checkout for one-time payments. It's usually triggered with the <ButtonCheckout /> component. Webhooks are used to update the user's state in the database.
 export const createCheckout = async ({
   priceId,
+  quantity,
   mode,
   successUrl,
   cancelUrl,
@@ -36,7 +37,7 @@ export const createCheckout = async ({
     line_items: [
       {
         price: priceId,
-        quantity: 1,
+        quantity: quantity || 1,
       },
     ],
     discounts: couponId
