@@ -15,6 +15,8 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 export async function POST(req) {
   const body = await req.text();
 
+  console.log("Stripe webhook received");
+
   const signature = headers().get("stripe-signature");
 
   let data;
@@ -31,6 +33,8 @@ export async function POST(req) {
 
   data = event.data;
   eventType = event.type;
+
+  console.log(`Stripe event type: ${eventType}`);
 
   // Create a private supabase client using the secret service_role API key
   const supabase = new SupabaseClient(
@@ -49,13 +53,19 @@ export async function POST(req) {
         const priceId = session?.line_items?.data[0]?.price.id;
         const userId = data.object.client_reference_id;
         
+        console.log({ customerId, priceId, userId });
+
         // Find the plan in your config file
         const plan = configFile.stripe.plans.find((p) => p.priceId === priceId) || configFile.stripe.plans_annual.find((p) => p.priceId === priceId) || configFile.stripe.plans.find(p => p.tiers?.some(t => t.priceId === priceId)) || configFile.stripe.plans_annual.find(p => p.tiers?.some(t => t.priceId === priceId));
         
-        if (!plan) break;
+        if (!plan) {
+          console.error("Plan not found for priceId:", priceId);
+          break;
+        }
 
+        console.log("Updating profile for user:", userId);
         // Update the profile where id equals the userId (in table called 'profiles') and update the customer_id, price_id, and has_access (provisioning)
-        await supabase
+        const { error } = await supabase
           .from("profiles")
           .update({
             customer_id: customerId,
@@ -64,6 +74,12 @@ export async function POST(req) {
             plan: plan.name,
           })
           .eq("id", userId);
+
+        if (error) {
+          console.error("Supabase error checkout.session.completed:", error);
+        } else {
+          console.log("Profile updated successfully for user:", userId);
+        }
 
         // Extra: send email with user link, product page, etc...
         // try {
@@ -95,10 +111,20 @@ export async function POST(req) {
           data.object.id
         );
 
-        await supabase
+        console.log("Revoking access for customer:", subscription.customer);
+        const { error } = await supabase
           .from("profiles")
           .update({ has_access: false })
           .eq("customer_id", subscription.customer);
+
+        if (error) {
+          console.error("Supabase error customer.subscription.deleted:", error);
+        } else {
+          console.log(
+            "Access revoked successfully for customer:",
+            subscription.customer
+          );
+        }
 
         break;
       }
@@ -112,20 +138,44 @@ export async function POST(req) {
         const plan = configFile.stripe.plans.find((p) => p.priceId === priceId) || configFile.stripe.plans_annual.find((p) => p.priceId === priceId) || configFile.stripe.plans.find(p => p.tiers?.some(t => t.priceId === priceId)) || configFile.stripe.plans_annual.find(p => p.tiers?.some(t => t.priceId === priceId));
 
         // Find profile where customer_id equals the customerId (in table called 'profiles')
-        const { data: profile } = await supabase
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("*")
           .eq("customer_id", customerId)
           .single();
 
+        if (profileError || !profile) {
+          console.error(
+            "Supabase error or profile not found for customer:",
+            customerId,
+            profileError
+          );
+          break;
+        }
+
         // Make sure the invoice is for the same plan (priceId) the user subscribed to
-        if (profile.price_id !== priceId) break;
+        if (profile.price_id !== priceId) {
+          console.log(
+            `Invoice paid for a different plan. User plan: ${profile.price_id}, Invoice plan: ${priceId}`
+          );
+          break;
+        }
 
         // Grant the profile access to your product. It's a boolean in the database, but could be a number of credits, etc...
-        await supabase
+        console.log("Granting access for customer:", customerId);
+        const { error: updateError } = await supabase
           .from("profiles")
           .update({ has_access: true, plan: plan.name })
           .eq("customer_id", customerId);
+
+        if (updateError) {
+          console.error(
+            "Supabase error invoice.paid:",
+            updateError
+          );
+        } else {
+          console.log("Access granted for customer:", customerId);
+        }
 
         break;
       }
