@@ -3,6 +3,7 @@ import PlausibleProvider from "next-plausible";
 import Script from "next/script";
 import { getSEOTags } from "@/libs/seo";
 import ClientLayout from "@/components/LayoutClient";
+import { PostHogProvider } from "@/components/PostHogProvider";
 import config from "@/config";
 import "./globals.css";
 import { SurveyProvider } from "./context/SurveyContext";
@@ -38,19 +39,18 @@ export default function RootLayout({ children }) {
       >
         {config.domainName && (
           <head>
-            
             <PlausibleProvider domain={config.domainName} />
-            
             <Script id="microsoft-clarity" strategy="beforeInteractive">
               {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window, document, "clarity", "script", "rwxrulgbze");`}
             </Script>
-            <Script src="http://localhost:3000/widget.js"></Script> 
-
+            <Script src="http://localhost:3000/widget.js"></Script>
           </head>
         )}
         <body data-theme="emerald">
-          {/* ClientLayout contains all the client wrappers (Crisp chat support, toast messages, tooltips, etc.) */}
-          <ClientLayout lng={lng}>{children}</ClientLayout>
+          <PostHogProvider>
+            {/* ClientLayout contains all the client wrappers (Crisp chat support, toast messages, tooltips, etc.) */}
+            <ClientLayout lng={lng}>{children}</ClientLayout>
+          </PostHogProvider>
         </body>
       </html>
     </SurveyProvider>
