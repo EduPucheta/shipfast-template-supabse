@@ -22,9 +22,9 @@ const config = {
             ? "price_1Niyy5AxyNprDp7iZIqEyD2h"
             : "price_456",
         //  REQUIRED - Name of the plan, displayed on the pricing page
-        name: "pricing.plans.free.name",
+        name: "Free",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
-        description: "pricing.plans.free.description",
+        description: "Free plan",
         // The price you want to display, the one user will be charged on Stripe.
         price: 0,
         // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
@@ -46,8 +46,8 @@ const config = {
           process.env.NODE_ENV === "development"
             ? "price_1R2HPPIPjutGjJ5SoNiP5bgq"
             : "price_1RnQuaIPjutGjJ5SWhDIor7k",  
-        name: "pricing.plans.pro.name",
-        description: "pricing.plans.pro.description",
+        name: "Pro",
+        description: "Pro plan",
         price: 29,
         priceAnchor: 49,
         features: [
@@ -69,8 +69,8 @@ const config = {
           process.env.NODE_ENV === "development"
             ? "price_1Ro8cPIPjutGjJ5SVbVEaOzD" // New single Price ID for tiered pricing
             : "price_1Ro8mvIPjutGjJ5S1Sk27DdQ",
-        name: "pricing.plans.scale.name",
-        description: "pricing.plans.scale.description",
+        name: "Scale",
+        description: "Scale plan",
         isSlider: true,
         // Tiers pricing logic for the frontend to calculate prices dynamically
         // This logic must match the tiered pricing configuration in Stripe
@@ -108,8 +108,8 @@ const config = {
           process.env.NODE_ENV === "development"
             ? "price_advanced_yearly_dev"
             : "price_1Rnmz2IPjutGjJ5SX65BYoE0",
-        name: "pricing.plans.pro.name",
-        description: "pricing.plans.pro.description",
+        name: "Pro",
+        description: "Pro plan",
         price: 29 * 10,
         priceAnchor: 49 * 12,
         features: [
@@ -128,8 +128,8 @@ const config = {
           process.env.NODE_ENV === "development"
             ? "price_dev_scale_tiered_yearly" // New single Price ID for tiered pricing
             : "price_1Ro8wEIPjutGjJ5S9LcbP4Ni",
-        name: "pricing.plans.scale.name",
-        description: "pricing.plans.scale.description",
+        name: "Scale",
+        description: "Scale plan",
         isSlider: true,
         pricing: (quantity) => {
           // Annual pricing logic based on monthly rates with a 10x multiplier ("2 months free")
