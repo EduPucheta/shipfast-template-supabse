@@ -16,12 +16,27 @@ const ButtonAccount = () => {
   const supabase = createClientComponentClient();
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [plan, setPlan] = useState(null);
 
   useEffect(() => {
     const getUser = async () => {
-      const { data } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-      setUser(data.user);
+      setUser(user);
+
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("plan")
+          .eq("id", user.id)
+          .single();
+
+        if (profile) {
+          setPlan(profile.plan);
+        }
+      }
     };
 
     getUser();
@@ -64,14 +79,22 @@ const ButtonAccount = () => {
                 height={24}
               />
             ) : (
-              <span className="w-8 h-8 bg-base-100 flex justify-center items-center rounded-full shrink-0 capitalize">
+              <span className="w-8 h-8 bg-base-100 flex justify-center items-center rounded--full shrink-0 capitalize">
                 {user?.email?.charAt(0)}
               </span>
             )}
 
-            {user?.user_metadata?.name ||
-              user?.email?.split("@")[0] ||
-              "Account"}
+            <div className="flex flex-col items-start leading-tight">
+              <span>
+                {user?.user_metadata?.name ||
+                  user?.email?.split("@")[0] ||
+                  "Account"}
+              </span>
+
+              {plan && (
+                <span className="text-xs opacity-60 ">{plan} plan</span>
+              )}
+            </div>
 
             {isLoading ? (
               <span className="loading loading-spinner loading-xs"></span>

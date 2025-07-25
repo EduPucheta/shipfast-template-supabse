@@ -15,6 +15,8 @@ export default function ConfigurationPage() {
   const [error, setError] = useState(null);
   const [editingSpace, setEditingSpace] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [user, setUser] = useState(null);
+  const [plan, setPlan] = useState(null);
 
   const supabase = createClientComponentClient();
 
@@ -33,7 +35,7 @@ export default function ConfigurationPage() {
   const trackingCode = `<script src="https://feedbackito.com/widget.js"></script>`;
 
   useEffect(() => {
-    const fetchSpaces = async () => {
+    const fetchUserAndSpaces = async () => {
       setIsLoading(true);
       setError(null);
       try {
@@ -41,7 +43,19 @@ export default function ConfigurationPage() {
           data: { user },
         } = await supabase.auth.getUser();
 
+        setUser(user);
+
         if (user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('plan')
+            .eq('id', user.id)
+            .single();
+
+          if (profile) {
+            setPlan(profile.plan);
+          }
+
           const { data, error: spacesError } = await supabase
             .from('spaces')
             .select('*')
@@ -55,14 +69,14 @@ export default function ConfigurationPage() {
           setSpaces([]); // No user logged in
         }
       } catch (err) {
-        console.error('Error fetching spaces:', err);
-        setError(err.message || 'Failed to fetch spaces.');
+        console.error('Error fetching data:', err);
+        setError(err.message || 'Failed to fetch data.');
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchSpaces();
+    fetchUserAndSpaces();
   }, [supabase]);
 
   const handleCopy = async () => {
@@ -125,6 +139,50 @@ export default function ConfigurationPage() {
         </button>
       </div>
       <div className="grid gap-6">
+        {/* Profile Section */}
+        {user && (
+          <div className="p-6">
+            <h3 className="text-lg font-medium mb-4">Profile</h3>
+            <div className="p-4 border rounded-lg bg-base-200">
+              <div className="flex items-center space-x-4">
+                {user.user_metadata?.avatar_url ? (
+                  <img
+                    src={user.user_metadata.avatar_url}
+                    alt={user.user_metadata.name || 'Avatar'}
+                    className="w-12 h-12 rounded-full"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <span className="w-12 h-12 bg-base-300 flex justify-center items-center rounded-full text-xl font-bold">
+                    {user.user_metadata?.name?.charAt(0) ||
+                      user.email?.charAt(0)}
+                  </span>
+                )}
+                <div>
+                  <p className="font-semibold">
+                    {user.user_metadata?.name || 'No name provided'}
+                  </p>
+                  <p className="text-sm text-base-content/80">{user.email}</p>
+                </div>
+              </div>
+              {plan && (
+                <>
+                  <div className="divider"></div>
+                  <div className="flex justify-between items-center">
+                    <p>
+                      <strong>Plan:</strong>{' '}
+                      <span className="font-semibold capitalize">{plan}</span>
+                    </p>
+                    <button className="btn btn-sm btn-primary">
+                      Change plan
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Setup Instructions */}
         <div className="p-6">
           <div className="space-y-4">

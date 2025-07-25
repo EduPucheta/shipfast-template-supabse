@@ -1,16 +1,12 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useSurvey } from "../app/context/SurveyContext";
 import { Smartphone } from "lucide-react";
 import { Monitor } from "lucide-react";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
-
 const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browser }) => {
+  const supabase = createClientComponentClient();
   const { question1, surveyTheme, reactionType } = useSurvey();
   const [surveyData, setSurveyData] = useState(null);
   const [rating, setRating] = useState(null);
@@ -21,6 +17,8 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
   const [showThankYou, setShowThankYou] = useState(false);
   const [previewMode, setPreviewMode] = useState("smartphone");
   const [isMounted, setIsMounted] = useState(false);
+  const [showBranding, setShowBranding] = useState(true);
+  const [profilePlan, setProfilePlan] = useState(null);
 
   // Function to detect device type (only call after mounting)
   const detectDeviceType = () => {
@@ -38,6 +36,44 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
     if (typeof window !== 'undefined' && window.parent !== window) {
       window.parent.postMessage({ type: "widget-ready" }, "*");
     }
+  }, []);
+
+  useEffect(() => {
+    const checkUserPlan = async () => {
+      console.log("Checking user plan...");
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError) {
+        console.error("Error getting user:", userError);
+        return;
+      }
+      if (user) {
+        console.log("User found:", user);
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('plan')
+          .eq('id', user.id)
+          .single();
+        if (profileError) {
+          console.error("Error fetching profile:", profileError);
+        }
+        if (profile) {
+          console.log("Profile found:", profile);
+          setProfilePlan(profile.plan);
+          if (profile.plan !== 'Free') {
+            console.log("User has a paid plan. Hiding branding.");
+            setShowBranding(false);
+          } else {
+            console.log("User has a Free plan. Showing branding.");
+          }
+        } else {
+          console.log("No profile found for the user.");
+        }
+      } else {
+        console.log("No user is logged in.");
+      }
+    };
+
+    checkUserPlan();
   }, []);
 
   useEffect(() => {
@@ -263,16 +299,19 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
       )}
       
       {/* Feedbackito branding */}
-      <div className="mt-4 pt-2 border-t border-base-300">
-        <a 
-          href="https://feedbackito.com/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-xs text-base-content/60 hover:text-base-content/80 transition-colors duration-200 flex items-center justify-center gap-1"
-        >
-          Powered by <span className="font-semibold">Feedbackito</span>
-        </a>
-      </div>
+      {showBranding && (
+        <div className="mt-4 pt-2 border-t border-base-300">
+          <a
+            href="https://feedbackito.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-base-content/60 hover:text-base-content/80 transition-colors duration-200 flex items-center justify-center gap-1"
+          >
+            Powered by <span className="font-semibold">Feedbackito</span>
+          </a>
+        </div>
+      )}
+
     </div>
   );
 
