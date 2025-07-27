@@ -115,6 +115,48 @@
       }
     ]
   },
+  "useCases": {
+    "title": "How Businesses Use Feedbackito",
+    "subtitle": "Discover how different industries leverage AI-powered survey analysis to transform customer feedback into actionable insights",
+    "cta": "Join thousands of businesses improving with customer feedback",
+    "button": "Start Collecting Feedback",
+    "ecommerce": {
+      "title": "E-commerce Store",
+      "description": "Online retailers use Feedbackito to understand customer satisfaction after purchases and improve their shopping experience.",
+      "useCase": ""How was your shopping experience?" - Post-purchase surveys",
+      "metrics": "+32% repeat purchases"
+    },
+    "healthcare": {
+      "title": "Healthcare Clinic",
+      "description": "Medical practices collect patient feedback to improve care quality and streamline appointment processes.",
+      "useCase": ""Rate your visit today" - Patient satisfaction surveys",
+      "metrics": "4.8/5 patient satisfaction"
+    },
+    "education": {
+      "title": "Online Course Platform",
+      "description": "Educators gather student feedback to improve course content and teaching methods.",
+      "useCase": ""How was this lesson?" - Course evaluation forms",
+      "metrics": "95% course completion rate"
+    },
+    "hospitality": {
+      "title": "Hotel Chain",
+      "description": "Hotels use guest feedback to enhance service quality and identify areas for improvement.",
+      "useCase": ""How was your stay?" - Guest experience surveys",
+      "metrics": "+45% positive reviews"
+    },
+    "saas": {
+      "title": "SaaS Company",
+      "description": "Software companies track user satisfaction and feature requests to guide product development.",
+      "useCase": ""What features do you need?" - Product feedback forms",
+      "metrics": "3x faster feature adoption"
+    },
+    "restaurant": {
+      "title": "Restaurant Chain",
+      "description": "Restaurants collect diner feedback to improve menu offerings and service quality.",
+      "useCase": ""Rate your meal" - Dining experience surveys",
+      "metrics": "+28% customer retention"
+    }
+  },
   "cta": {
     "title": "Transform your feedback into actionable insights",
     "subtitle": "Stop spending hours analyzing survey responses manually. Let AI help you understand what your users are really saying."
