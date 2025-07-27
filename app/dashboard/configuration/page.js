@@ -211,7 +211,7 @@ export default function ConfigurationPage() {
                   <ul className="text-sm mt-1 space-y-1">
                     <li>• The same tracking code can be used on multiple websites</li>
                     <li>• Each survey can be configured to appear only on specific domains</li>
-                    <li>• Surveys set to "All websites" will appear wherever the code is installed</li>
+                    <li>• Surveys set to &quot;All websites&quot; will appear wherever the code is installed</li>
                     <li>• Use the Website Targeting settings when creating surveys to control where they appear</li>
                   </ul>
                 </div>

@@ -1,6 +1,6 @@
 "use client";
 import PreviewSurvey from "@/components/PreviewSurvey";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { MessageSquare, Loader2 } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
@@ -126,6 +126,20 @@ export default function WidgetPage() {
     return () => clearTimeout(timer);
   }, [isMounted, isLoading, activeSurveyId, parentOrigin]);
 
+  const handleExpand = useCallback(() => {
+    if (window.parent) {
+      window.parent.postMessage({ type: "expand-widget" }, parentOrigin);
+    }
+    setIsExpanded(true);
+  }, [parentOrigin]);
+
+  const handleCollapse = useCallback(() => {
+    if (window.parent) {
+      window.parent.postMessage({ type: "collapse-widget" }, parentOrigin);
+    }
+    setIsExpanded(false);
+  }, [parentOrigin]);
+
   // Listen for messages from parent
   useEffect(() => {
     if (!isMounted) return;
@@ -140,21 +154,7 @@ export default function WidgetPage() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [isMounted, parentOrigin]);
-
-  const handleExpand = () => {
-    if (window.parent) {
-      window.parent.postMessage({ type: "expand-widget" }, parentOrigin);
-    }
-    setIsExpanded(true);
-  };
-
-  const handleCollapse = () => {
-    if (window.parent) {
-      window.parent.postMessage({ type: "collapse-widget" }, parentOrigin);
-    }
-    setIsExpanded(false);
-  };
+  }, [isMounted, parentOrigin, handleCollapse]);
 
   // Prevent hydration issues by not rendering until mounted
   if (!isMounted) {
