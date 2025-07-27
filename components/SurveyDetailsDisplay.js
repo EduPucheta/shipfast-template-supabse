@@ -44,11 +44,13 @@ export default function SurveyDetailsDisplay({ survey }) {
           )}
         </p>
         <p className="mb-2">
-          <strong>Target Pages:</strong>{" "}
-          {survey.target_urls && survey.target_urls.length > 0 ? (
-            survey.target_urls.join(", ")
+          <strong>Website Targeting:</strong>{" "}
+          {survey.targeting_type === 'all_pages' ? (
+            <span className="text-green-600">All websites (no restrictions)</span>
+          ) : survey.target_urls && survey.target_urls.length > 0 ? (
+            <span className="text-blue-600">{survey.target_urls.join(", ")}</span>
           ) : (
-            <span className="text-gray-500">No target pages specified.</span>
+            <span className="text-gray-500">No specific domains configured.</span>
           )}
         </p>
       </div>

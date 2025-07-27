@@ -190,10 +190,7 @@ export default function ConfigurationPage() {
               <h3 className="text-lg font-medium mb-2">Tracking Code Setup</h3>
               <p className="mb-2">
                 Add the following tracking code to the <code>&lt;head&gt;</code>{' '}
-                section of your site:
-              </p>
-              <p className="mb-2 ">
-                This tracking script supports a single domain only.
+                section of your website:
               </p>
               <div className="relative">
                 <pre className="bg-neutral p-4 rounded-lg">
@@ -205,6 +202,19 @@ export default function ConfigurationPage() {
                 >
                   {isCopied ? 'Copied!' : 'Copy Code'}
                 </button>
+              </div>
+              
+              <div className="alert alert-info mt-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div>
+                  <h4 className="font-bold">How Domain Targeting Works</h4>
+                  <ul className="text-sm mt-1 space-y-1">
+                    <li>• The same tracking code can be used on multiple websites</li>
+                    <li>• Each survey can be configured to appear only on specific domains</li>
+                    <li>• Surveys set to &quot;All websites&quot; will appear wherever the code is installed</li>
+                    <li>• Use the Website Targeting settings when creating surveys to control where they appear</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

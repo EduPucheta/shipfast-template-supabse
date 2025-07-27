@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain-Specific Widget Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .content {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .test-info {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .domain-info {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Domain-Specific Widget Test</h1>
+    
+    <div class="test-info">
+        <h2>🎯 Testing Domain-Based Targeting</h2>
+        <p>This page tests the new domain-specific widget functionality. The widget will only appear if there's an active survey configured for this domain.</p>
+    </div>
+    
+    <div class="domain-info">
+        <h3>📍 Current Domain Information</h3>
+        <p><strong>Current URL:</strong> <code id="current-url"></code></p>
+        <p><strong>Current Domain:</strong> <code id="current-domain"></code></p>
+        <p><strong>Origin:</strong> <code id="current-origin"></code></p>
+    </div>
+
+    <div class="content">
+        <h2>How Domain Targeting Works</h2>
+        <p>The widget system now supports domain-specific targeting:</p>
+        
+        <ul>
+            <li><strong>All websites:</strong> Survey appears on any website with the tracking code</li>
+            <li><strong>Specific domains:</strong> Survey only appears on matching domains/URLs</li>
+        </ul>
+
+        <h3>Domain Matching Examples:</h3>
+        <ul>
+            <li><code>example.com</code> - Matches example.com and all subdomains (www.example.com, shop.example.com, etc.)</li>
+            <li><code>www.example.com</code> - Matches only www.example.com</li>
+            <li><code>https://example.com/shop</code> - Matches the specific page</li>
+            <li><code>localhost</code> - Matches localhost (useful for development)</li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        <h2>Testing Instructions</h2>
+        <ol>
+            <li>Create a survey in the dashboard</li>
+            <li>Choose "Specific websites or domains" for targeting</li>
+            <li>Add the current domain shown above to the target domains list</li>
+            <li>Set the survey as active</li>
+            <li>Refresh this page - the widget should appear</li>
+            <li>Create another survey with a different domain (e.g., "different-domain.com")</li>
+            <li>The second survey should NOT appear on this page</li>
+        </ol>
+    </div>
+
+    <div class="content">
+        <h2>Widget Status</h2>
+        <p id="widget-status">Checking widget status...</p>
+        <p id="error-status"></p>
+    </div>
+
+    <script>
+        // Display current domain information
+        document.getElementById('current-url').textContent = window.location.href;
+        document.getElementById('current-domain').textContent = window.location.hostname;
+        document.getElementById('current-origin').textContent = window.location.origin;
+
+        // Monitor widget loading status
+        let widgetCheckInterval = setInterval(() => {
+            const widgetContainer = document.getElementById('feedback-widget-container');
+            const statusElement = document.getElementById('widget-status');
+            
+            if (window.feedbackWidgetLoaded) {
+                if (widgetContainer) {
+                    statusElement.textContent = '✅ Widget loaded successfully and container created';
+                    statusElement.style.color = 'green';
+                } else {
+                    statusElement.textContent = '⚠️ Widget script loaded but no container found';
+                    statusElement.style.color = 'orange';
+                }
+                clearInterval(widgetCheckInterval);
+            } else {
+                statusElement.textContent = '⏳ Widget script not yet loaded...';
+                statusElement.style.color = 'gray';
+            }
+        }, 500);
+
+        // Listen for widget messages to monitor status
+        window.addEventListener('message', function(event) {
+            const errorElement = document.getElementById('error-status');
+            
+            if (event.data.type === 'widget-ready') {
+                errorElement.textContent = '✅ Widget is ready and survey loaded';
+                errorElement.style.color = 'green';
+            }
+        });
+
+        // Clear status after 10 seconds if no widget loads
+        setTimeout(() => {
+            const statusElement = document.getElementById('widget-status');
+            const errorElement = document.getElementById('error-status');
+            
+            if (!window.feedbackWidgetLoaded) {
+                statusElement.textContent = '❌ Widget failed to load after 10 seconds';
+                statusElement.style.color = 'red';
+                errorElement.textContent = 'This could mean: 1) No active survey exists, 2) No survey is configured for this domain, or 3) There\'s a script loading issue';
+                errorElement.style.color = 'red';
+            }
+            
+            clearInterval(widgetCheckInterval);
+        }, 10000);
+
+        function testCleanup() {
+            if (window.cleanupFeedbackWidget) {
+                window.cleanupFeedbackWidget();
+                console.log('Widget cleanup function called');
+                document.getElementById('widget-status').textContent = '🧹 Widget cleaned up - reload page to test again';
+            } else {
+                console.log('Cleanup function not available');
+            }
+        }
+
+        function reloadWidget() {
+            testCleanup();
+            setTimeout(() => {
+                const script = document.createElement('script');
+                script.src = 'http://localhost:3000/widget.js';
+                document.body.appendChild(script);
+                console.log('Widget reloaded');
+                
+                // Reset status
+                document.getElementById('widget-status').textContent = '🔄 Widget reloaded - checking status...';
+                document.getElementById('error-status').textContent = '';
+            }, 100);
+        }
+    </script>
+
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+        <button onclick="testCleanup()" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-right: 10px;">Test Cleanup</button>
+        <button onclick="reloadWidget()" style="background: #007cba; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Reload Widget</button>
+    </div>
+
+    <!-- Load the widget script -->
+    <script src="http://localhost:3000/widget.js"></script>
+</body>
+</html>

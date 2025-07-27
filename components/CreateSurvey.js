@@ -85,9 +85,9 @@ const CreateSurvey = () => {
         return;
     }
 
-    // Add validation for specific pages if that option is selected
+    // Add validation for specific websites if that option is selected
     if (targetingType === 'specific_pages' && (!targetUrls.length || !targetUrls[0])) {
-        setError("Please specify at least one URL or trigger.");
+        setError("Please specify at least one domain or URL for website targeting.");
         return;
     }
 
@@ -399,9 +399,9 @@ const CreateSurvey = () => {
                 {/* Pages or Events Selection */}
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text font-semibold">Pages or events <span className="text-error">*</span></span>
+                    <span className="label-text font-semibold">Website Targeting <span className="text-error">*</span></span>
                   </label>
-                  <p className="text-sm text-base-content/70 mb-2">Select which pages or events to show this survey on</p>
+                  <p className="text-sm text-base-content/70 mb-2">Choose which websites this survey will appear on</p>
                   <div className="space-y-2">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -411,7 +411,7 @@ const CreateSurvey = () => {
                         checked={targetingType === 'all_pages'}
                         onChange={() => setTargetingType('all_pages')}
                       />
-                      <span>All pages</span>
+                      <span>All websites (no restrictions)</span>
                     </label>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -421,27 +421,24 @@ const CreateSurvey = () => {
                         checked={targetingType === 'specific_pages'}
                         onChange={() => setTargetingType('specific_pages')}
                       />
-                      <span>Specific pages or events</span>
+                      <span>Specific websites or domains</span>
                     </label>
                   </div>
 
                   {targetingType === 'specific_pages' && (
                     <div className="mt-4 space-y-4">
-                      <p className="text-sm font-medium">Show the survey on the following URLs or triggers:</p>
-                      <p className="text-xs text-base-content/70">Fields are case-sensitive and events always take priority over URLs.</p>
+                      <p className="text-sm font-medium">Allow this survey on the following domains/URLs:</p>
+                      <p className="text-xs text-base-content/70">
+                        Enter domains (e.g., example.com), full URLs (e.g., https://example.com/page), or partial matches.
+                        The widget will only appear on matching websites.
+                      </p>
                       
                       {targetUrls.map((url, index) => (
                         <div key={index} className="flex gap-2">
-                          <select className="select select-bordered flex-none w-40">
-                            <option>Simple URL match</option>
-                            <option>Exact URL match</option>
-                            <option>Regular expression</option>
-                            <option>Event trigger</option>
-                          </select>
                           <input
                             type="text"
                             className="input input-bordered flex-1"
-                            placeholder="e.g. https://www.example.com/"
+                            placeholder="e.g., example.com or https://www.example.com/specific-page"
                             value={url}
                             onChange={(e) => {
                               const newUrls = [...targetUrls];
@@ -451,14 +448,16 @@ const CreateSurvey = () => {
                           />
                           {index === targetUrls.length - 1 ? (
                             <button
-                              className="btn btn-primary"
+                              type="button"
+                              className="btn btn-primary btn-sm"
                               onClick={() => setTargetUrls([...targetUrls, ''])}
                             >
-                              Add another
+                              Add domain
                             </button>
                           ) : (
                             <button
-                              className="btn btn-ghost"
+                              type="button"
+                              className="btn btn-ghost btn-sm"
                               onClick={() => {
                                 const newUrls = targetUrls.filter((_, i) => i !== index);
                                 setTargetUrls(newUrls);
@@ -469,6 +468,18 @@ const CreateSurvey = () => {
                           )}
                         </div>
                       ))}
+                      
+                      <div className="alert alert-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div>
+                          <h3 className="font-bold">Targeting Examples:</h3>
+                          <ul className="text-sm mt-1">
+                            <li><code>example.com</code> - Matches example.com and all subdomains</li>
+                            <li><code>www.example.com</code> - Matches only www.example.com</li>
+                            <li><code>https://example.com/shop</code> - Matches specific page</li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>

@@ -1,6 +1,6 @@
 "use client";
 import PreviewSurvey from "@/components/PreviewSurvey";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { MessageSquare, Loader2 } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
@@ -30,23 +30,69 @@ export default function WidgetPage() {
     if (browserInfo) setBrowser(browserInfo);
     if (origin) setParentOrigin(origin);
 
-    // Fetch active survey without authentication
+    // Fetch active survey for the current domain
     const fetchActiveSurvey = async () => {
       try {
+        // Extract domain from pageUrl for domain-based filtering
+        let currentDomain = null;
+        if (url) {
+          try {
+            currentDomain = new URL(url).hostname;
+          } catch (e) {
+            console.warn("Could not parse domain from URL:", url);
+          }
+        }
+
         const { data, error } = await supabase
           .from("surveys")
-          .select("id")
+          .select("id, target_urls, targeting_type")
           .eq("is_active", true)
-          .order("created_at", { ascending: false })
-          .limit(1)
-          .single();
+          .order("created_at", { ascending: false });
 
         if (error) {
-          console.error("Error fetching active survey:", error);
+          console.error("Error fetching active surveys:", error);
           setError("No active survey found");
-        } else if (data) {
-          setActiveSurveyId(data.id);
+          return;
+        }
+
+        // Filter surveys based on domain/URL targeting
+        const matchingSurvey = data?.find(survey => {
+          // If no domain info available, show any survey (fallback behavior)
+          if (!currentDomain) return true;
+          
+          // If survey targets all pages, it matches
+          if (survey.targeting_type === 'all_pages' || !survey.target_urls || survey.target_urls.length === 0) {
+            return true;
+          }
+          
+          // Check if current domain/URL matches any target URLs
+          return survey.target_urls.some(targetUrl => {
+            if (!targetUrl) return false;
+            
+            try {
+              // Handle different URL formats
+              if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) {
+                const targetDomain = new URL(targetUrl).hostname;
+                return currentDomain === targetDomain || currentDomain.endsWith('.' + targetDomain);
+              } else if (targetUrl.includes('.')) {
+                // Treat as domain
+                return currentDomain === targetUrl || currentDomain.endsWith('.' + targetUrl);
+              } else {
+                // Treat as partial match
+                return currentDomain.includes(targetUrl) || url.includes(targetUrl);
+              }
+            } catch (e) {
+              // Fallback to simple string matching
+              return currentDomain.includes(targetUrl) || url.includes(targetUrl);
+            }
+          });
+        });
+
+        if (matchingSurvey) {
+          setActiveSurveyId(matchingSurvey.id);
           setError(null);
+        } else {
+          setError("No survey configured for this website");
         }
       } catch (err) {
         console.error("Error in fetchActiveSurvey:", err);
@@ -80,6 +126,20 @@ export default function WidgetPage() {
     return () => clearTimeout(timer);
   }, [isMounted, isLoading, activeSurveyId, parentOrigin]);
 
+  const handleExpand = useCallback(() => {
+    if (window.parent) {
+      window.parent.postMessage({ type: "expand-widget" }, parentOrigin);
+    }
+    setIsExpanded(true);
+  }, [parentOrigin]);
+
+  const handleCollapse = useCallback(() => {
+    if (window.parent) {
+      window.parent.postMessage({ type: "collapse-widget" }, parentOrigin);
+    }
+    setIsExpanded(false);
+  }, [parentOrigin]);
+
   // Listen for messages from parent
   useEffect(() => {
     if (!isMounted) return;
@@ -94,21 +154,7 @@ export default function WidgetPage() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [isMounted, parentOrigin]);
-
-  const handleExpand = () => {
-    if (window.parent) {
-      window.parent.postMessage({ type: "expand-widget" }, parentOrigin);
-    }
-    setIsExpanded(true);
-  };
-
-  const handleCollapse = () => {
-    if (window.parent) {
-      window.parent.postMessage({ type: "collapse-widget" }, parentOrigin);
-    }
-    setIsExpanded(false);
-  };
+  }, [isMounted, parentOrigin, handleCollapse]);
 
   // Prevent hydration issues by not rendering until mounted
   if (!isMounted) {
