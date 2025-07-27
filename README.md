@@ -34,7 +34,7 @@ P.S.
 
 # Feedback Widget Integration Guide
 
-This guide explains how to integrate the feedback widget into your website.
+This guide explains how to integrate the feedback widget into your website with domain-specific targeting.
 
 ## Installation
 
@@ -44,18 +44,40 @@ This guide explains how to integrate the feedback widget into your website.
 <script src="https://your-domain.com/widget.js"></script>
 ```
 
-2. Replace `YOUR_WIDGET_URL` in the widget.js file with your actual widget URL (e.g., `https://your-domain.com/widget`).
-
-3. Replace `YOUR_DOMAIN` in the widget.js file with your actual domain for security purposes.
+2. Configure your surveys in the dashboard to target specific domains or allow all websites.
 
 ## Features
 
+- **Domain-specific targeting**: Each survey can be configured to appear only on specific websites
 - Floating feedback button in the bottom-right corner
 - Customizable themes
 - Star or heart rating system
 - Optional comment field
 - Mobile-responsive design
 - Secure iframe integration
+
+## Domain Targeting
+
+When creating surveys, you can choose between:
+
+### All Websites (No Restrictions)
+- The survey will appear on any website where the tracking code is installed
+- Useful for global surveys or when you control all the websites
+
+### Specific Websites or Domains
+- Configure the survey to appear only on specific domains or URLs
+- Perfect for targeting different surveys to different websites
+- Supports multiple targeting formats:
+  - `example.com` - Matches example.com and all subdomains
+  - `www.example.com` - Matches only www.example.com
+  - `https://example.com/shop` - Matches specific pages
+  - `localhost` - Useful for development testing
+
+### How Multiple Surveys Work
+- Only one survey will be displayed per domain at a time
+- If multiple surveys match a domain, the most recently created active survey will be shown
+- You can have different surveys for different domains using the same tracking code
+- Example: Survey A for `shop.example.com`, Survey B for `blog.example.com`, Survey C for all other domains
 
 ## Customization
 
