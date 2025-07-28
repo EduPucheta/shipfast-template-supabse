@@ -2,11 +2,24 @@
 
 import Link from "next/link";
 import { Zap } from "lucide-react";
+import { Crisp } from "crisp-sdk-web";
 import config from "@/config";
 import { useTranslation } from "@/app/i18n/client";
 
 const HeroSection = () => {
   const { t } = useTranslation();
+
+  const handleTalkToHuman = () => {
+    if (config.crisp?.id) {
+      Crisp.chat.show();
+      Crisp.chat.open();
+    } else if (config.mailgun?.supportEmail) {
+      window.open(
+        `mailto:${config.mailgun.supportEmail}?subject=Need help with ${config.appName}`,
+        "_blank"
+      );
+    }
+  };
 
   return (
     <div className=" min-h-screen flex items-center px-4 sm:px-6 md:px-8 lg:px-12 bg-base-100">
@@ -35,17 +48,7 @@ const HeroSection = () => {
             </Link>
             <button 
               className="btn btn-outline btn-lg"
-              onClick={() => {
-                if (typeof window !== 'undefined' && window.Crisp) {
-                  window.Crisp.chat.show();
-                  window.Crisp.chat.open();
-                } else if (config.mailgun?.supportEmail) {
-                  window.open(
-                    `mailto:${config.mailgun.supportEmail}?subject=Need help with ${config.appName}`,
-                    "_blank"
-                  );
-                }
-              }}
+              onClick={handleTalkToHuman}
             >
               Talk to a human
             </button>
