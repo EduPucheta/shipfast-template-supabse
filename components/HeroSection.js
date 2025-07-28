@@ -3,28 +3,11 @@
 import Link from "next/link";
 import { Zap } from "lucide-react";
 import config from "@/config";
-import SignUpPresale from "@/components/SignUpPresale";
-import TestimonialsAvatars from "@/components/TestimonialsAvatars";
-import { useState, useEffect } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import ButtonSignin from "@/components/ButtonSignin";
 import { useTranslation } from "@/app/i18n/client";
 
 const HeroSection = () => {
-  const [subscriberCount, setSubscriberCount] = useState("...");
-  const supabase = createClientComponentClient();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    async function fetchSubscriberCount() {
-      const { count } = await supabase
-        .from("presale_subscribers")
-        .select("*", { count: "exact", head: true });
-
-      setSubscriberCount(count || 0);
-    }
-
-    fetchSubscriberCount();
-  }, []);
 
   return (
     <div className=" min-h-screen flex items-center px-4 sm:px-6 md:px-8 lg:px-12 bg-base-100">
@@ -44,14 +27,28 @@ const HeroSection = () => {
             {t('heroSection.subtitle')}
           </p>
 
-
-
-          <SignUpPresale
-            onSubscribeSuccess={() =>
-              setSubscriberCount((prev) => (prev === "..." ? 1 : prev + 1))
-            }
-          />
-          <TestimonialsAvatars subscriberCount={subscriberCount} />
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+            <ButtonSignin 
+              text="Get Started"
+              extraStyle="btn-primary btn-lg"
+            />
+            <button 
+              className="btn btn-outline btn-lg"
+              onClick={() => {
+                if (typeof window !== 'undefined' && window.Crisp) {
+                  window.Crisp.chat.show();
+                  window.Crisp.chat.open();
+                } else if (config.mailgun?.supportEmail) {
+                  window.open(
+                    `mailto:${config.mailgun.supportEmail}?subject=Need help with ${config.appName}`,
+                    "_blank"
+                  );
+                }
+              }}
+            >
+              Talk to a human
+            </button>
+          </div>
         </div>
         <div className="w-full lg:w-2/5 flex justify-center lg:justify-end">
           <video
