@@ -43,7 +43,7 @@ const Step = ({ emoji, text }) => {
 // - Problem Agitation: "Developers spend too much time adding features, get overwhelmed, and quit." (not about ShipFast at all)
 // - Features: "ShipFast has user auth, Stripe, emails all set up for you"
 const Problem = async ({ lang }) => {
-  const cookieValue = cookies().get("i18next")?.value;
+  const cookieValue = (await cookies()).get("i18next")?.value;
   const lng = lang || cookieValue || 'en';
   
   const { t } = await getTranslation(lng);

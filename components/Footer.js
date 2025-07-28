@@ -10,7 +10,7 @@ import { cookies } from "next/headers";
 // The support link is connected to the config.js file. If there's no config.mailgun.supportEmail, the link won't be displayed.
 
 const Footer = async ({ lang }) => {
-  const lng = lang || cookies().get("i18next")?.value || 'en';
+  const lng = lang || (await cookies()).get("i18next")?.value || 'en';
   const { t } = await getTranslation(lng);
   const currentYear = new Date().getFullYear();
 

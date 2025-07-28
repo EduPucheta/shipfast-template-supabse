@@ -4,7 +4,7 @@ import { useTranslation as getTranslation } from "@/app/i18n";
 import { cookies } from "next/headers";
 
 const CTA = async ({ lang }) => {
-  const lng = lang || cookies().get("i18next")?.value || 'en';
+  const lng = lang || (await cookies()).get("i18next")?.value || 'en';
   const { t } = await getTranslation(lng);
 
   return (

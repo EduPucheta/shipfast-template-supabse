@@ -17,7 +17,7 @@ export async function POST(req) {
 
   console.log("Stripe webhook received");
 
-  const signature = headers().get("stripe-signature");
+  const signature = (await headers()).get("stripe-signature");
 
   let data;
   let eventType;

@@ -26,8 +26,8 @@ export const viewport = {
 // You can override them in each page passing params to getSOTags() function.
 export const metadata = getSEOTags();
 
-export default function RootLayout({ children }) {
-  const cookieStore = cookies();
+export default async function RootLayout({ children }) {
+  const cookieStore = await cookies();
   const lng = cookieStore.get('i18next')?.value || 'en';
   const dir = LTR_LANGUAGES.includes(lng) ? 'ltr' : 'rtl';
 

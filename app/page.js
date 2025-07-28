@@ -12,8 +12,8 @@ import FeaturesAccordion from "@/components/FeaturesAccordion";
 import { cookies } from "next/headers";
 
 
-export default function Page() {
-  const lng = cookies().get("i18next")?.value || "en";
+export default async function Page() {
+  const lng = (await cookies()).get("i18next")?.value || "en";
 
   return (
     <>

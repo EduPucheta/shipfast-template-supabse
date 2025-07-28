@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import AskAI from "@/components/AskAI";
 import dayjs from "dayjs"; 
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { toast } from "react-hot-toast";
 import SurveyAnalytics from "@/components/SurveyAnalytics";
 import RecommendedActions from "@/components/RecommendedActions";
@@ -29,7 +29,8 @@ async function getSurvey(id) {
   return data;
 }
 
-export default function SurveyResponses({ params }) {
+export default function SurveyResponses(props) {
+  const params = use(props.params);
   const [survey, setSurvey] = useState(null);
   const [loading, setLoading] = useState(true);
 
