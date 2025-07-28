@@ -1,6 +1,6 @@
 import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
-import { languages, cookieName } from './app/i18n/settings';
+import { i18n, languages, cookieName } from './app/i18n/settings';
 import acceptLanguage from 'accept-language';
 
 acceptLanguage.languages(languages);
@@ -22,7 +22,7 @@ export async function middleware(req) {
     res.headers.set('X-Frame-Options', 'ALLOWALL');
     res.headers.set('Content-Security-Policy', "frame-ancestors *");
   }
-  
+
   const supabase = createMiddlewareClient({ req, res });
   await supabase.auth.getSession();
 
@@ -41,6 +41,11 @@ export async function middleware(req) {
   if (req.cookies.get(cookieName)?.value !== lng) {
     response.cookies.set(cookieName, lng);
   }
+
+  // manejo de internacionalización
+  const pathnameIsMissingLocale = languages.every(
+    (locale) => !req.nextUrl.pathname.startsWith(`/${locale}/`) && req.nextUrl.pathname !== `/${locale}`
+  );
 
   return response;
 }
