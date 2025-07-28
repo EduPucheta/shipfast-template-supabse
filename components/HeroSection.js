@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Zap } from "lucide-react";
 import config from "@/config";
-import ButtonSignin from "@/components/ButtonSignin";
 import { useTranslation } from "@/app/i18n/client";
 
 const HeroSection = () => {
@@ -28,10 +27,12 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
-            <ButtonSignin 
-              text="Get Started"
-              extraStyle="btn-primary btn-lg"
-            />
+            <Link 
+              href="/signin"
+              className="btn btn-primary btn-lg"
+            >
+              Get Started
+            </Link>
             <button 
               className="btn btn-outline btn-lg"
               onClick={() => {
