@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import DeleteModal from '@/components/DeleteModal';
 import { Crisp } from 'crisp-sdk-web';
 import config from '@/config';
+import Image from 'next/image';
 
 export default function ConfigurationPage() {
   const [isCopied, setIsCopied] = useState(false);
@@ -178,9 +179,11 @@ export default function ConfigurationPage() {
             <div className="p-4 border rounded-lg bg-base-200">
               <div className="flex items-center space-x-4">
                 {user.user_metadata?.avatar_url ? (
-                  <img
+                  <Image
                     src={user.user_metadata.avatar_url}
                     alt={user.user_metadata.name || 'Avatar'}
+                    width={48}
+                    height={48}
                     className="w-12 h-12 rounded-full"
                     referrerPolicy="no-referrer"
                   />
@@ -394,7 +397,7 @@ export default function ConfigurationPage() {
                   className="input input-bordered w-full"
                 />
                 <label className="label">
-                  <span className="label-text-alt">Optional: The URL where you'll add the feedback widget</span>
+                  <span className="label-text-alt">Optional: The URL where you&apos;ll add the feedback widget</span>
                 </label>
               </div>
               <div className="modal-action mt-6">
