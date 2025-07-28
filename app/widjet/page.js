@@ -15,34 +15,44 @@ export default function WidgetPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [spaceId, setSpaceId] = useState(null);
 
   // Handle client-side mounting
   useEffect(() => {
     setIsMounted(true);
-    
+
     // Only access browser APIs after mounting
     const params = new URLSearchParams(window.location.search);
-    const url = params.get("pageUrl");
-    const browserInfo = params.get("browser");
-    const origin = params.get("parentOrigin");
+    const url = params.get('pageUrl');
+    const browserInfo = params.get('browser');
+    const origin = params.get('parentOrigin');
+    const spaceIdParam = params.get('space_id');
 
-    if(url) setPageUrl(url);
+    if (url) setPageUrl(url);
     if (browserInfo) setBrowser(browserInfo);
     if (origin) setParentOrigin(origin);
+    if (spaceIdParam) setSpaceId(spaceIdParam);
 
     // Fetch active survey without authentication
     const fetchActiveSurvey = async () => {
+      if (!spaceIdParam) {
+        setError('Space ID is missing');
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const { data, error } = await supabase
-          .from("surveys")
-          .select("id")
-          .eq("is_active", true)
-          .order("created_at", { ascending: false })
+          .from('surveys')
+          .select('id')
+          .eq('is_active', true)
+          .eq('space_id', spaceIdParam)
+          .order('created_at', { ascending: false })
           .limit(1)
           .single();
 
         if (error) {
-          console.error("Error fetching active survey:", error);
+          console.error('Error fetching active survey:', error);
           setError("No active survey found");
         } else if (data) {
           setActiveSurveyId(data.id);

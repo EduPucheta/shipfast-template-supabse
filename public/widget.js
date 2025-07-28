@@ -1,157 +1,44 @@
-(function() {
-  // Prevent multiple widget instances
-  if (window.feedbackWidgetLoaded || document.getElementById('feedback-widget-container')) {
-    return;
-  }
+(function () {
+  const currentScript = document.currentScript;
+  const spaceId = currentScript.src.split('space_id=')[1];
 
-  // Prevent widget from loading on its own page
-  if (window.location.pathname === '/widjet') {
-    return;
-  }
+  // Dynamically determine the base URL based on the current script's source
+  const scriptUrl = new URL(currentScript.src);
+  const baseUrl = `${scriptUrl.protocol}//${scriptUrl.host}`;
 
-  window.feedbackWidgetLoaded = true;
-
-  const scriptTag = document.currentScript;
-  const baseUrl = scriptTag ? new URL(scriptTag.src).origin : 'http://localhost:3000';
-
-  const pageUrl = window.location.href;
-  const browserInfo = window.navigator.userAgent;
-  const parentOrigin = window.location.origin;
-
-  // Create a container for the widget iframe
-  const container = document.createElement('div');
-  container.id = 'feedback-widget-container';
-  container.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 9999;
-    pointer-events: none;
-  `;
-  document.body.appendChild(container);
-
-  // Create a single iframe to host the widget
   const iframe = document.createElement('iframe');
+  const widgetUrl = new URL(`${baseUrl}/widjet`);
   
-  // Initial styles for the collapsed button
-  const initialStyles = {
-    width: '160px',
-    height: '70px',
-    border: 'none',
-    background: 'transparent',
-    pointerEvents: 'none',
-    borderRadius: '0px'
-  };
-  Object.assign(iframe.style, initialStyles);
-
-  iframe.src = `${baseUrl}/widjet?parentOrigin=${encodeURIComponent(parentOrigin)}&pageUrl=${encodeURIComponent(pageUrl)}&browser=${encodeURIComponent(browserInfo)}`;
+  widgetUrl.searchParams.set('pageUrl', window.location.href);
+  widgetUrl.searchParams.set('browser', navigator.userAgent);
+  widgetUrl.searchParams.set('parentOrigin', window.location.origin);
+  widgetUrl.searchParams.set('space_id', spaceId);
   
-  container.appendChild(iframe);
+  iframe.src = widgetUrl.toString();
+  iframe.style.position = 'fixed';
+  iframe.style.bottom = '20px';
+  iframe.style.right = '20px';
+  iframe.style.border = 'none';
+  iframe.style.width = '124px';
+  iframe.style.height = '40px'; 
+  iframe.style.transition = 'height 0.3s ease, width 0.3s ease';
+  iframe.style.zIndex = '9999';
+  iframe.style.borderRadius = '20px';
+  iframe.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
 
-  // Create a backdrop for the expanded view
-  const backdrop = document.createElement('div');
-  backdrop.id = 'feedback-widget-backdrop';
-  Object.assign(backdrop.style, {
-    display: 'none',
-    position: 'fixed',
-    top: '0',
-    left: '0',
-    width: '100%',
-    height: '100%',
-    background: 'rgba(0, 0, 0, 0.5)',
-    zIndex: '9998',
-    pointerEvents: 'none'
-  });
-  
-  // Add click handler to backdrop to close widget
-  backdrop.addEventListener('click', function(e) {
-    if (e.target === backdrop) {
-      iframe.contentWindow.postMessage({ type: 'close-widget' }, baseUrl);
-    }
-  });
-  
-  document.body.appendChild(backdrop);
+  document.body.appendChild(iframe);
 
-  // Store widget state
-  let isExpanded = false;
-  let isReady = false;
-
-  // Handle messages from the iframe
-  window.addEventListener('message', function(event) {
+  window.addEventListener('message', (event) => {
     if (event.origin !== baseUrl) return;
 
-    const { type } = event.data;
-
-    switch (type) {
-      case 'widget-ready':
-        isReady = true;
-        iframe.style.pointerEvents = 'auto';
-        container.style.pointerEvents = 'auto';
-        break;
-
-      case 'expand-widget':
-        if (!isReady) return;
-        
-        isExpanded = true;
-        backdrop.style.display = 'block';
-        backdrop.style.pointerEvents = 'auto';
-        
-        // Move container to center and resize
-        Object.assign(container.style, {
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          bottom: 'auto',
-          right: 'auto'
-        });
-        
-        Object.assign(iframe.style, {
-          width: '450px',
-          height: '380px',
-          borderRadius: '8px',
-         
-        });
-        break;
-
-      case 'collapse-widget':
-        if (!isReady) return;
-        
-        isExpanded = false;
-        backdrop.style.display = 'none';
-        backdrop.style.pointerEvents = 'none';
-        
-        // Reset container position
-        Object.assign(container.style, {
-          top: 'auto',
-          left: 'auto',
-          transform: 'none',
-          bottom: '20px',
-          right: '20px'
-        });
-        
-        Object.assign(iframe.style, {
-          ...initialStyles,
-          pointerEvents: 'auto'
-        });
-        break;
-
-      case 'widget-height-change':
-        if (!isExpanded && event.data.height) {
-          iframe.style.height = event.data.height + 'px';
-        }
-        break;
+    if (event.data.type === 'expand-widget') {
+      iframe.style.width = '350px';
+      iframe.style.height = '366px';
+    } else if (event.data.type === 'collapse-widget') {
+      iframe.style.width = '124px';
+      iframe.style.height = '40px';
+    } else if (event.data.type === 'widget-height-change') {
+      iframe.style.height = `${event.data.height}px`;
     }
-  });
-
-  // Cleanup function for development
-  window.cleanupFeedbackWidget = function() {
-    document.getElementById('feedback-widget-container')?.remove();
-    document.getElementById('feedback-widget-backdrop')?.remove();
-    window.feedbackWidgetLoaded = false;
-  };
-
-  // Handle page unload
-  window.addEventListener('beforeunload', function() {
-    window.cleanupFeedbackWidget();
   });
 })(); 

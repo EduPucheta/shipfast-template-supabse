@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import DeleteModal from '@/components/DeleteModal';
 import { Crisp } from 'crisp-sdk-web';
 import config from '@/config';
+import Image from 'next/image';
 
 export default function ConfigurationPage() {
   const [isCopied, setIsCopied] = useState(false);
@@ -17,6 +18,8 @@ export default function ConfigurationPage() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [user, setUser] = useState(null);
   const [plan, setPlan] = useState(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
 
   const supabase = createClientComponentClient();
 
@@ -31,8 +34,6 @@ export default function ConfigurationPage() {
       );
     }
   };
-
-  const trackingCode = `<script src="https://feedbackito.com/widget.js"></script>`;
 
   useEffect(() => {
     const fetchUserAndSpaces = async () => {
@@ -79,7 +80,8 @@ export default function ConfigurationPage() {
     fetchUserAndSpaces();
   }, [supabase]);
 
-  const handleCopy = async () => {
+  const handleCopy = async (spaceId) => {
+    const trackingCode = `<script src="https://feedbackito.com/widget.js?space_id=${spaceId}"></script>`;
     try {
       await navigator.clipboard.writeText(trackingCode);
       setIsCopied(true);
@@ -130,6 +132,37 @@ export default function ConfigurationPage() {
     setIsUpdating(false);
   };
 
+  const handleCreateSpace = async (e) => {
+    e.preventDefault();
+    if (!user) return;
+    setIsCreating(true);
+
+    const organizationName = e.currentTarget.organization_name.value;
+    const organizationUrl = e.currentTarget.organization_url.value;
+
+    const { data, error: createError } = await supabase
+      .from('spaces')
+      .insert([
+        {
+          organization_name: organizationName,
+          organization_url: organizationUrl,
+          profile_id: user.id,
+        },
+      ])
+      .select()
+      .single();
+
+    if (createError) {
+      console.error('Error creating space:', createError);
+      toast.error(createError.message || 'Failed to create website.');
+    } else {
+      setSpaces((currentSpaces) => [...currentSpaces, data]);
+      toast.success('Website created successfully!');
+      setShowCreateModal(false);
+    }
+    setIsCreating(false);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
@@ -146,9 +179,11 @@ export default function ConfigurationPage() {
             <div className="p-4 border rounded-lg bg-base-200">
               <div className="flex items-center space-x-4">
                 {user.user_metadata?.avatar_url ? (
-                  <img
+                  <Image
                     src={user.user_metadata.avatar_url}
                     alt={user.user_metadata.name || 'Avatar'}
+                    width={48}
+                    height={48}
                     className="w-12 h-12 rounded-full"
                     referrerPolicy="no-referrer"
                   />
@@ -183,36 +218,17 @@ export default function ConfigurationPage() {
           </div>
         )}
 
-        {/* Setup Instructions */}
-        <div className="p-6">
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-medium mb-2">Tracking Code Setup</h3>
-              <p className="mb-2">
-                Add the following tracking code to the <code>&lt;head&gt;</code>{' '}
-                section of your site:
-              </p>
-              <p className="mb-2 ">
-                This tracking script supports a single domain only.
-              </p>
-              <div className="relative">
-                <pre className="bg-neutral p-4 rounded-lg">
-                  <code className="text-base-200">{trackingCode}</code>
-                </pre>
-                <button
-                  onClick={handleCopy}
-                  className="absolute top-2 right-2 btn btn-sm btn-primary"
-                >
-                  {isCopied ? 'Copied!' : 'Copy Code'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Display Spaces */}
         <div className="p-6">
-          <h3 className="text-lg font-medium mb-4">Your Websites</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-medium">Your Websites</h3>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="btn btn-primary btn-sm"
+            >
+              + Create New Website
+            </button>
+          </div>
           {isLoading && <p>Loading spaces...</p>}
           {error && <p className="text-error">Error: {error}</p>}
           {!isLoading && !error && spaces.length === 0 && (
@@ -225,36 +241,58 @@ export default function ConfigurationPage() {
                 {spaces.map((space) => (
                   <li
                     key={space.id}
-                    className="p-4 border rounded-lg bg-base-200 flex justify-between items-center"
+                    className="p-4 border rounded-lg bg-base-200"
                   >
-                    <div>
-                      <h4 className="font-semibold text-md">
-                        {space.organization_name}
-                      </h4>
-                      {space.organization_url && (
-                        <a
-                          href={space.organization_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm   hover:underline"
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-semibold text-md">
+                          {space.organization_name}
+                        </h4>
+                        {space.organization_url && (
+                          <a
+                            href={space.organization_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm   hover:underline"
+                          >
+                            {space.organization_url}
+                          </a>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setEditingSpace(space)}
+                          className="btn btn-ghost btn-sm flex items-center gap-2"
                         >
-                          {space.organization_url}
-                        </a>
-                      )}
+                          <Pencil size={16} /> Edit
+                        </button>
+                        <DeleteModal
+                          object="space"
+                          objectID={space.id}
+                          objectTitle={space.organization_name}
+                          onDeleteSuccess={() => handleDeleteSuccess(space.id)}
+                        />
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => setEditingSpace(space)}
-                        className="btn btn-ghost btn-sm flex items-center gap-2"
-                      >
-                        <Pencil size={16} /> Edit
-                      </button>
-                      <DeleteModal
-                        object="space"
-                        objectID={space.id}
-                        objectTitle={space.organization_name}
-                        onDeleteSuccess={() => handleDeleteSuccess(space.id)}
-                      />
+                    <div className="mt-4">
+                      <p className="text-sm mb-2">
+                        Add the following tracking code to the{' '}
+                        <code>&lt;head&gt;</code> section of your site:
+                      </p>
+                      <p className="text-xs text-base-content/70 mb-2">
+                        This tracking script supports a single domain only.
+                      </p>
+                      <div className="relative">
+                        <pre className="bg-neutral p-4 rounded-lg">
+                          <code className="text-base-200">{`<script src="https://feedbackito.com/widget.js?space_id=${space.id}"></script>`}</code>
+                        </pre>
+                        <button
+                          onClick={() => handleCopy(space.id)}
+                          className="absolute top-2 right-2 btn btn-sm btn-primary"
+                        >
+                          {isCopied ? 'Copied!' : 'Copy Code'}
+                        </button>
+                      </div>
                     </div>
                   </li>
                 ))}
@@ -319,6 +357,71 @@ export default function ConfigurationPage() {
             method="dialog"
             className="modal-backdrop"
             onClick={() => setEditingSpace(null)}
+          >
+            <button>close</button>
+          </form>
+        </dialog>
+      )}
+
+      {showCreateModal && (
+        <dialog className="modal modal-open">
+          <div className="modal-box">
+            <button
+              onClick={() => setShowCreateModal(false)}
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            >
+              ✕
+            </button>
+            <h3 className="font-bold text-lg mb-4">Create New Website</h3>
+            <form onSubmit={handleCreateSpace}>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Website Name</span>
+                </label>
+                <input
+                  type="text"
+                  name="organization_name"
+                  placeholder="e.g., My Awesome Website"
+                  className="input input-bordered w-full"
+                  required
+                />
+              </div>
+              <div className="form-control mt-4">
+                <label className="label">
+                  <span className="label-text">Website URL</span>
+                </label>
+                <input
+                  type="url"
+                  name="organization_url"
+                  placeholder="https://example.com"
+                  className="input input-bordered w-full"
+                />
+                <label className="label">
+                  <span className="label-text-alt">Optional: The URL where you&apos;ll add the feedback widget</span>
+                </label>
+              </div>
+              <div className="modal-action mt-6">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => setShowCreateModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={isCreating}
+                >
+                  {isCreating ? 'Creating...' : 'Create Website'}
+                </button>
+              </div>
+            </form>
+          </div>
+          <form
+            method="dialog"
+            className="modal-backdrop"
+            onClick={() => setShowCreateModal(false)}
           >
             <button>close</button>
           </form>
