@@ -179,7 +179,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
     return (
       <div className="card !bg-base-200 shrink-0 p-4 flex flex-col justify-center items-center gap-4 w-full h-full shadow-lg" suppressHydrationWarning={true}>
         <div className="flex justify-center items-center py-4">
-          <span className="loading loading-spinner loading-md"></span>
+          {/* Loading spinner disabled */}
         </div>
       </div>
     );
@@ -193,7 +193,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
     >
       {loading ? (
         <div className="flex justify-center items-center py-4 ">
-          <span className="loading loading-spinner loading-md"></span>
+          {/* Loading spinner disabled */}
         </div>
       ) : (
         <>
@@ -287,7 +287,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
-                    <span className="loading loading-spinner loading-sm"></span>
+                    "Submit" // Loading spinner disabled
                   ) : (
                     "Submit"
                   )}

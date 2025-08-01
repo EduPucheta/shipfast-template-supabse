@@ -44,7 +44,7 @@ const HeroSection = () => {
               href="/signin"
               className="btn btn-primary btn-lg"
             >
-              Get Started
+              Get started for free
             </Link>
             <button 
               className="btn btn-outline btn-lg"

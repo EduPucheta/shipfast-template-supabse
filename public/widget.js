@@ -15,16 +15,18 @@
   widgetUrl.searchParams.set('space_id', spaceId);
   
   iframe.src = widgetUrl.toString();
+  iframe.scrolling = 'no'; // Disable scrollbars
   iframe.style.position = 'fixed';
   iframe.style.bottom = '20px';
   iframe.style.right = '20px';
   iframe.style.border = 'none';
   iframe.style.width = '124px';
-  iframe.style.height = '40px'; 
+  iframe.style.height = '40px';   
   iframe.style.transition = 'height 0.3s ease, width 0.3s ease';
   iframe.style.zIndex = '9999';
   iframe.style.borderRadius = '20px';
-  iframe.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+ // iframe.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+  iframe.style.overflow = 'hidden'; // Additional CSS to ensure no scrollbars
 
   document.body.appendChild(iframe);
 

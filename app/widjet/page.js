@@ -1,7 +1,7 @@
 "use client";
 import PreviewSurvey from "@/components/PreviewSurvey";
 import { useEffect, useState } from "react";
-import { MessageSquare, Loader2 } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const supabase = createClientComponentClient();
@@ -79,7 +79,7 @@ export default function WidgetPage() {
         window.parent.postMessage({ type: "widget-ready" }, parentOrigin);
         
         // Also send height information for dynamic sizing
-        const height = activeSurveyId ? 60 : 40;
+        const height = activeSurveyId ? 40 : 40;
         window.parent.postMessage({ 
           type: "widget-height-change", 
           height 
@@ -124,22 +124,22 @@ export default function WidgetPage() {
   if (!isMounted) {
     return (
       <div className="bg-transparent w-full h-full flex items-center justify-center" suppressHydrationWarning={true}>
-        <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+        {/* Loader disabled */}
       </div>
     );
   }
 
-  // Show loading state
-  if (isLoading) {
-    return (
-      <div className="bg-transparent w-full h-full flex items-center justify-center" suppressHydrationWarning={true}>
-        <div className="flex items-center gap-2 text-gray-500">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          <span className="text-sm">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+  // Loading state disabled
+  // if (isLoading) {
+  //   return (
+  //     <div className="bg-transparent w-full h-full flex items-center justify-center" suppressHydrationWarning={true}>
+  //       <div className="flex items-center gap-2 text-gray-500">
+  //         <Loader2 className="w-4 h-4 animate-spin" />
+  //         <span className="text-sm">Loading...</span>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // Show error state or hide widget if no survey
   if (error || !activeSurveyId) {
@@ -155,7 +155,7 @@ export default function WidgetPage() {
   return (
     <div className="bg-transparent w-full h-full" suppressHydrationWarning={true}>
       {isExpanded ? (
-        <div className="relative w-full h-full bg-white rounded-lg shadow-lg">
+        <div className="relative w-full h-full bg-white rounded-lg ">
           <button
             onClick={handleCollapse}
             className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 cursor-pointer z-10 p-1 rounded-full hover:bg-gray-100 transition-colors"
