@@ -34,11 +34,8 @@ export default function SurveyDetailsDisplay({ survey }) {
         </p>
         <p className="mb-2">
           <strong>Target Devices:</strong>{" "}
-          {survey.target_devices ? (
-            Object.entries(survey.target_devices)
-              .filter(([, value]) => value)
-              .map(([key]) => key)
-              .join(", ")
+          {survey.survey_devices && survey.survey_devices.length > 0 ? (
+            survey.survey_devices.map(d => d.device_name).join(', ')
           ) : (
             <span className="text-gray-500">No target devices specified.</span>
           )}

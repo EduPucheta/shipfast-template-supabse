@@ -19,7 +19,7 @@ dayjs.extend(relativeTime);
 async function getSurvey(id) {
   const { data, error } = await supabase
     .from("surveys")
-    .select("*")
+    .select("*, survey_devices(device_name), target_urls")
     .eq("id", id)
     .single();
 

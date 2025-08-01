@@ -5,6 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useSurvey } from "../app/context/SurveyContext";
 import { useSpace } from "@/app/context/SpaceContext";
 import { toast } from "react-hot-toast";
+import { useAsync } from 'react-use';
 
 const supabase = createClientComponentClient();
 
@@ -23,8 +24,8 @@ const CreateSurvey = () => {
 
   const [surveyTitle, setSurveyTitle] = useState("");
   const [surveyDescription, setDescription] = useState("");
-  const [loading, setLoading] = useState(false); 
-  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
   const [selectedDevices, setSelectedDevices] = useState({
     desktop: true,
@@ -160,7 +161,6 @@ const CreateSurvey = () => {
                     question1: question1,
                     user_id: userId,
                     space_id: selectedSpace.id,
-                    target_devices: selectedDevices,
                     targeting_type: targetingType,
                     target_urls: targetingType === 'specific_pages' ? targetUrls : null,
                 },
@@ -171,6 +171,27 @@ const CreateSurvey = () => {
         if (insertError) throw insertError;
 
         if (insertData) {
+            const surveyId = insertData.id;
+
+            const selectedDeviceNames = Object.entries(selectedDevices)
+              .filter(([, isSelected]) => isSelected)
+              .map(([deviceName]) => ({
+                survey_id: surveyId,
+                device_name: deviceName,
+              }));
+
+
+            if (selectedDeviceNames.length > 0) {
+              const { error: insertDevicesError } = await supabase
+                .from('survey_devices')
+                .insert(selectedDeviceNames);
+
+              if (insertDevicesError) {
+                console.error('Error inserting survey devices:', insertDevicesError);
+                // Optionally, handle this error, e.g., by deleting the survey or notifying the user
+              }
+            }
+            
             // Reset form fields to defaults (context or initial)
             setSurveyTitle("");
             setDescription("");

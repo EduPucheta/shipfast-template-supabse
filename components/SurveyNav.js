@@ -79,7 +79,7 @@ const SurveyNav = () => {
       try {
         const { data, error } = await supabase
           .from("surveys")
-          .select("survey_title, id, created_at, is_active, reviews(count)")
+          .select("survey_title, id, created_at, is_active, reviews(count), survey_devices(device_name)")
           .eq("user_id", userId)
           .eq("space_id", selectedSpace.id)
           .order("created_at", { ascending: false });

@@ -86,21 +86,22 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
         
         const { data, error } = await supabase
           .from("surveys")
-          .select("question1, survey_theme, reactionType, target_devices, submit_button_text, thank_you_title, thank_you_text")
+          .select(
+            "*, survey_devices(*)"
+          )
           .eq("id", surveyID)
           .eq("is_active", true)
           .single();
 
         console.log('Survey data:', data);
-        console.log('Target devices from survey:', data?.target_devices);
-        
         if (error) {
           console.error("Error fetching survey data:", error);
           setSurveyData(null);
         } else if (data) {
           console.log('Survey data fetched successfully');
           setSurveyData(data);
-          if (!data.target_devices?.[deviceType]) {
+          const allowedDevices = data.survey_devices.map(d => d.device_name);
+          if (!allowedDevices.includes(deviceType)) {
             console.log('Device type is not allowed for this survey, but showing content anyway.');
           }
         } else {
