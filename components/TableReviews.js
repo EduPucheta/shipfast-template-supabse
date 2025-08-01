@@ -348,7 +348,7 @@ const TableReviews = ({ id }) => {
                   <button
                     type="button"
                     className="input input-bordered w-full max-w-xs flex items-center justify-start font-normal"
-                    popovertarget="start-date-popover"
+                    popoverTarget="start-date-popover"
                     style={{ anchorName: "--start-date-anchor" }}
                   >
                     <CalendarDays className="h-4 w-4 mr-2 opacity-70" />
@@ -391,7 +391,7 @@ const TableReviews = ({ id }) => {
                   <button
                     type="button"
                     className="input input-bordered w-full max-w-xs flex items-center justify-start font-normal"
-                    popovertarget="end-date-popover"
+                    popoverTarget="end-date-popover"
                     style={{ anchorName: "--end-date-anchor" }}
                   >
                     <CalendarDays className="h-4 w-4 mr-2 opacity-70" />
@@ -439,7 +439,7 @@ const TableReviews = ({ id }) => {
             <div className="relative">
               <button
                 className="btn btn-ghost"
-                popovertarget="column-select-popover"
+                popoverTarget="column-select-popover"
                 title="Customize Columns"
                 style={{ anchorName: "--column-select-anchor" }}
               >
