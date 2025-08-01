@@ -2,8 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useSurvey } from "../app/context/SurveyContext";
-import { Smartphone } from "lucide-react";
-import { Monitor } from "lucide-react";
+import { Smartphone, Monitor, RefreshCcw } from "lucide-react";
 
 const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browser }) => {
   const supabase = createClientComponentClient();
@@ -124,6 +123,13 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
     }
   }, [showThankYou]);
 
+  const handleReset = useCallback(() => {
+    setRating(null);
+    setReview("");
+    setShowThankYou(false);
+    setError(null);
+  }, []);
+
   const handleRatingChange = useCallback((e) => {
     setRating(e.target.value);
   }, []);
@@ -217,7 +223,6 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
                 {displayReaction === "Stars" && (
                   <div
                     className="rating rating-lg gap-1"
-                    onChange={handleRatingChange}
                     role="radiogroup"
                     aria-label="Rating"
                   >
@@ -229,6 +234,8 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
                         value={value}
                         className="mask mask-star-2"
                         aria-label={`${value} stars`}
+                        checked={rating === value.toString()}
+                        onChange={handleRatingChange}
                       />
                     ))}
                   </div>
@@ -236,7 +243,6 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
                 {displayReaction === "Hearts" && (
                   <div
                     className="rating rating-lg gap-1"
-                    onChange={handleRatingChange}
                   >
                     {[1, 2, 3, 4, 5].map((value) => (
                       <input
@@ -247,6 +253,8 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
                         className={`mask mask-heart bg-${
                           ["red", "orange", "yellow", "lime", "green"][value - 1]
                         }-400`}
+                        checked={rating === value.toString()}
+                        onChange={handleRatingChange}
                       />
                     ))}
                   </div>
@@ -259,6 +267,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
                           type="radio"
                           name="emoji-rating"
                           value={index + 1}
+                          checked={rating === (index + 1).toString()}
                           onChange={handleRatingChange}
                           className="sr-only"
                         />
@@ -333,21 +342,32 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       {showDeviceToggles && (
-        <div role="tablist" className="tabs tabs-box mb-4 tabs-sm">
-          <a
-            role="tab"
-            className={`tab ${previewMode === 'smartphone' ? 'tab-active' : ''}`}
-            onClick={() => setPreviewMode('smartphone')}
-          >
-            <Smartphone className="w-4 h-4" />
-          </a>
-          <a
-            role="tab"
-            className={`tab ${previewMode === 'monitor' ? 'tab-active' : ''}`}
-            onClick={() => setPreviewMode('monitor')}
-          >
-            <Monitor className="w-4 h-4" />
-          </a>
+        <div className="flex items-center gap-2 mb-4">
+          <div role="tablist" className="tabs tabs-box tabs-sm">
+            <a
+              role="tab"
+              className={`tab ${previewMode === 'smartphone' ? 'tab-active' : ''}`}
+              onClick={() => setPreviewMode('smartphone')}
+            >
+              <Smartphone className="w-4 h-4" />
+            </a>
+            <a
+              role="tab"
+              className={`tab ${previewMode === 'monitor' ? 'tab-active' : ''}`}
+              onClick={() => setPreviewMode('monitor')}
+            >
+              <Monitor className="w-4 h-4" />
+            </a>
+          </div>
+          <div className="tooltip" data-tip="Reset widget to initial state">
+            <button
+              className="btn btn-ghost btn-sm"
+              onClick={handleReset}
+              aria-label="Reset widget to initial state"
+            >
+              <RefreshCcw className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       )}
 

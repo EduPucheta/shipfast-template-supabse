@@ -9,6 +9,7 @@ const supabase = createClientComponentClient();
 export default function WidgetPage() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeSurveyId, setActiveSurveyId] = useState(null);
+  const [surveyTheme, setSurveyTheme] = useState("light");
   const [pageUrl, setPageUrl] = useState(null);
   const [browser, setBrowser] = useState(null);
   const [parentOrigin, setParentOrigin] = useState('*');
@@ -44,7 +45,7 @@ export default function WidgetPage() {
       try {
         const { data, error } = await supabase
           .from('surveys')
-          .select('id')
+          .select('id, survey_theme')
           .eq('is_active', true)
           .eq('space_id', spaceIdParam)
           .order('created_at', { ascending: false })
@@ -56,6 +57,7 @@ export default function WidgetPage() {
           setError("No active survey found");
         } else if (data) {
           setActiveSurveyId(data.id);
+          setSurveyTheme(data.survey_theme || "light");
           setError(null);
         }
       } catch (err) {
@@ -153,7 +155,7 @@ export default function WidgetPage() {
   }
 
   return (
-    <div className="bg-transparent w-full h-full" suppressHydrationWarning={true}>
+    <div data-theme={surveyTheme} className="bg-transparent w-full h-full" suppressHydrationWarning={true}>
       {isExpanded ? (
         <div className="relative w-full h-full bg-white rounded-lg ">
           <button
@@ -177,6 +179,7 @@ export default function WidgetPage() {
       ) : (
         <button
           onClick={handleExpand}
+        
           className="btn btn-primary cursor-pointer rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-row items-center gap-2 text-sm"
         >
           <MessageSquare className="w-4 h-4" />
