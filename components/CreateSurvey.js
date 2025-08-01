@@ -18,7 +18,7 @@ const reactionOptions = ["Stars", "Hearts", "Emojis"];
 
 const CreateSurvey = () => {
   // Using defaults from context or initial values
-  const { question1, setQuestion1, surveyTheme, setSurveyTheme, reactionType, setreactionType } = useSurvey();
+  const { question1, setQuestion1, surveyTheme, setSurveyTheme, reactionType, setreactionType, submitButtonText, setSubmitButtonText, thankYouTitle, setThankYouTitle, thankYouText, setThankYouText } = useSurvey();
   const { selectedSpace } = useSpace();
 
   const [surveyTitle, setSurveyTitle] = useState("");
@@ -154,6 +154,9 @@ const CreateSurvey = () => {
                     survey_description: surveyDescription,
                     survey_theme: surveyTheme,
                     reactionType: reactionType,
+                    submit_button_text: submitButtonText,
+                    thank_you_title: thankYouTitle,
+                    thank_you_text: thankYouText,
                     question1: question1,
                     user_id: userId,
                     space_id: selectedSpace.id,
@@ -329,6 +332,48 @@ const CreateSurvey = () => {
                       </label>
                  </div>
               </div>
+              <div className="form-control pt-4">
+                      <label className="label">
+                          <span className="label-text font-semibold">Submit button</span>
+                      </label>
+                      <input
+                        type="text"
+                        className="input input-bordered w-full"
+                        value={submitButtonText}
+                        onChange={(e) => setSubmitButtonText(e.target.value)}
+                      />
+                       <label className="label">
+                          <span className="label-text-alt">The text on the feedback button.</span>
+                      </label>
+                  </div>
+              <div className="form-control pt-4">
+                      <label className="label">
+                          <span className="label-text font-semibold">Thank You Title</span>
+                      </label>
+                      <input
+                        type="text"
+                        className="input input-bordered w-full"
+                        value={thankYouTitle}
+                        onChange={(e) => setThankYouTitle(e.target.value)}
+                      />
+                       <label className="label">
+                          <span className="label-text-alt">The title of the thank you message.</span>
+                      </label>
+                  </div>
+              <div className="form-control pt-4">
+                      <label className="label">
+                          <span className="label-text font-semibold">Thank You Message</span>
+                      </label>
+                      <input
+                        type="text"
+                        className="input input-bordered w-full"
+                        value={thankYouText}
+                        onChange={(e) => setThankYouText(e.target.value)}
+                      />
+                       <label className="label">
+                          <span className="label-text-alt">The body of the thank you message.</span>
+                      </label>
+                  </div>
             </div>
           </div>
 

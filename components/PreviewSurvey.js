@@ -7,7 +7,7 @@ import { Monitor } from "lucide-react";
 
 const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browser }) => {
   const supabase = createClientComponentClient();
-  const { question1, surveyTheme, reactionType } = useSurvey();
+  const { question1, surveyTheme, reactionType, submitButtonText, thankYouTitle, thankYouText } = useSurvey();
   const [surveyData, setSurveyData] = useState(null);
   const [rating, setRating] = useState(null);
   const [review, setReview] = useState("");
@@ -17,8 +17,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
   const [showThankYou, setShowThankYou] = useState(false);
   const [previewMode, setPreviewMode] = useState("smartphone");
   const [isMounted, setIsMounted] = useState(false);
-  const [showBranding, setShowBranding] = useState(true);
-  const [profilePlan, setProfilePlan] = useState(null);
+    const [showBranding, setShowBranding] = useState(true);
 
   // Function to detect device type (only call after mounting)
   const detectDeviceType = () => {
@@ -58,7 +57,6 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
         }
         if (profile) {
           console.log("Profile found:", profile);
-          setProfilePlan(profile.plan);
           if (profile.plan !== 'Free') {
             console.log("User has a paid plan. Hiding branding.");
             setShowBranding(false);
@@ -74,7 +72,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
     };
 
     checkUserPlan();
-  }, []);
+  }, [supabase]);
 
   useEffect(() => {
     if (!isMounted) return;
@@ -89,7 +87,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
         
         const { data, error } = await supabase
           .from("surveys")
-          .select("question1, survey_theme, reactionType, target_devices")
+          .select("question1, survey_theme, reactionType, target_devices, submit_button_text, thank_you_title, thank_you_text")
           .eq("id", surveyID)
           .eq("is_active", true)
           .single();
@@ -115,7 +113,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
     };
 
     fetchSurvey();
-  }, [surveyID, isMounted]);
+  }, [surveyID, isMounted, supabase]);
 
   useEffect(() => {
     if (showThankYou) {
@@ -168,11 +166,14 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
       setShowThankYou(true);
     }
     setIsSubmitting(false);
-  }, [rating, review, surveyID, pageUrl, browser]);
+  }, [rating, review, surveyID, pageUrl, browser, supabase]);
 
   const displayQuestion = isPreview ? question1 : surveyData?.question1;
   const displayTheme = isPreview ? surveyTheme : surveyData?.survey_theme;
   const displayReaction = isPreview ? reactionType : surveyData?.reactionType;
+  const displaySubmitButtonText = isPreview ? submitButtonText : (surveyData?.submit_button_text || "Submit");
+  const displayThankYouTitle = isPreview ? thankYouTitle : (surveyData?.thank_you_title || "Thank You!");
+  const displayThankYouText = isPreview ? thankYouText : (surveyData?.thank_you_text || "Your feedback has been submitted.");
 
   // Prevent hydration issues by not rendering until mounted
   if (!isMounted) {
@@ -204,8 +205,8 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
           )}
           {showThankYou ? (
             <div className="text-center py-4">
-              <h3 className="text-lg font-semibold mb-1">Thank You!</h3>
-              <p>Your feedback has been submitted.</p>
+              <h3 className="text-lg font-semibold mb-1">{displayThankYouTitle}</h3>
+              <p>{displayThankYouText}</p>
             </div>
           ) : (
             <>
@@ -287,9 +288,9 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
-                    "Submit" // Loading spinner disabled
+                    "Submitting..."
                   ) : (
-                    "Submit"
+                    displaySubmitButtonText
                   )}
                 </button>
               </div>

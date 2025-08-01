@@ -8,6 +8,9 @@ export const SurveyProvider = ({ children }) => {
   const [question1, setQuestion1] = useState("How would you rate your experience?");
   const [surveyTheme, setSurveyTheme] = useState("cupcake");
   const [reactionType, setreactionType] = useState("Stars");
+  const [submitButtonText, setSubmitButtonText] = useState("Submit");
+  const [thankYouTitle, setThankYouTitle] = useState("Thank You!");
+  const [thankYouText, setThankYouText] = useState("Your feedback has been submitted.");
 
   return (
     <SurveyContext.Provider
@@ -18,6 +21,12 @@ export const SurveyProvider = ({ children }) => {
         setSurveyTheme,
         reactionType,
         setreactionType,
+        submitButtonText,
+        setSubmitButtonText,
+        thankYouTitle,
+        setThankYouTitle,
+        thankYouText,
+        setThankYouText,
       }}
     >
       {children}
