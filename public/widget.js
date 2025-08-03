@@ -6,6 +6,14 @@
   const scriptUrl = new URL(currentScript.src);
   const baseUrl = `${scriptUrl.protocol}//${scriptUrl.host}`;
 
+  // Detect device type from parent window
+  const detectDeviceType = () => {
+    const width = window.innerWidth;
+    if (width < 768) return 'mobile';
+    if (width < 1024) return 'tablet';
+    return 'desktop';
+  };
+
   const iframe = document.createElement('iframe');
   const widgetUrl = new URL(`${baseUrl}/widjet`);
   
@@ -13,6 +21,7 @@
   widgetUrl.searchParams.set('browser', navigator.userAgent);
   widgetUrl.searchParams.set('parentOrigin', window.location.origin);
   widgetUrl.searchParams.set('space_id', spaceId);
+  widgetUrl.searchParams.set('deviceType', detectDeviceType());
   
   iframe.src = widgetUrl.toString();
   iframe.scrolling = 'no'; // Disable scrollbars

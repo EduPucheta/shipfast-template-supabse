@@ -1,6 +1,6 @@
 "use client";
 import PreviewSurvey from "@/components/PreviewSurvey";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { MessageSquare } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
@@ -16,7 +16,7 @@ export default function WidgetPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
-  const [spaceId, setSpaceId] = useState(null);
+  const [deviceType, setDeviceType] = useState('desktop');
 
   // Handle client-side mounting
   useEffect(() => {
@@ -28,11 +28,12 @@ export default function WidgetPage() {
     const browserInfo = params.get('browser');
     const origin = params.get('parentOrigin');
     const spaceIdParam = params.get('space_id');
+    const deviceTypeParam = params.get('deviceType');
 
     if (url) setPageUrl(url);
     if (browserInfo) setBrowser(browserInfo);
     if (origin) setParentOrigin(origin);
-    if (spaceIdParam) setSpaceId(spaceIdParam);
+    if (deviceTypeParam) setDeviceType(deviceTypeParam);
 
     // Fetch active survey without authentication
     const fetchActiveSurvey = async () => {
@@ -43,22 +44,46 @@ export default function WidgetPage() {
       }
 
       try {
-        const { data, error } = await supabase
+        // Use device type passed from parent window
+        console.log('Widget device type received from parent:', deviceTypeParam || deviceType);
+
+        // First, get all active surveys for this space with their device targets
+        const { data: surveys, error: surveysError } = await supabase
           .from('surveys')
-          .select('id, survey_theme')
+          .select(`
+            id, 
+            survey_theme,
+            created_at,
+            survey_devices(device_name)
+          `)
           .eq('is_active', true)
           .eq('space_id', spaceIdParam)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single();
+          .order('created_at', { ascending: false });
 
-        if (error) {
-          console.error('Error fetching active survey:', error);
+        if (surveysError) {
+          console.error('Error fetching surveys:', surveysError);
           setError("No active survey found");
-        } else if (data) {
-          setActiveSurveyId(data.id);
-          setSurveyTheme(data.survey_theme || "light");
+          setIsLoading(false);
+          return;
+        }
+
+        // Filter surveys that target the current device
+        const currentDevice = deviceTypeParam || deviceType;
+        const compatibleSurveys = surveys?.filter(survey => {
+          const deviceTargets = survey.survey_devices?.map(d => d.device_name) || [];
+          return deviceTargets.includes(currentDevice);
+        }) || [];
+
+        // Get the most recent survey that targets the current device
+        if (compatibleSurveys.length > 0) {
+          const survey = compatibleSurveys[0];
+          console.log('Found compatible survey:', survey.id, 'for device:', currentDevice);
+          setActiveSurveyId(survey.id);
+          setSurveyTheme(survey.survey_theme || "light");
           setError(null);
+        } else {
+          console.log('No surveys found for device type:', currentDevice);
+          setError(`No active survey found for ${currentDevice} devices`);
         }
       } catch (err) {
         console.error("Error in fetchActiveSurvey:", err);
@@ -69,7 +94,22 @@ export default function WidgetPage() {
     };
 
     fetchActiveSurvey();
-  }, []);
+  }, [deviceType]);
+
+  // Define handlers before they're used in useEffect
+  const handleCollapse = useCallback(() => {
+    if (window.parent) {
+      window.parent.postMessage({ type: "collapse-widget" }, parentOrigin);
+    }
+    setIsExpanded(false);
+  }, [parentOrigin]);
+
+  const handleExpand = () => {
+    if (window.parent) {
+      window.parent.postMessage({ type: "expand-widget" }, parentOrigin);
+    }
+    setIsExpanded(true);
+  };
 
   // Notify parent when widget is ready
   useEffect(() => {
@@ -106,21 +146,7 @@ export default function WidgetPage() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [isMounted, parentOrigin]);
-
-  const handleExpand = () => {
-    if (window.parent) {
-      window.parent.postMessage({ type: "expand-widget" }, parentOrigin);
-    }
-    setIsExpanded(true);
-  };
-
-  const handleCollapse = () => {
-    if (window.parent) {
-      window.parent.postMessage({ type: "collapse-widget" }, parentOrigin);
-    }
-    setIsExpanded(false);
-  };
+  }, [isMounted, parentOrigin, handleCollapse]);
 
   // Prevent hydration issues by not rendering until mounted
   if (!isMounted) {
@@ -148,7 +174,7 @@ export default function WidgetPage() {
     return (
       <div className="bg-transparent w-full h-full flex items-center justify-center" suppressHydrationWarning={true}>
         <div className="text-xs text-gray-400 text-center px-2">
-          {error || "No active survey"}
+        
         </div>
       </div>
     );
@@ -173,6 +199,7 @@ export default function WidgetPage() {
               showDeviceToggles={false} 
               pageUrl={pageUrl} 
               browser={browser}
+              deviceType={deviceType}
             />
           </div>
         </div>

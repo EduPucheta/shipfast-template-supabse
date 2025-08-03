@@ -4,7 +4,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useSurvey } from "../app/context/SurveyContext";
 import { Smartphone, Monitor, RefreshCcw } from "lucide-react";
 
-const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browser }) => {
+const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browser, deviceType: propDeviceType }) => {
   const supabase = createClientComponentClient();
   const { question1, surveyTheme, reactionType, submitButtonText, thankYouTitle, thankYouText } = useSurvey();
   const [surveyData, setSurveyData] = useState(null);
@@ -80,9 +80,9 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
       if (surveyID) {
         setLoading(true);
         
-        // Detect device type (safely after mounting)
-        const deviceType = detectDeviceType();
-        console.log('Current device type:', deviceType, 'Window width:', typeof window !== 'undefined' ? window.innerWidth : 'N/A');
+        // Use passed device type or detect if not provided
+        const deviceType = propDeviceType || detectDeviceType();
+        console.log('Preview device type:', deviceType, propDeviceType ? '(from prop)' : '(detected)', 'Window width:', typeof window !== 'undefined' ? window.innerWidth : 'N/A');
         
         const { data, error } = await supabase
           .from("surveys")
@@ -99,10 +99,17 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
           setSurveyData(null);
         } else if (data) {
           console.log('Survey data fetched successfully');
-          setSurveyData(data);
           const allowedDevices = data.survey_devices.map(d => d.device_name);
+          
+          // Check if current device is allowed for this survey
           if (!allowedDevices.includes(deviceType)) {
-            console.log('Device type is not allowed for this survey, but showing content anyway.');
+            console.log(`Device type '${deviceType}' is not allowed for this survey. Allowed devices:`, allowedDevices);
+            setSurveyData(null);
+            setError(`This survey is not available for ${deviceType} devices`);
+          } else {
+            console.log(`Device type '${deviceType}' is allowed for this survey`);
+            setSurveyData(data);
+            setError(null);
           }
         } else {
           console.log('No survey data found.');
@@ -113,7 +120,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
     };
 
     fetchSurvey();
-  }, [surveyID, isMounted, supabase]);
+  }, [surveyID, isMounted, supabase, propDeviceType]);
 
   useEffect(() => {
     if (showThankYou) {
