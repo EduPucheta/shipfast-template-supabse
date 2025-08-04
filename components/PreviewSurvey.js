@@ -169,6 +169,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
         survey: surveyID,
         page: pageUrlToSubmit,
         browser: browserToSubmit,
+        device: propDeviceType,
       }]); 
 
     if (submitError) {
@@ -180,7 +181,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
       setShowThankYou(true);
     }
     setIsSubmitting(false);
-  }, [rating, review, surveyID, pageUrl, browser, supabase]);
+  }, [rating, review, surveyID, pageUrl, browser, supabase, propDeviceType]);
 
   const displayQuestion = isPreview ? question1 : surveyData?.question1;
   const displayTheme = isPreview ? surveyTheme : surveyData?.survey_theme;
