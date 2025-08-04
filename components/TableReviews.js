@@ -18,7 +18,6 @@ const TableReviews = ({ id }) => {
   const [userId, setUserId] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
   const [ratingFilter, setRatingFilter] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
   const [pageFilter, setPageFilter] = useState('');
   const [startDateFilter, setStartDateFilter] = useState('');
   const [endDateFilter, setEndDateFilter] = useState('');
@@ -27,7 +26,6 @@ const TableReviews = ({ id }) => {
     rating: true,
     created_at: true,
     review: true,
-    category: true,
     page: true,
     country: true,
     device: true,
@@ -95,11 +93,6 @@ const TableReviews = ({ id }) => {
       filteredReviews = filteredReviews.filter(review => review.rating === parseInt(ratingFilter));
     }
 
-    // Apply category filter
-    if (categoryFilter) {
-      filteredReviews = filteredReviews.filter(review => review.category === categoryFilter);
-    }
-
     // Apply page filter
     if (pageFilter) {
       filteredReviews = filteredReviews.filter(review => review.page === pageFilter);
@@ -121,7 +114,6 @@ const TableReviews = ({ id }) => {
       const lowercasedKeyword = keywordFilter.toLowerCase();
       filteredReviews = filteredReviews.filter(review =>
         (review.review && review.review.toLowerCase().includes(lowercasedKeyword)) ||
-        (review.category && review.category.toLowerCase().includes(lowercasedKeyword)) ||
         (review.page && review.page.toLowerCase().includes(lowercasedKeyword)) ||
         (review.country && review.country.toLowerCase().includes(lowercasedKeyword)) ||
         (review.device && review.device.toLowerCase().includes(lowercasedKeyword)) ||
@@ -150,12 +142,6 @@ const TableReviews = ({ id }) => {
         return sortConfig.direction === 'asc'
           ? (a.page || '').localeCompare(b.page || '')
           : (b.page || '').localeCompare(a.page || '');
-      }
-      
-      if (sortConfig.key === 'category') {
-        return sortConfig.direction === 'asc'
-          ? (a.category || '').localeCompare(b.category || '')
-          : (b.category || '').localeCompare(a.category || '');
       }
       
       if (sortConfig.key === 'country') {
@@ -195,7 +181,6 @@ const TableReviews = ({ id }) => {
       "Created At",
       "Rating",
       "Review",
-      "Category",
       "Page",
       "Country",
       "Device",
@@ -211,7 +196,6 @@ const TableReviews = ({ id }) => {
           format(new Date(review.created_at), "yyyy-MM-dd HH:mm:ss"),
           review.rating,
           `"${review.review?.replace(/"/g, '""') || ""}"`,
-          `"${review.category?.replace(/"/g, '""') || ""}"`,
           `"${review.page?.replace(/"/g, '""') || ""}"`,
           `"${review.country?.replace(/"/g, '""') || ""}"`,
           `"${review.device?.replace(/"/g, '""') || ""}"`,
@@ -307,18 +291,6 @@ const TableReviews = ({ id }) => {
               >
                 <option value="">All Ratings</option>
                 {[1, 2, 3, 4, 5].map(r => <option key={r} value={r}>{r} Star{r > 1 ? 's' : ''}</option>)}
-              </select>
-            </div>
-            <div>
-              <select 
-                id="category-filter" 
-                className="select select-bordered w-full max-w-xs"
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-              >
-                <option value="">All Categories</option>
-                {/* Assuming categories are dynamic, you might want to populate this from your reviews data */}
-                {[...new Set(reviews.map(r => r.category))].filter(Boolean).map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
             <div>
@@ -498,14 +470,6 @@ const TableReviews = ({ id }) => {
                     Review {sortConfig.key === 'review' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                   </th>
                 )}
-                {visibleColumns.category && (
-                  <th 
-                    className="cursor-pointer hover:bg-base-200"
-                    onClick={() => handleSort('category')}
-                  >
-                    Category {sortConfig.key === 'category' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
-                  </th>
-                )}
                 {visibleColumns.page && (
                   <th 
                     className="cursor-pointer hover:bg-base-200"
@@ -559,15 +523,6 @@ const TableReviews = ({ id }) => {
                       <span className="text-sm whitespace-pre-wrap break-words">
                         {highlightKeyword(review.review, keywordFilter)}
                       </span>
-                    </td>
-                  )}
-                  {visibleColumns.category && (
-                    <td>
-                      <div className="tooltip" data-tip={review.category}>
-                        <span className="text-sm whitespace-pre-wrap break-words">
-                          {highlightKeyword(review.category, keywordFilter)}
-                        </span>
-                      </div>
                     </td>
                   )}
                   {visibleColumns.page && (
