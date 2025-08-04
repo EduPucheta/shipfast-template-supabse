@@ -13,9 +13,8 @@ import { useSpace } from "@/app/context/SpaceContext";
 
 dayjs.extend(relativeTime);
 
-const supabase = createClientComponentClient();
-
 const SurveyNav = () => {
+  const supabase = createClientComponentClient();
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);

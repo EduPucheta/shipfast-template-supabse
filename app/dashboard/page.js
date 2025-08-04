@@ -5,7 +5,8 @@ import MetricSummary from "@/components/MetricSummary";
 import CreateSurvey from "@/components/CreateSurvey";
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from "next/headers";
 import config from "@/config";
 
 
@@ -13,10 +14,7 @@ import config from "@/config";
 // It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
 // See https://shipfa.st/docs/tutorials/private-page
 export default async function Dashboard() {
-  const supabase = createClientComponentClient({
-    supabaseUrl: config.supabase?.url,
-    supabaseKey: config.supabase?.anonKey,
-  });
+  const supabase = createServerComponentClient({ cookies });
 
   const { data: reviews, error: reviewsError } = await supabase
     .from('reviews')

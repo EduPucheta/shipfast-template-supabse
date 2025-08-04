@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Plus } from "lucide-react";
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 import logo from "@/app/icon.png";
 import config from "@/config";
@@ -22,11 +21,6 @@ const links = [
     label: "Configuration"
   },
 ];
-
-const supabase = createClientComponentClient({
-  supabaseUrl: config.supabase?.url,
-  supabaseKey: config.supabase?.anonKey,
-});
 
 const HeaderDashboard = () => {
   const searchParams = useSearchParams();
