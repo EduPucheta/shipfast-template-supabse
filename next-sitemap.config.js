@@ -1,7 +1,30 @@
 module.exports = {
-  // REQUIRED: add your own domain name here (e.g. https://shipfa.st),
   siteUrl: process.env.SITE_URL || "https://feedbackito.com",
   generateRobotsTxt: true,
-  // use this to exclude routes from the sitemap (i.e. a user dashboard). By default, NextJS app router metadata files are excluded (https://nextjs.org/docs/app/api-reference/file-conventions/metadata)
-  exclude: ["/twitter-image.*", "/opengraph-image.*", "/icon.*"],
+  exclude: [
+    '/api/*',
+    '/dashboard/*',
+    '/survey/*',
+    '/widget/*',
+    '/widjet/*',
+    '/signin',
+    '/thankyou',
+    '/roadmap',
+    '*.png',
+    '*.jpg',
+    '*.jpeg',
+    '*.ico',
+    '/apple-icon.png',
+    '/icon.png',
+    '/twitter-image.png',
+    '/opengraph-image.png',
+    '/favicon.ico'
+  ],
+  additionalPaths: async (config) => {
+    return [
+      { loc: '/', changefreq: 'weekly', priority: 1.0 },
+      { loc: '/privacy-policy', changefreq: 'monthly', priority: 0.8 },
+      { loc: '/tos', changefreq: 'monthly', priority: 0.8 },
+    ];
+  },
 };
