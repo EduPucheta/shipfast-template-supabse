@@ -175,7 +175,7 @@ export default function WidgetPage() {
       <div className="bg-transparent w-full h-full flex items-center justify-center" suppressHydrationWarning={true}>
         <div className="text-xs text-gray-400 text-center px-2">
         
-        </div>
+        </div> 
       </div>
     );
   }
