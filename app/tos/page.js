@@ -34,7 +34,7 @@ const TOS = () => {
           className="leading-relaxed whitespace-pre-wrap"
           style={{ fontFamily: "sans-serif" }}
         >
-          {`Last Updated: July 29, 2024
+          {`Last Updated: August 6, 2025
 
 Welcome to Feedbackito!
 

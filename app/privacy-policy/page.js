@@ -34,7 +34,7 @@ const PrivacyPolicy = () => {
           className="leading-relaxed whitespace-pre-wrap"
           style={{ fontFamily: "sans-serif" }}
         >
-          {`Last Updated: July 29, 2024
+          {`Last Updated:  August 6, 2025
 
 Thank you for visiting Feedbackito ("we," "us," or "our"). This Privacy Policy outlines how we collect, use, and protect your personal and non-personal information when you use our website located at https://feedbackito.com (the "Website").
 
