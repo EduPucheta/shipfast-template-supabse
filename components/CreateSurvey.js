@@ -201,11 +201,11 @@ const CreateSurvey = () => {
             // setQuestion1('How would you rate your experience?');
             toast.success(`Survey "${finalSurveyTitle}" created successfully!`);
 
-            // Send email (consider moving this server-side for reliability)
-            fetch("/api/send", { method: "POST" })
-                .then(res => res.ok ? res.json() : Promise.reject(res))
-                .then(data => console.log("Email API response:", data))
-                .catch(err => console.error("Error sending email:", err));
+            // Email notification disabled
+            // fetch("/api/send", { method: "POST" })
+            //     .then(res => res.ok ? res.json() : Promise.reject(res))
+            //     .then(data => console.log("Email API response:", data))
+            //     .catch(err => console.error("Error sending email:", err));
 
         } else {
              setError("Survey creation failed unexpectedly. Please try again.");
