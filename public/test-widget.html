@@ -30,6 +30,17 @@
         .test-button:hover {
             background: #005a8b;
         }
+        .debug-info {
+            background: #e8f4fd;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .debug-info h3 {
+            margin-top: 0;
+            color: #0066cc;
+        }
     </style>
 </head>
 <body>
@@ -46,10 +57,19 @@
             <li>Widget shows the survey form</li>
             <li>Clicking the close button or backdrop collapses the widget</li>
             <li>Widget is responsive and works on different screen sizes</li>
+            <li><strong>NEW:</strong> Country detection and collection</li>
         </ul>
         
         <button class="test-button" onclick="testCleanup()">Test Cleanup Function</button>
         <button class="test-button" onclick="reloadWidget()">Reload Widget</button>
+        <button class="test-button" onclick="testCountryDetection()">Test Country Detection</button>
+    </div>
+
+    <div class="debug-info">
+        <h3>Debug Information</h3>
+        <div id="debug-output">
+            <p>Loading debug information...</p>
+        </div>
     </div>
     
     <div class="content">
@@ -73,14 +93,44 @@
             testCleanup();
             setTimeout(() => {
                 const script = document.createElement('script');
-                script.src = 'http://localhost:3000/widget.js';
+                script.src = 'http://localhost:3000/widget.js?space_id=f2384ae7-ce8b-4a31-adf4-1e4bca8f0604';
                 document.body.appendChild(script);
                 console.log('Widget reloaded');
             }, 100);
         }
+
+        async function testCountryDetection() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                const debugOutput = document.getElementById('debug-output');
+                debugOutput.innerHTML = `
+                    <p><strong>Country Detection Test Results:</strong></p>
+                    <p>Country: ${data.country_name || 'Unknown'}</p>
+                    <p>Country Code: ${data.country || 'Unknown'}</p>
+                    <p>City: ${data.city || 'Unknown'}</p>
+                    <p>Region: ${data.region || 'Unknown'}</p>
+                    <p>IP: ${data.ip || 'Unknown'}</p>
+                    <p><em>This information will be passed to the widget and stored with feedback submissions.</em></p>
+                `;
+                console.log('Country detection test results:', data);
+            } catch (error) {
+                console.error('Error testing country detection:', error);
+                document.getElementById('debug-output').innerHTML = `
+                    <p><strong>Country Detection Test Failed:</strong></p>
+                    <p>Error: ${error.message}</p>
+                    <p><em>The widget will use 'Unknown' as the country value.</em></p>
+                `;
+            }
+        }
+
+        // Run country detection test on page load
+        window.addEventListener('load', () => {
+            setTimeout(testCountryDetection, 1000);
+        });
     </script>
 
     <!-- Load the widget script -->
-    <script src="http://localhost:3000/widget.js"></script>
+    <script src="http://localhost:3000/widget.js?space_id=f2384ae7-ce8b-4a31-adf4-1e4bca8f0604"></script>
 </body>
 </html> 

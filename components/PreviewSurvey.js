@@ -4,7 +4,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useSurvey } from "../app/context/SurveyContext";
 import { Smartphone, Monitor, RefreshCcw } from "lucide-react";
 
-const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browser, deviceType: propDeviceType }) => {
+const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browser, deviceType: propDeviceType, country: propCountry }) => {
   const supabase = createClientComponentClient();
   const { question1, surveyTheme, reactionType, submitButtonText, thankYouTitle, thankYouText } = useSurvey();
   const [surveyData, setSurveyData] = useState(null);
@@ -158,8 +158,10 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
     // Get the parent page URL from the referrer (safely after mounting)
     const pageUrlToSubmit = pageUrl || (typeof document !== 'undefined' ? document.referrer : '');
     const browserToSubmit = browser || (typeof navigator !== 'undefined' ? navigator.userAgent : '');
+    const countryToSubmit = propCountry || 'Unknown';
 
     console.log('Page URL:', pageUrlToSubmit);
+    console.log('Country:', countryToSubmit);
 
     const { error: submitError } = await supabase
       .from("reviews")
@@ -170,6 +172,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
         page: pageUrlToSubmit,
         browser: browserToSubmit,
         device: propDeviceType,
+        country: countryToSubmit,
       }]); 
 
     if (submitError) {
@@ -181,7 +184,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
       setShowThankYou(true);
     }
     setIsSubmitting(false);
-  }, [rating, review, surveyID, pageUrl, browser, supabase, propDeviceType]);
+  }, [rating, review, surveyID, pageUrl, browser, supabase, propDeviceType, propCountry]);
 
   const displayQuestion = isPreview ? question1 : surveyData?.question1;
   const displayTheme = isPreview ? surveyTheme : surveyData?.survey_theme;

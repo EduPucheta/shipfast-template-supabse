@@ -9,6 +9,7 @@ export default function SurveyAnalytics({ id }) {
   const [ratingData, setRatingData] = useState([]);
   const [wordData, setWordData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
+  const [countryData, setCountryData] = useState([]);
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,7 +34,7 @@ export default function SurveyAnalytics({ id }) {
         // Fetch all reviews for this survey
         const { data: reviews, error } = await supabase
           .from('reviews')
-          .select('page, rating, review, category')
+          .select('page, rating, review, category, country')
           .eq('survey', id.surveyID);
 
         if (error) throw error;
@@ -43,6 +44,7 @@ export default function SurveyAnalytics({ id }) {
         const ratingCounts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
         const wordCounts = {};
         const categoryCounts = {};
+        const countryCounts = {};
         
         reviews.forEach(review => {
           const page = review.page || 'Unknown Page';
@@ -71,6 +73,10 @@ export default function SurveyAnalytics({ id }) {
           // Count by category
           const category = review.category || 'Uncategorized';
           categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+
+          // Count by country
+          const country = review.country || 'Unknown';
+          countryCounts[country] = (countryCounts[country] || 0) + 1;
         });
         
         // Convert page counts to array for easier rendering
@@ -104,11 +110,17 @@ export default function SurveyAnalytics({ id }) {
         const categoryDataArray = Object.entries(categoryCounts)
           .map(([category, count]) => ({ category, count }))
           .sort((a, b) => b.count - a.count);
+
+        // Convert country counts to array and sort by count
+        const countryDataArray = Object.entries(countryCounts)
+          .map(([country, count]) => ({ country, count }))
+          .sort((a, b) => b.count - a.count);
         
         setPageData(pageDataArray);
         setRatingData(ratingDataArray);
         setWordData(wordDataArray);
         setCategoryData(categoryDataArray);
+        setCountryData(countryDataArray);
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Failed to load survey data');
@@ -195,7 +207,7 @@ export default function SurveyAnalytics({ id }) {
 
   return (
     <div className="bg-base-100 p-6">
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
         {/* Rating Distribution Chart */}
         <div className="w-full">
           <h2 className="text-2xl font-bold mb-4">Rating Distribution</h2>
@@ -221,6 +233,38 @@ export default function SurveyAnalytics({ id }) {
           </div>
         </div>
 
+        {/* Country Distribution Chart */}
+        <div className="w-full">
+          <h2 className="text-2xl font-bold mb-4">Responses by Country</h2>
+          <div className="space-y-2">
+            {countryData.slice(0, 10).map((item) => {
+              const percentage = ((item.count / totalResponses) * 100).toFixed(1);
+              return (
+                <div key={item.country} className="flex items-center gap-4">
+                  <span className="w-20 text-right text-sm">{item.country}</span>
+                  <div className="flex-1">
+                    <div className="h-6 bg-base-200 rounded-lg overflow-hidden">
+                      <div 
+                        className="tooltip tooltip-right h-full bg-secondary transition-all duration-500"
+                        data-tip={`${item.count} responses (${percentage}% of total)`}
+                        style={{ width: `${percentage}%` }}
+                      />
+                    </div>
+                  </div>
+                  <span className="w-16 text-right text-sm">{item.count} ({percentage}%)</span>
+                </div>
+              );
+            })}
+            {countryData.length > 10 && (
+              <div className="text-sm text-gray-500 mt-2">
+                +{countryData.length - 10} more countries
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
         {/* Bubble Chart for Most Common Words */}
         <div className="w-full">
           <h2 className="text-2xl font-bold mb-4">Most Common Words</h2>

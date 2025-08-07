@@ -17,6 +17,7 @@ export default function WidgetPage() {
   const [error, setError] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
   const [deviceType, setDeviceType] = useState('desktop');
+  const [country, setCountry] = useState('Unknown');
 
   // Function to check if current page matches survey targeting
   const checkPageMatching = (survey, currentPath) => {
@@ -77,11 +78,13 @@ export default function WidgetPage() {
     const origin = params.get('parentOrigin');
     const spaceIdParam = params.get('space_id');
     const deviceTypeParam = params.get('deviceType');
+    const countryParam = params.get('country');
 
     if (url) setPageUrl(url);
     if (browserInfo) setBrowser(browserInfo);
     if (origin) setParentOrigin(origin);
     if (deviceTypeParam) setDeviceType(deviceTypeParam);
+    if (countryParam) setCountry(countryParam);
 
     // Fetch active survey without authentication
     const fetchActiveSurvey = async () => {
@@ -94,6 +97,7 @@ export default function WidgetPage() {
       try {
         // Use device type passed from parent window
         console.log('Widget device type received from parent:', deviceTypeParam || deviceType);
+        console.log('Widget country received from parent:', countryParam || country);
 
         // First, get all active surveys for this space with their device targets and targeting info
         const { data: surveys, error: surveysError } = await supabase
@@ -256,6 +260,7 @@ export default function WidgetPage() {
               pageUrl={pageUrl} 
               browser={browser}
               deviceType={deviceType}
+              country={country}
             />
           </div>
         </div>
