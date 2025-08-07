@@ -18,6 +18,34 @@ export default function WidgetPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [deviceType, setDeviceType] = useState('desktop');
 
+  // Function to check if current page matches survey targeting
+  const checkPageMatching = (survey, currentPath) => {
+    // If targeting all pages, always show
+    if (survey.targeting_type === 'all_pages') {
+      return true;
+    }
+
+    // If targeting specific pages, check each target URL
+    if (survey.targeting_type === 'specific_pages' && survey.target_urls) {
+      return survey.target_urls.some(urlObj => {
+        if (!urlObj || typeof urlObj !== 'object') return false;
+        
+        const targetPath = urlObj.path || '';
+        const matchType = urlObj.matchType || 'exact';
+        
+        if (matchType === 'exact') {
+          return currentPath === targetPath;
+        } else if (matchType === 'contains') {
+          return currentPath.includes(targetPath);
+        }
+        
+        return false;
+      });
+    }
+
+    return false;
+  };
+
   // Handle client-side mounting
   useEffect(() => {
     setIsMounted(true);
@@ -47,13 +75,15 @@ export default function WidgetPage() {
         // Use device type passed from parent window
         console.log('Widget device type received from parent:', deviceTypeParam || deviceType);
 
-        // First, get all active surveys for this space with their device targets
+        // First, get all active surveys for this space with their device targets and targeting info
         const { data: surveys, error: surveysError } = await supabase
           .from('surveys')
           .select(`
             id, 
             survey_theme,
             created_at,
+            targeting_type,
+            target_urls,
             survey_devices(device_name)
           `)
           .eq('is_active', true)
@@ -67,11 +97,17 @@ export default function WidgetPage() {
           return;
         }
 
-        // Filter surveys that target the current device
+        // Filter surveys that target the current device and page
         const currentDevice = deviceTypeParam || deviceType;
+        const currentPath = url ? new URL(url).pathname : window.location.pathname;
+        
         const compatibleSurveys = surveys?.filter(survey => {
           const deviceTargets = survey.survey_devices?.map(d => d.device_name) || [];
-          return deviceTargets.includes(currentDevice);
+          const deviceMatches = deviceTargets.includes(currentDevice);
+          const pageMatches = checkPageMatching(survey, currentPath);
+          
+          console.log(`Survey ${survey.id}: device matches ${deviceMatches}, page matches ${pageMatches}`);
+          return deviceMatches && pageMatches;
         }) || [];
 
         // Get the most recent survey that targets the current device

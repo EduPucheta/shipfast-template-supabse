@@ -5,7 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useSurvey } from "../app/context/SurveyContext";
 import { useSpace } from "@/app/context/SpaceContext";
 import { toast } from "react-hot-toast";
-import { useAsync } from 'react-use';
+
 
 const supabase = createClientComponentClient();
 
@@ -33,7 +33,7 @@ const CreateSurvey = () => {
     mobile: true
   });
   const [targetingType, setTargetingType] = useState('all_pages'); // 'all_pages' or 'specific_pages'
-  const [targetUrls, setTargetUrls] = useState(['']); // Array of URLs/triggers
+  const [targetPaths, setTargetPaths] = useState([{ path: '', matchType: 'exact' }]); // Array of page path objects
 
   useEffect(() => {
     const getUser = async () => {
@@ -87,8 +87,8 @@ const CreateSurvey = () => {
     }
 
     // Add validation for specific pages if that option is selected
-    if (targetingType === 'specific_pages' && (!targetUrls.length || !targetUrls[0])) {
-        setError("Please specify at least one URL or trigger.");
+    if (targetingType === 'specific_pages' && (!targetPaths.length || !targetPaths[0].path.trim())) {
+        setError("Please specify at least one page path.");
         return;
     }
 
@@ -162,7 +162,7 @@ const CreateSurvey = () => {
                     user_id: userId,
                     space_id: selectedSpace.id,
                     targeting_type: targetingType,
-                    target_urls: targetingType === 'specific_pages' ? targetUrls : null,
+                    target_urls: targetingType === 'specific_pages' ? targetPaths.filter(p => p.path.trim()) : null,
                 },
             ])
             .select()
@@ -465,9 +465,9 @@ const CreateSurvey = () => {
                 {/* Pages or Events Selection */}
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text font-semibold">Pages or events <span className="text-error">*</span></span>
+                    <span className="label-text font-semibold">Pages  <span className="text-error">*</span></span>
                   </label>
-                  <p className="text-sm text-base-content/70 mb-2">Select which pages or events to show this survey on</p>
+                  <p className="text-sm text-base-content/70 mb-2">Select which pages to show this survey on</p>
                   <div className="space-y-2">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -487,38 +487,44 @@ const CreateSurvey = () => {
                         checked={targetingType === 'specific_pages'}
                         onChange={() => setTargetingType('specific_pages')}
                       />
-                      <span>Specific pages or events</span>
+                      <span>Specific pages</span>
                     </label>
                   </div>
 
                   {targetingType === 'specific_pages' && (
                     <div className="mt-4 space-y-4">
-                      <p className="text-sm font-medium">Show the survey on the following URLs or triggers:</p>
-                      <p className="text-xs text-base-content/70">Fields are case-sensitive and events always take priority over URLs.</p>
+                      <p className="text-sm font-medium">Show the survey on the following page paths:</p>
+                      <p className="text-xs text-base-content/70">Fields are case-sensitive. </p>
                       
-                      {targetUrls.map((url, index) => (
+                      {targetPaths.map((pathObj, index) => (
                         <div key={index} className="flex gap-2">
-                          <select className="select select-bordered flex-none w-40">
-                            <option>Simple URL match</option>
-                            <option>Exact URL match</option>
-                            <option>Regular expression</option>
-                            <option>Event trigger</option>
+                          <select 
+                            className="select select-bordered flex-none w-40"
+                            value={pathObj.matchType}
+                            onChange={(e) => {
+                              const newPaths = [...targetPaths];
+                              newPaths[index] = { ...pathObj, matchType: e.target.value };
+                              setTargetPaths(newPaths);
+                            }}
+                          >
+                            <option value="exact">Exact path match</option>
+                            <option value="contains">Path contains</option>
                           </select>
                           <input
                             type="text"
                             className="input input-bordered flex-1"
-                            placeholder="e.g. https://www.example.com/"
-                            value={url}
+                            placeholder="e.g. /about"
+                            value={pathObj.path}
                             onChange={(e) => {
-                              const newUrls = [...targetUrls];
-                              newUrls[index] = e.target.value;
-                              setTargetUrls(newUrls);
+                              const newPaths = [...targetPaths];
+                              newPaths[index] = { ...pathObj, path: e.target.value };
+                              setTargetPaths(newPaths);
                             }}
                           />
-                          {index === targetUrls.length - 1 ? (
+                          {index === targetPaths.length - 1 ? (
                             <button
                               className="btn btn-primary"
-                              onClick={() => setTargetUrls([...targetUrls, ''])}
+                              onClick={() => setTargetPaths([...targetPaths, { path: '', matchType: 'exact' }])}
                             >
                               Add another
                             </button>
@@ -526,8 +532,8 @@ const CreateSurvey = () => {
                             <button
                               className="btn btn-ghost"
                               onClick={() => {
-                                const newUrls = targetUrls.filter((_, i) => i !== index);
-                                setTargetUrls(newUrls);
+                                const newPaths = targetPaths.filter((_, i) => i !== index);
+                                setTargetPaths(newPaths);
                               }}
                             >
                               Remove
