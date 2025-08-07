@@ -40,14 +40,39 @@ export default function SurveyDetailsDisplay({ survey }) {
             <span className="text-gray-500">No target devices specified.</span>
           )}
         </p>
-        <p className="mb-2">
+        <div className="mb-2 w-full">
           <strong>Target Pages:</strong>{" "}
-          {survey.target_urls && survey.target_urls.length > 0 ? (
-            survey.target_urls.join(", ")
+          {Array.isArray(survey.target_urls) && survey.target_urls.length > 0 ? (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {survey.target_urls.map((item, idx) => {
+                const entry =
+                  item && typeof item === "object"
+                    ? { path: item.path || "", matchType: item.matchType || "exact" }
+                    : { path: String(item || ""), matchType: "exact" };
+
+                const isAbsolute = /^https?:\/\//i.test(entry.path);
+                const isDomainLike = /\w+\.[a-z]{2,}/i.test(entry.path) && !entry.path.startsWith("/");
+                const href = isAbsolute ? entry.path : isDomainLike ? `https://${entry.path}` : entry.path || "#";
+
+                return (
+                  <a
+                    key={`${entry.path}-${idx}`}
+                    href={href || "#"}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="badge badge-outline badge-primary hover:badge-secondary cursor-pointer max-w-full"
+                    title={`${entry.path} (${entry.matchType})`}
+                  >
+                    <span className="truncate max-w-[220px]">{entry.path || "(empty)"}</span>
+                    <span className="ml-2 badge badge-ghost badge-sm normal-case">{entry.matchType}</span>
+                  </a>
+                );
+              })}
+            </div>
           ) : (
             <span className="text-gray-500">No target pages specified.</span>
           )}
-        </p>
+        </div>
       </div>
     </div>
   );
