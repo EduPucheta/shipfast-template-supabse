@@ -20,25 +20,45 @@ export default function WidgetPage() {
 
   // Function to check if current page matches survey targeting
   const checkPageMatching = (survey, currentPath) => {
-    // If targeting all pages, always show
-    if (survey.targeting_type === 'all_pages') {
-      return true;
+    function normalizePath(path) {
+      if (!path) return '';
+      try {
+        // Accept full URLs or paths; always compare pathnames without trailing slash
+        const pathname = path.startsWith('http') ? new URL(path).pathname : path;
+        return pathname.length > 1 && pathname.endsWith('/')
+          ? pathname.slice(0, -1)
+          : pathname;
+      } catch {
+        return path;
+      }
     }
+
+    const normalizedCurrent = normalizePath(currentPath);
+
+    // If targeting all pages, always show
+    if (survey.targeting_type === 'all_pages') return true;
 
     // If targeting specific pages, check each target URL
     if (survey.targeting_type === 'specific_pages' && survey.target_urls) {
-      return survey.target_urls.some(urlObj => {
-        if (!urlObj || typeof urlObj !== 'object') return false;
-        
-        const targetPath = urlObj.path || '';
-        const matchType = urlObj.matchType || 'exact';
-        
-        if (matchType === 'exact') {
-          return currentPath === targetPath;
-        } else if (matchType === 'contains') {
-          return currentPath.includes(targetPath);
+      return survey.target_urls.some((entry) => {
+        // Support legacy format where entries were strings
+        if (typeof entry === 'string') {
+          return normalizePath(entry) === normalizedCurrent;
         }
-        
+
+        if (!entry || typeof entry !== 'object') return false;
+
+        const targetPath = normalizePath(entry.path || '');
+        const matchType = entry.matchType || 'exact';
+
+        if (!targetPath) return false;
+
+        if (matchType === 'exact') {
+          return normalizedCurrent === targetPath;
+        }
+        if (matchType === 'contains') {
+          return normalizedCurrent.includes(targetPath);
+        }
         return false;
       });
     }
@@ -147,7 +167,7 @@ export default function WidgetPage() {
     setIsExpanded(true);
   };
 
-  // Notify parent when widget is ready
+    // Notify parent when widget is ready
   useEffect(() => {
     if (!isMounted || isLoading) return;
 
@@ -156,8 +176,8 @@ export default function WidgetPage() {
       if (window.parent) {
         window.parent.postMessage({ type: "widget-ready" }, parentOrigin);
         
-        // Also send height information for dynamic sizing
-        const height = activeSurveyId ? 40 : 40;
+          // Also send height information for dynamic sizing; hide when no targeted survey
+          const height = activeSurveyId ? 40 : 0;
         window.parent.postMessage({ 
           type: "widget-height-change", 
           height 

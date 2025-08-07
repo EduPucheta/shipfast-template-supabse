@@ -39,6 +39,20 @@
 
   document.body.appendChild(iframe);
 
+  // If widget reports zero height, collapse iframe completely
+  function collapseIframe() {
+    iframe.style.width = '0px';
+    iframe.style.height = '0px';
+    iframe.style.pointerEvents = 'none';
+    iframe.style.opacity = '0';
+  }
+  function expandToButton() {
+    iframe.style.pointerEvents = '';
+    iframe.style.opacity = '1';
+    iframe.style.width = '124px';
+    iframe.style.height = '40px';
+  }
+
   window.addEventListener('message', (event) => {
     if (event.origin !== baseUrl) return;
 
@@ -46,10 +60,15 @@
       iframe.style.width = '350px';
       iframe.style.height = '366px';
     } else if (event.data.type === 'collapse-widget') {
-      iframe.style.width = '124px';
-      iframe.style.height = '40px';
+      expandToButton();
     } else if (event.data.type === 'widget-height-change') {
-      iframe.style.height = `${event.data.height}px`;
+      const newHeight = Number(event.data.height) || 0;
+      if (newHeight <= 0) {
+        collapseIframe();
+      } else {
+        expandToButton();
+        iframe.style.height = `${newHeight}px`;
+      }
     }
   });
 })(); 
