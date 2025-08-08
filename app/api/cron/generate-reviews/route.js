@@ -1,5 +1,3 @@
-import { generateReview } from '../../../../scripts/generateReviews.js';
-
 export async function GET(request) {
   // Verificá que el request venga de Vercel Cron
   const authHeader = request.headers.get('authorization');
@@ -8,6 +6,7 @@ export async function GET(request) {
   }
 
   try {
+    const { generateReview } = await import('../../../../scripts/generateReviews.js');
     await generateReview();
     return new Response('Review generated successfully', { status: 200 });
   } catch (error) {

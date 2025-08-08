@@ -1,12 +1,18 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+function getAdminClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !serviceKey) {
+    throw new Error("Supabase admin env vars are missing");
+  }
+  return createClient(url, serviceKey);
+}
 
 export async function checkAndUpdateQuota(userId, tokensUsed) {
   try {
+    const supabase = getAdminClient();
+
     // Get current quota
     const { data: quota, error: quotaError } = await supabase
       .from("user_quotas")
@@ -22,14 +28,17 @@ export async function checkAndUpdateQuota(userId, tokensUsed) {
     // Check if quota needs to be reset (new month)
     const today = new Date();
     const quotaResetDate = new Date(quota.quota_reset_date);
-    if (today.getMonth() !== quotaResetDate.getMonth() || today.getFullYear() !== quotaResetDate.getFullYear()) {
+    if (
+      today.getMonth() !== quotaResetDate.getMonth() ||
+      today.getFullYear() !== quotaResetDate.getFullYear()
+    ) {
       // Reset quota for new month
       const { error: resetError } = await supabase
         .from("user_quotas")
         .update({
           tokens_used: 0,
-          quota_reset_date: today.toISOString().split('T')[0],
-          updated_at: new Date().toISOString()
+          quota_reset_date: today.toISOString().split("T")[0],
+          updated_at: new Date().toISOString(),
         })
         .eq("user_id", userId);
 
@@ -50,7 +59,7 @@ export async function checkAndUpdateQuota(userId, tokensUsed) {
       .from("user_quotas")
       .update({
         tokens_used: quota.tokens_used + tokensUsed,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       })
       .eq("user_id", userId);
 
@@ -59,7 +68,10 @@ export async function checkAndUpdateQuota(userId, tokensUsed) {
       return { error: "Failed to update quota" };
     }
 
-    return { success: true, remainingTokens: quota.monthly_cap - (quota.tokens_used + tokensUsed) };
+    return {
+      success: true,
+      remainingTokens: quota.monthly_cap - (quota.tokens_used + tokensUsed),
+    };
   } catch (error) {
     console.error("Error in checkAndUpdateQuota:", error);
     return { error: "Internal server error" };

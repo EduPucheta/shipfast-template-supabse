@@ -4,15 +4,13 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { checkAndUpdateQuota } from "@/libs/quotas";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export async function POST(req) {
   try {
     if (!process.env.OPENAI_API_KEY) {
       throw new Error("OpenAI API key is not configured");
     }
+
+    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
     const { messages, surveyData } = await req.json();
 
@@ -42,14 +40,14 @@ export async function POST(req) {
       - Survey Information: ${JSON.stringify(surveyData.survey)}
       - Survey Responses: ${JSON.stringify(surveyData.reviews)}
       
-      Use this data to provide accurate and relevant answers to the user's questions about their survey responses. Be concise and to the point.`
+      Use this data to provide accurate and relevant answers to the user's questions about their survey responses. Be concise and to the point.`,
     };
 
-    const completion = await client.chat.completions.create({ 
+    const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [systemMessage, ...messages],
       temperature: 0.7,
-      max_tokens: 1000, 
+      max_tokens: 1000,
     });
 
     if (!completion.choices?.[0]?.message?.content) {
@@ -61,7 +59,7 @@ export async function POST(req) {
 
     // Check and update quota
     const quotaResult = await checkAndUpdateQuota(user.id, totalTokens);
-    
+
     if (quotaResult.error) {
       return NextResponse.json(
         { error: quotaResult.error },
@@ -71,11 +69,11 @@ export async function POST(req) {
 
     return NextResponse.json({
       content: completion.choices[0].message.content,
-      remainingTokens: quotaResult.remainingTokens
+      remainingTokens: quotaResult.remainingTokens,
     });
   } catch (error) {
     console.error("OpenAI API Error:", error);
-    
+
     // Handle specific OpenAI API errors
     if (error.response?.status === 401) {
       return NextResponse.json(
@@ -83,7 +81,7 @@ export async function POST(req) {
         { status: 401 }
       );
     }
-    
+
     if (error.response?.status === 429) {
       return NextResponse.json(
         { error: "Rate limit exceeded. Please try again later." },
