@@ -38,6 +38,37 @@
       }
     ]
   },
+  "useCases": {
+    "title": "Use cases to",
+    "titleHighlight": "unlock value",
+    "subtitle": "Popular ways teams use Feedbackito to collect insights and act fast.",
+    "items": [
+      {
+        "title": "SaaS Product Feedback",
+        "description": "Collect in-app feedback on features, analyze sentiment, and prioritize your roadmap with AI summaries."
+      },
+      {
+        "title": "E‑commerce Post‑Purchase",
+        "description": "Trigger surveys after checkout to learn about friction, product satisfaction, and reasons for returns."
+      },
+      {
+        "title": "Marketing Website UX",
+        "description": "Embed a widget on landing pages to understand objections and improve conversion copy."
+      },
+      {
+        "title": "Customer Support QA",
+        "description": "Aggregate support feedback, find recurring issues, and get recommended fixes to reduce ticket volume."
+      },
+      {
+        "title": "Beta Programs",
+        "description": "Run structured betas, centralize feedback, and identify must‑fix items before launch."
+      },
+      {
+        "title": "Onboarding Feedback",
+        "description": "Measure activation friction, uncover confusing steps, and ship quick fixes that increase day‑1 success."
+      }
+    ]
+  },
   "pricing": {
     "title": "Pricing",
     "subtitle": "Choose the perfect plan for your growth journey",

@@ -38,6 +38,37 @@
       }
     ]
   },
+  "useCases": {
+    "title": "Casos de uso para",
+    "titleHighlight": "desbloquear valor",
+    "subtitle": "Formas populares en que los equipos usan Feedbackito para recopilar ideas y actuar rápido.",
+    "items": [
+      {
+        "title": "Feedback de producto SaaS",
+        "description": "Recopila feedback en la app sobre funciones, analiza el sentimiento y prioriza el roadmap con resúmenes de IA."
+      },
+      {
+        "title": "Post‑compra en e‑commerce",
+        "description": "Activa encuestas tras el pago para detectar fricciones, satisfacción del producto y motivos de devolución."
+      },
+      {
+        "title": "UX en sitio de marketing",
+        "description": "Incorpora un widget en landing pages para entender objeciones y mejorar el copy de conversión."
+      },
+      {
+        "title": "Calidad en soporte al cliente",
+        "description": "Agrega feedback del soporte, detecta problemas recurrentes y obtén acciones recomendadas para reducir tickets."
+      },
+      {
+        "title": "Programas beta",
+        "description": "Ejecuta betas estructuradas, centraliza feedback e identifica lo imprescindible antes del lanzamiento."
+      },
+      {
+        "title": "Feedback de onboarding",
+        "description": "Mide fricciones de activación, detecta pasos confusos y aplica mejoras rápidas que aumentan el éxito del día 1."
+      }
+    ]
+  },
   "pricing": {
     "title": "Precios",
     "subtitle": "Elige el plan perfecto para tu crecimiento",

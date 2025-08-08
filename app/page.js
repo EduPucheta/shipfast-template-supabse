@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import SignUpPresale from "@/components/SignUpPresale"; 
 import Problem from "@/components/Problem";
 import FeaturesAccordion from "@/components/FeaturesAccordion";
+import CardUseCases from "@/components/CardUseCases";
 import { cookies } from "next/headers";
 
 
@@ -26,6 +27,7 @@ export default async function Page() {
         <HeroSection lang={lng}/>
         <Problem lang={lng}/> 
         <FeaturesAccordion lang={lng}/>
+        <CardUseCases lang={lng} />
         <Pricing lang={lng}/>
         <FAQ lang={lng}/>
        
