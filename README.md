@@ -100,3 +100,16 @@ The widget is loaded in an iframe for security and isolation. Communication betw
 ## Support
 
 For support or questions, please contact us at support@your-domain.com.
+
+## Auto Blog Generator
+
+- Daily script: `node scripts/generateBlog.js` (or `npm run generate:blog`)
+- Requires `OPENAI_API_KEY` in environment for GPT and image generation
+- Writes Markdown posts to `content/posts` and cover images to `public/blog/<slug>/cover.png`
+- Blog routes: `/blog` index and `/blog/[slug]` pages
+
+To schedule daily on Linux (runs at 06:00):
+
+```bash
+(crontab -l 2>/dev/null; echo "0 6 * * * cd /workspace && /usr/bin/node scripts/generateBlog.js >> /workspace/cron.log 2>&1") | crontab -
+```
