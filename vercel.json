@@ -2,7 +2,7 @@
     "crons": [
       {
         "path": "/api/cron/generate-reviews",
-        "schedule": "*/10 * * * *"
+       "schedule": "0 0 * * 0"
       },
       {
         "path": "/api/cron/generate-articles",
