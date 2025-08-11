@@ -248,6 +248,7 @@ const SurveyNav = () => {
             )}
           </button>
         </form>
+        <p className="text-base-content/70 mb-6 max-w-md mt-4">After you create your space, install the widget on your site: go to <a href="/dashboard/configuration" className="link link-primary">Configuration</a> to find the tracking code.</p>
       </div>
     );
   }
