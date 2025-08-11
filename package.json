@@ -9,7 +9,8 @@
     "lint": "next lint",
     "stripe": "stripe listen --forward-to localhost:3000/api/webhook/stripe",
     "clean": "rm -rf .next && rm -rf node_modules/.cache",
-    "fresh": "npm run clean && npm install && npm run dev"
+    "fresh": "npm run clean && npm install && npm run dev",
+    "test-article-generation": "node scripts/testArticleGeneration.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",
