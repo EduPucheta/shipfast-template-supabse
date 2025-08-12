@@ -36,8 +36,31 @@ The AI generates articles covering:
 ## Configuration
 
 ### Environment Variables Required
-- `OPENAI_API_KEY` - Your OpenAI API key
+- `OPENAI_API_KEY` - Your OpenAI API key (get from [OpenAI Platform](https://platform.openai.com/account/api-keys))
 - `CRON_SECRET` - Secret for authenticating cron requests
+
+### Environment Setup
+
+The article generation scripts are configured to load environment variables from `.env.local` file. This is the standard Next.js practice for local development.
+
+1. **Ensure your `.env.local` file** contains:
+```env
+# OpenAI API Key for article generation
+OPENAI_API_KEY=sk-your-actual-api-key-here
+
+# Cron Secret for scheduled tasks
+CRON_SECRET=your-cron-secret-here
+```
+
+2. **Environment files are automatically ignored** by Git for security:
+```gitignore
+# Environment variables (already in .gitignore)
+.env
+.env.local
+.env.*.local
+```
+
+**Note:** The scripts have been updated to automatically load from `.env.local` using the `dotenv` package.
 
 ### Cron Schedule
 Currently set to run weekly (`0 0 * * 0`). You can modify this in `route-segment.config.js`:
@@ -87,10 +110,41 @@ To modify the article generation:
 
 ## Troubleshooting
 
-- **OpenAI API Errors**: Check your API key and quota
+### Common Error Messages
+
+**"❌ OpenAI API key is not configured!"**
+- **Solution**: Create a `.env` file and add your `OPENAI_API_KEY`
+- **Steps**: Follow the Environment Setup section above
+
+**"401 Incorrect API key provided: undefined"**
+- **Solution**: Your API key is not being loaded correctly
+- **Check**: Ensure the `.env` file is in the root directory and contains a valid API key
+
+**"MODULE_TYPELESS_PACKAGE_JSON Warning"**
+- **Solution**: This warning has been fixed by adding `"type": "module"` to `package.json`
+
+### Other Issues
+
+- **OpenAI API Errors**: Check your API key and quota limits
 - **File Permission Errors**: Ensure write permissions to the articles directory
 - **Cron Authentication**: Verify `CRON_SECRET` is correctly set
 - **JSON Parsing Errors**: The AI response might not be valid JSON - check logs
+
+### Verification Steps
+
+1. **Test your setup**:
+   ```bash
+   npm run test-article-generation
+   ```
+
+2. **Expected success output**:
+   ```
+   Testing article generation...
+   Starting article generation...
+   Ask GPT >>>
+   Successfully created article: [filename]
+   ✅ Article generation test completed successfully
+   ```
 
 ## Security
 

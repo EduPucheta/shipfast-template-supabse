@@ -1,4 +1,8 @@
+import { config } from 'dotenv';
 import { generateArticle } from './generateArticles.js';
+
+// Load environment variables from .env.local file
+config({ path: '.env.local' });
 
 // Test script to verify article generation
 async function testGeneration() {

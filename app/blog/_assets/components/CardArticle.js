@@ -35,7 +35,7 @@ const CardArticle = ({
         </Link>
       )}
       <div className="card-body ">
-        {/* CATEGORIES */}
+        {/* CATEGORIES 
         {showCategory && (
           <div className="flex flex-wrap gap-2">
             {article.categories.map((category) => (
@@ -43,7 +43,7 @@ const CardArticle = ({
             ))}
           </div>
         )}
-
+*/}
         {/* TITLE WITH RIGHT TAG */}
         <TitleTag className="mb-1 text-xl md:text-2xl font-bold">
           <Link

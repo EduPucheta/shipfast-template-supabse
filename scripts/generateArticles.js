@@ -1,9 +1,73 @@
-import { sendOpenAi } from '../libs/gpt.js';
+import { config } from 'dotenv';
+import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 
+// Load environment variables from .env.local file
+config({ path: '.env.local' });
+
+// Custom GPT-5 function specifically for article generation
+const sendGPT5 = async (messages, userId, max = 100, temp = 1) => {
+  const url = "https://api.openai.com/v1/chat/completions";
+
+  console.log("Ask GPT-5 >>>");
+  messages.map((m) =>
+    console.log(" - " + m.role.toUpperCase() + ": " + m.content)
+  );
+
+  const body = JSON.stringify({
+    model: "gpt-5",
+    messages,
+    max_completion_tokens: max,
+ 
+    user: userId,
+  });
+
+  const options = {
+    headers: {
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const res = await axios.post(url, body, options);
+
+    const answer = res.data.choices[0].message.content;
+    const usage = res?.data?.usage;
+
+    console.log(">>> " + answer);
+    console.log(
+      "TOKENS USED: " +
+        usage?.total_tokens +
+        " (prompt: " +
+        usage?.prompt_tokens +
+        " / response: " +
+        usage?.completion_tokens +
+        ")"
+    );
+    console.log("\n");
+
+    return answer;
+  } catch (e) {
+    console.error("GPT-5 Error: " + e?.response?.status, e?.response?.data);
+    return null;
+  }
+};
+
 export const generateArticle = async () => {
   console.log('Starting article generation...');
+
+  // Check if OpenAI API key is configured
+  if (!process.env.OPENAI_API_KEY) {
+    console.error('❌ OpenAI API key is not configured!');
+    console.log('📝 To fix this issue:');
+    console.log('1. Create a .env file in the root directory');
+    console.log('2. Add your OpenAI API key: OPENAI_API_KEY=sk-your-api-key-here');
+    console.log('3. Get your API key from: https://platform.openai.com/account/api-keys');
+    console.log('4. Make sure the .env file is in your .gitignore to keep it secure');
+    throw new Error('OpenAI API key is required for article generation');
+  }
 
   // Generate article content using GPT
   const messages = [
@@ -11,12 +75,14 @@ export const generateArticle = async () => {
       role: "system",
       content: `You are an expert technical writer specializing in AI and user feedback systems. Generate a comprehensive blog article about user feedback and AI integration. The article should be educational, practical, and suitable for developers and product managers. 
 
+IMPORTANT: Return ONLY valid JSON with no markdown formatting or code fences. All strings must be properly escaped for JSON.
+
 Structure your response as a JSON object with the following fields:
 - title: Article title (max 60 characters)
 - description: Article description (max 160 characters)  
 - slug: URL-friendly slug (kebab-case)
-- content: Main article content in HTML format with proper sections
-- categories: Array of category slugs (use "tutorial" or "feature")
+- content: Main article content in HTML format with proper sections (escape all quotes properly)
+
 
 Focus on topics like:
 - AI-powered feedback analysis
@@ -26,7 +92,7 @@ Focus on topics like:
 - Machine learning for product improvement
 - Best practices for implementing AI in feedback systems
 
-Make the content actionable and include code examples where appropriate. Use proper HTML structure with h2, h3, p, ul, li, code, and pre tags.`
+Make the content actionable and include code examples where appropriate. Use proper HTML structure with h2, h3, p, ul, li, code, and pre tags. Ensure all content is properly escaped for JSON format.`
     },
     {
       role: "user",
@@ -34,7 +100,7 @@ Make the content actionable and include code examples where appropriate. Use pro
     }
   ];
 
-  const articleResponse = await sendOpenAi(messages, 'article-generator', 2000, 0.7);
+  const articleResponse = await sendGPT5(messages, 'article-generator', 2000, 0.7); // Using GPT-5 for article generation
   
   if (!articleResponse) {
     console.error('Failed to generate article content');
@@ -43,9 +109,19 @@ Make the content actionable and include code examples where appropriate. Use pro
 
   let articleData;
   try {
-    articleData = JSON.parse(articleResponse);
+    // Clean the response by removing markdown code fences if present
+    let cleanedResponse = articleResponse.trim();
+    if (cleanedResponse.startsWith('```json')) {
+      cleanedResponse = cleanedResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+    } else if (cleanedResponse.startsWith('```')) {
+      cleanedResponse = cleanedResponse.replace(/^```\s*/, '').replace(/\s*```$/, '');
+    }
+    
+    articleData = JSON.parse(cleanedResponse);
   } catch (error) {
     console.error('Failed to parse article JSON:', error);
+    console.log('Raw response excerpt:', articleResponse.substring(0, 500) + '...');
+    console.log('Please check the AI response formatting and try again.');
     return;
   }
 
@@ -82,8 +158,7 @@ export const article = {
   title: "${articleData.title.replace(/"/g, '\\"')}",
   // The description of the article to display in the article page. Up to 160 characters. It's also used to generate the meta description.
   description: "${articleData.description.replace(/"/g, '\\"')}",
-  // An array of categories of the article. It's used to generate the category badges, the category filter, and more.
-  categories: ${JSON.stringify(articleData.categories || ["tutorial"])},
+
   // The author of the article. It's used to generate a link to the author's bio page.
   author: "marc",
   // The date of the article. It's used to generate the meta date.
@@ -157,10 +232,7 @@ async function updateContentIndex(fileName, slug) {
     // Add to articles array
     const articleObject = `  {
     ...${articleVarName},
-    // Map the string category back to the category object
-    categories: ${articleVarName}.categories.map(categorySlug => 
-      categories.find((category) => category.slug === categorySlug)
-    ),
+
     // Map the string author back to the author object
     author: authors.find((author) => author.slug === ${articleVarName}.author),
   },`;
@@ -182,3 +254,8 @@ async function updateContentIndex(fileName, slug) {
     console.error('Error updating content.js:', error);
   }
 }
+
+export const runtime = 'nodejs';
+export const maxDuration = 300; // Up to 5 minutes for Pro plans
+
+export const schedule = '0 0 * * 0'; // Sundays at midnight

@@ -2,6 +2,8 @@ import eduImg from "@/app/blog/_assets/images/authors/edu.jpg";
 import { article as introducingSupabaseArticle } from "@/app/blog/_content/articles/introducing-supabase.js";
 import { article as introducingSupabase2Article } from "@/app/blog/_content/articles/introducing-supabase2.js";
 import { article as introducingSupabase3Article } from "@/app/blog/_content/articles/introducing-supabase3.js";
+import { article as integratingaiwithuserfeedbacksystemsArticle } from "@/app/blog/_content/articles/integrating-ai-with-user-feedback-systems-20250811.js";
+import { article as integratingaiinuserfeedbacksystemsArticle } from "@/app/blog/_content/articles/integrating-ai-in-user-feedback-systems-20250811.js";
 
 // ==================================================================================================================================================================
 // BLOG CATEGORIES 🏷️
@@ -132,19 +134,14 @@ export const authors = [
 export const articles = [
   {
     ...introducingSupabaseArticle,
-    // Map the string category back to the category object
-    categories: introducingSupabaseArticle.categories.map(categorySlug => 
-      categories.find((category) => category.slug === categorySlug)
-    ),
+
     // Map the string author back to the author object
     author: authors.find((author) => author.slug === introducingSupabaseArticle.author),
   },
   {
     ...introducingSupabase2Article,
     // Map the string category back to the category object
-    categories: introducingSupabase2Article.categories.map(categorySlug => 
-      categories.find((category) => category.slug === categorySlug)
-    ),
+
     // Map the string author back to the author object
     author: authors.find((author) => author.slug === introducingSupabase2Article.author),
   },
@@ -156,5 +153,20 @@ export const articles = [
     ),
     // Map the string author back to the author object
     author: authors.find((author) => author.slug === introducingSupabase3Article.author),
+  },
+
+  {
+    ...integratingaiwithuserfeedbacksystemsArticle,
+    // Map the string category back to the category object
+
+    // Map the string author back to the author object
+    author: authors.find((author) => author.slug === integratingaiwithuserfeedbacksystemsArticle.author),
+  },
+
+  {
+    ...integratingaiinuserfeedbacksystemsArticle,
+
+    // Map the string author back to the author object
+    author: authors.find((author) => author.slug === integratingaiinuserfeedbacksystemsArticle.author),
   },
 ];

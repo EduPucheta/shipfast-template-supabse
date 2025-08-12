@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
-import Testimonial from "@/components/Testimonials1";
+import Testimonials1 from "@/components/Testimonials1";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import SignUpPresale from "@/components/SignUpPresale"; 
@@ -30,7 +30,7 @@ export default async function Page() {
         <CardUseCases lang={lng} />
         <Pricing lang={lng}/>
         <FAQ lang={lng}/>
-       
+        <Testimonials1 />
         <CTA lang={lng}/>
         <Footer lang={lng}/>
       </div>
