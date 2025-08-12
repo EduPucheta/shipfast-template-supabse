@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Script from "next/script";
 import { articles } from "../_assets/content";
-import BadgeCategory from "../_assets/components/BadgeCategory";
+
 import Avatar from "../_assets/components/Avatar";
 import { getSEOTags } from "@/libs/seo";
 import config from "@/config";
