@@ -9,7 +9,12 @@ export const SpaceProvider = ({ children }) => {
   const [spaces, setSpaces] = useState([]);
   const [selectedSpace, setSelectedSpace] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const supabase = createClientComponentClient();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const fetchSpaces = async () => {
@@ -25,7 +30,11 @@ export const SpaceProvider = ({ children }) => {
         } else {
           setSpaces(userSpaces);
           if (userSpaces.length > 0) {
-            const lastSelectedSpaceId = localStorage.getItem('selectedSpaceId');
+            // Only access localStorage after component is mounted
+            let lastSelectedSpaceId = null;
+            if (isMounted && typeof window !== 'undefined') {
+              lastSelectedSpaceId = localStorage.getItem('selectedSpaceId');
+            }
             const lastSelected = userSpaces.find(s => s.id === lastSelectedSpaceId);
             setSelectedSpace(lastSelected || userSpaces[0]);
           }
@@ -34,8 +43,10 @@ export const SpaceProvider = ({ children }) => {
       setLoading(false);
     };
 
-    fetchSpaces();
-  }, [supabase]);
+    if (isMounted) {
+      fetchSpaces();
+    }
+  }, [supabase, isMounted]);
 
   const addSpace = async (name, domain) => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -61,7 +72,10 @@ export const SpaceProvider = ({ children }) => {
 
   const switchSpace = (space) => {
     setSelectedSpace(space);
-    localStorage.setItem('selectedSpaceId', space.id);
+    // Only access localStorage on the client side
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('selectedSpaceId', space.id);
+    }
   };
   
   const value = {

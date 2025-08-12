@@ -154,7 +154,7 @@ export default function WidgetPage() {
     };
 
     fetchActiveSurvey();
-  }, [deviceType]);
+  }, [deviceType, country]);
 
   // Define handlers before they're used in useEffect
   const handleCollapse = useCallback(() => {
