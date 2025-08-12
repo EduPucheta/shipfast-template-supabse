@@ -45,7 +45,7 @@ export const article = {
 <p className={styles.p}>For example, consider a product feedback system that utilizes sentiment analysis:</p>
 <pre className={styles.code}><code className={styles.codeInline}>from textblob import TextBlob
 
-feedback = &ldquo;I love the new features!&rdquo;
+feedback = "I love the new features!"
 sentiment = TextBlob(feedback).sentiment
 print(sentiment)</code></pre>
 <p className={styles.p}>This simple Python code snippet uses the TextBlob library to analyze the sentiment of user feedback, returning polarity and subjectivity scores.</p>
