@@ -2,12 +2,12 @@
 
 import { useTranslation } from '@/app/i18n/client';
 import { languages } from '@/app/i18n/settings';
-import { useRouter } from 'next/navigation';
+
 import { ChevronDown } from 'lucide-react';
 
 export default function ButtonLang({ lng }) {
   const { i18n } = useTranslation(lng);
-  const router = useRouter();
+
 
   const changeLanguage = async (newLng) => {
     // Set the cookie immediately

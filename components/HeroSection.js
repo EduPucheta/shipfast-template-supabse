@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Zap } from "lucide-react";
+
 import { Crisp } from "crisp-sdk-web";
 import config from "@/config";
 import { useTranslation } from "@/app/i18n/client";

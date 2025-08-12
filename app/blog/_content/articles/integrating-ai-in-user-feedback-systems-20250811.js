@@ -40,32 +40,32 @@ export const article = {
 <p className={styles.p}>AI can transform raw user feedback into actionable insights. By leveraging natural language processing (NLP) and machine learning algorithms, companies can efficiently analyze large volumes of feedback to identify patterns and trends.</p>
 
 <h3 className={styles.h3}>Automated Sentiment Analysis</h3>
-<p className={styles.p}>Sentiment analysis is a powerful tool for understanding user emotions in feedback. It allows product teams to gauge how users feel about their products or services. For example, a feedback comment saying, "I love this feature!" can be classified as positive sentiment, while "This feature is terrible!" indicates negative sentiment.</p>
+<p className={styles.p}>Sentiment analysis is a powerful tool for understanding user emotions in feedback. It allows product teams to gauge how users feel about their products or services. For example, a feedback comment saying, &ldquo;I love this feature!&rdquo; can be classified as positive sentiment, while &ldquo;This feature is terrible!&rdquo; indicates negative sentiment.</p>
 <p className={styles.p}>To implement sentiment analysis, consider using libraries like <code className={styles.codeInline}>TextBlob</code> or <code className={styles.codeInline}>spaCy</code> in Python. Here’s a simple example using <code className={styles.codeInline}>TextBlob</code>:</p>
 <pre className={styles.code}><code className={styles.codeInline}>from textblob import TextBlob
 
-feedback = "I love this product!"
+feedback = &quot;I love this product!&quot;
 sentiment = TextBlob(feedback).sentiment
 print(sentiment)
 </code></pre>
 <p className={styles.p}>This code snippet will output a polarity score between -1 (negative) and 1 (positive), helping you understand user sentiments quickly.</p>
 
 <h3 className={styles.h3}>Smart Categorization of User Feedback</h3>
-<p className={styles.p}>AI can also assist in categorizing user feedback automatically. This can save time by reducing manual sorting. For instance, feedback can be categorized into themes such as "features", "bugs", or "user experience".</p>
+<p className={styles.p}>AI can also assist in categorizing user feedback automatically. This can save time by reducing manual sorting. For instance, feedback can be categorized into themes such as &ldquo;features&rdquo;, &ldquo;bugs&rdquo;, or &ldquo;user experience&rdquo;.</p>
 <p className={styles.p}>Using machine learning models like <code className={styles.codeInline}>Naive Bayes</code> or <code className={styles.codeInline}>SVM</code> can help in classifying feedback into predefined categories. Training your model involves feeding it labeled data, which the model learns from.</p>
 <pre className={styles.code}><code className={styles.codeInline}>from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
 # Sample feedback data
-feedbacks = ["The new update is great!", "I found a bug in the app.", "The interface is confusing."]
-labels = ["feature", "bug", "UI"]
+feedbacks = [&quot;The new update is great!&quot;, &quot;I found a bug in the app.&quot;, &quot;The interface is confusing.&quot;]
+labels = [&quot;feature&quot;, &quot;bug&quot;, &quot;UI&quot;]
 
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(feedbacks)
 model = MultinomialNB().fit(X, labels)
 
 # Predicting category for new feedback
-new_feedback = ["The app crashes often."]
+new_feedback = [&quot;The app crashes often.&quot;]
 new_X = vectorizer.transform(new_feedback)
 print(model.predict(new_X))
 </code></pre>

@@ -7,7 +7,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { Link } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { EllipsisVertical } from "lucide-react";
-import { Trash2 } from "lucide-react";
+
 import DeleteModal from "./DeleteModal";
 import { useSpace } from "@/app/context/SpaceContext";
 
@@ -18,8 +18,7 @@ const SurveyNav = () => {
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);
-  const [updatingSurvey, setUpdatingSurvey] = useState(null);
-  const [deletingSurvey, setDeletingSurvey] = useState(null);
+  // const [deletingSurvey] = useState(null); // unused for now
   const [sortConfig, setSortConfig] = useState({ key: 'created_at', direction: 'desc' });
   const { selectedSpace, addSpace, loading: spacesLoading } = useSpace();
   const [spaceName, setSpaceName] = useState("");
@@ -39,7 +38,7 @@ const SurveyNav = () => {
     };
 
     getUser();
-  }, []);
+  }, [supabase.auth]);
 
   const handleCreateSpace = async (e) => {
     e.preventDefault();
@@ -104,10 +103,10 @@ const SurveyNav = () => {
     };
 
     fetchSurveys();
-  }, [userId, selectedSpace]);
+  }, [userId, selectedSpace, supabase]);
 
   const handleToggle = async (surveyId, currentStatus) => {
-    setUpdatingSurvey(surveyId);
+    // setUpdatingSurvey(surveyId); // removed unused updatingSurvey state
 
     try {
       const newStatus = !currentStatus;
@@ -158,7 +157,7 @@ const SurveyNav = () => {
       console.error("Unexpected error:", err);
       toast.error("An unexpected error occurred");
     } finally {
-      setUpdatingSurvey(null);
+      // setUpdatingSurvey(null); // removed unused updatingSurvey state
     }
   };
 

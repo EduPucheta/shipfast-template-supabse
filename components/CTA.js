@@ -1,5 +1,5 @@
 import Image from "next/image";
-import config from "@/config";
+
 import { useTranslation as getTranslation } from "@/app/i18n";
 import { cookies } from "next/headers";
 

@@ -7,7 +7,7 @@ import Image from "next/image";
 import ButtonSignin from "./ButtonSignin";
 import logo from "@/app/icon.png";
 import config from "@/config";
-import ButtonAccount from "./ButtonAccount";
+
 import ButtonLang from "./ButtonLang";
 import { useTranslation } from "@/app/i18n/client";
 

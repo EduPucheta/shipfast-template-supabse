@@ -1,8 +1,5 @@
-import { Inter } from "next/font/google";
-import config from "@/config";
-import "../globals.css";
 
-const font = Inter({ subsets: ["latin"] });
+import "../globals.css";
 
 export default function WidgetLayout({ children }) {
   return (

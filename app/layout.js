@@ -8,7 +8,7 @@ import ConditionalWidget from "@/components/ConditionalWidget";
 import config from "@/config";
 import "./globals.css";
 import { SurveyProvider } from "./context/SurveyContext";
-import { languages } from './i18n/settings';
+
 import { cookies } from 'next/headers';
 
 const font = Inter({ subsets: ["latin"] });

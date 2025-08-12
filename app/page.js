@@ -6,7 +6,7 @@ import FAQ from "@/components/FAQ";
 import Testimonials1 from "@/components/Testimonials1";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
-import SignUpPresale from "@/components/SignUpPresale"; 
+ 
 import Problem from "@/components/Problem";
 import FeaturesAccordion from "@/components/FeaturesAccordion";
 import CardUseCases from "@/components/CardUseCases";
