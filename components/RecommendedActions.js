@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const RecommendedActions = () => {
   const mockActions = [
@@ -29,25 +30,34 @@ const RecommendedActions = () => {
   ];
 
   return (
-    <div className="p-6">
-      <p className="text-gray-600 mb-6">Based on survey responses, here are the key areas where improvements can be made to enhance user satisfaction and product experience.</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockActions.map((action) => (
-          <div key={action.id} className="card bg-base-100 shadow-xl">
-            <div className="card-body">
-              <h3 className="card-title">{action.title}</h3>
-              <p className="text-sm text-gray-600">{action.description}</p>
-              <div className="flex flex-wrap gap-2 mt-4">
-                <div className="badge badge-primary">Impact: {action.impact}</div>
-                <div className="badge badge-secondary">Effort: {action.effort}</div>
-                <div className="badge badge-accent">{action.status}</div>
-              </div>
-              <div className="card-actions justify-end mt-4">
-                <button className="btn btn-primary btn-sm">View Details</button>
+    <div className="relative p-6">
+      <div className="filter blur-sm">
+        <p className="text-gray-600 mb-6">Based on survey responses, here are the key areas where improvements can be made to enhance user satisfaction and product experience.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {mockActions.map((action) => (
+            <div key={action.id} className="card bg-base-100 shadow-xl">
+              <div className="card-body">
+                <h3 className="card-title">{action.title}</h3>
+                <p className="text-sm text-gray-600">{action.description}</p>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <div className="badge badge-primary">Impact: {action.impact}</div>
+                  <div className="badge badge-secondary">Effort: {action.effort}</div>
+                  <div className="badge badge-accent">{action.status}</div>
+                </div>
+                <div className="card-actions justify-end mt-4">
+                  <button className="btn btn-primary btn-sm">View Details</button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center bg-white bg-opacity-75">
+        <h3 className="text-2xl font-bold mb-4">Unlock Recommended Actions</h3>
+        <p className="text-gray-600 mb-6">This feature is available on our paid plans. Upgrade to get actionable insights.</p>
+        <Link href="/#pricing">
+          <button className="btn btn-primary">Upgrade Now</button>
+        </Link>
       </div>
     </div>
   );
