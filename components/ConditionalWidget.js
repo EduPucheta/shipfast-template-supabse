@@ -18,9 +18,14 @@ export default function ConditionalWidget() {
     return null;
   }
 
+  // Use localhost:3000 in development, production URL otherwise
+  const widgetUrl = process.env.NODE_ENV === 'development' 
+    ? 'http://localhost:3000/widget.js?space_id=f2384ae7-ce8b-4a31-adf4-1e4bca8f0604'
+    : 'https://feedbackito.com/widget.js?space_id=d5ae1b99-13d4-48a3-a0ad-cf934528055b';
+
   return (
     <Script 
-      src="http://localhost:3000/widget.js?space_id=f2384ae7-ce8b-4a31-adf4-1e4bca8f0604"
+      src={widgetUrl}
       strategy="afterInteractive"
     />
   );
