@@ -20,7 +20,7 @@ export default function ConditionalWidget() {
 
   return (
     <Script 
-      src="https://feedbackito.com/widget.js?space_id=d5ae1b99-13d4-48a3-a0ad-cf934528055b"
+      src="http://localhost:3000/widget.js?space_id=f2384ae7-ce8b-4a31-adf4-1e4bca8f0604"
       strategy="afterInteractive"
     />
   );
