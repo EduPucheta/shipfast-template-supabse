@@ -1,10 +1,16 @@
 (function () {
+  console.log('Widget script starting...');
+  
   const currentScript = document.currentScript;
+  console.log('Current script:', currentScript);
+  
   const spaceId = currentScript.src.split('space_id=')[1];
+  console.log('Space ID extracted:', spaceId);
 
   // Dynamically determine the base URL based on the current script's source
   const scriptUrl = new URL(currentScript.src);
   const baseUrl = `${scriptUrl.protocol}//${scriptUrl.host}`;
+  console.log('Base URL:', baseUrl);
 
   // Detect device type from parent window
   const detectDeviceType = () => {
@@ -28,7 +34,9 @@
 
   // Initialize widget with country detection
   const initializeWidget = async () => {
+    console.log('Initializing widget...');
     const country = await detectCountry();
+    console.log('Country detected:', country);
     
     const iframe = document.createElement('iframe');
     const widgetUrl = new URL(`${baseUrl}/widjet`);
@@ -71,8 +79,15 @@
     }
 
     window.addEventListener('message', (event) => {
-      if (event.origin !== baseUrl) return;
+      console.log('Message received:', event);
+      console.log('Origin:', event.origin, 'Expected:', baseUrl);
+      
+      if (event.origin !== baseUrl) {
+        console.log('Origin mismatch, ignoring message');
+        return;
+      }
 
+      console.log('Processing message:', event.data);
       if (event.data.type === 'expand-widget') {
         iframe.style.width = '350px';
         iframe.style.height = '366px';
@@ -88,6 +103,7 @@
         }
       }
     });
+    console.log('Widget initialization complete');
   };
 
   // Start the widget initialization
