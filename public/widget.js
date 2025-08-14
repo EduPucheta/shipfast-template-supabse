@@ -10,7 +10,16 @@
   // Dynamically determine the base URL based on the current script's source
   const scriptUrl = new URL(currentScript.src);
   const baseUrl = `${scriptUrl.protocol}//${scriptUrl.host}`;
+
+  // Create a list of allowed origins including both www and non-www versions
+  const allowedOrigins = [
+    baseUrl,
+    baseUrl.replace('www.', ''),
+    baseUrl.replace('//', '//www.')
+  ].filter((url, index, arr) => arr.indexOf(url) === index); // Remove duplicates
+
   console.log('Base URL:', baseUrl);
+  console.log('Allowed origins:', allowedOrigins);
 
   // Detect device type from parent window
   const detectDeviceType = () => {
@@ -80,9 +89,10 @@
 
     window.addEventListener('message', (event) => {
       console.log('Message received:', event);
-      console.log('Origin:', event.origin, 'Expected:', baseUrl);
+      console.log('Origin:', event.origin, 'Expected origins:', allowedOrigins);
       
-      if (event.origin !== baseUrl) {
+      // Check if the message origin is in our allowed origins list
+      if (!allowedOrigins.includes(event.origin)) {
         console.log('Origin mismatch, ignoring message');
         return;
       }
