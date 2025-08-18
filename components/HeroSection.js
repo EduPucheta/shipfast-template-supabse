@@ -22,12 +22,12 @@ const HeroSection = () => {
   };
 
   return (
-    <div className=" min-h-screen flex items-center px-4 sm:px-6 md:px-8 lg:px-12 bg-base-100">
+    <div className=" flex items-center px-4 sm:px-6 md:px-8 lg:px-12 bg-base-100">
       <div className="max-w-7xl w-full mx-auto py-16 flex flex-col lg:flex-row justify-between items-center">
         <div className="w-full lg:w-1/2 mb-12 lg:mb-0 text-center lg:text-left">
           <div className="flex justify-center lg:justify-start items-center gap-2 mb-5"></div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-2 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-5xl font-extrabold mb-2 leading-tight">
             {t('heroSection.title')}
             <br />
             {" "}
