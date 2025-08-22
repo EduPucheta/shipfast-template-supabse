@@ -90,7 +90,7 @@
         "name": "Gratis",
         "description": "Perfecto para pequeños proyectos",
         "features": {
-          "0": "200 respuestas mensuales",
+          "0": "100 respuestas mensuales",
           "1": "Encuestas ilimitadas",
           "2": "Totalmente personalizable",
           "3": "Algunos tokens para hablar con la IA"
@@ -115,6 +115,14 @@
         }
       }
     }
+  },
+  "pricingComparison": {
+    "title": "Mira cómo nos comparamos con la competencia",
+    "subtitle": "Compara el precio de Feedbackito para 200 respuestas de encuesta con otras herramientas populares de encuestas",
+    "getStarted": "Empezar",
+    "learnMore": "Saber Más",
+    "whyChoose": "¿Por qué elegir Feedbackito?",
+    "whyChooseText": "Mientras que otras herramientas se enfocan solo en recopilar respuestas, nosotros proporcionamos análisis impulsado por IA que convierte los comentarios en información accionable."
   },
   "faq": {
     "title": "Preguntas Frecuentes",

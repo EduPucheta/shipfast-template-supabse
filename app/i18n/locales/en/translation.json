@@ -90,7 +90,7 @@
         "name": "Free",
         "description": "Perfect for small projects",
         "features": {
-          "0": "200 monthly responses",
+          "0": "100 monthly responses",
           "1": "Unlimited surveys",
           "2": "Fully customizable",
           "3": "Some tokens to talk to the AI"
@@ -115,6 +115,14 @@
         }
       }
     }
+  },
+  "pricingComparison": {
+    "title": "See how we stack up against the competition",
+    "subtitle": "Compare Feedbackito's pricing for 200 survey responses with other popular survey on-site tools",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "whyChoose": "Why choose Feedbackito?",
+    "whyChooseText": "While other tools focus on just collecting responses, we provide AI-powered analysis that turns feedback into actionable insights."
   },
   "faq": {
     "title": "FAQ",

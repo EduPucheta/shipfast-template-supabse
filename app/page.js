@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import Pricing from "@/components/Pricing";
+import PricingComparison from "@/components/PricingComparison";
 import FAQ from "@/components/FAQ";
 
 import CTA from "@/components/CTA";
@@ -29,6 +30,7 @@ export default async function Page() {
         <FeaturesAccordion lang={lng}/>
         <CardUseCases lang={lng} />
         <Pricing lang={lng}/>
+        <PricingComparison lang={lng}/>
         <FAQ lang={lng}/>
 
         <CTA lang={lng}/>
