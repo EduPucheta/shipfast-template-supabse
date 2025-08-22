@@ -41,21 +41,55 @@ This guide explains how to integrate the feedback widget into your website.
 1. Add the following script to your website's HTML, just before the closing `</body>` tag:
 
 ```html
-<script src="https://your-domain.com/widget.js"></script>
+<script src="https://your-domain.com/widget.js?space_id=YOUR_SPACE_ID"></script>
 ```
 
-2. Replace `YOUR_WIDGET_URL` in the widget.js file with your actual widget URL (e.g., `https://your-domain.com/widget`).
-
-3. Replace `YOUR_DOMAIN` in the widget.js file with your actual domain for security purposes.
+2. Replace `YOUR_SPACE_ID` with your actual space ID from the Feedbackito dashboard.
 
 ## Features
 
-- Floating feedback button in the bottom-right corner
-- Customizable themes
+- **Flexible Positioning**: Choose between bottom-right corner or right-side centered positioning
+- Floating feedback button with customizable themes
 - Star or heart rating system
 - Optional comment field
 - Mobile-responsive design
 - Secure iframe integration
+
+## Widget Positioning
+
+The widget supports two positioning options that you can configure when creating or editing surveys:
+
+### 1. Bottom Right (Default)
+- Position: Bottom-right corner of the screen
+- Best for: Most general use cases
+- CSS: `bottom: 20px; right: 20px;`
+
+### 2. Right Side (Centered)
+- Position: Right side of the screen, vertically centered
+- Best for: Websites with important content at the bottom
+- CSS: `right: 20px; top: 50%; transform: translateY(-50%);`
+- Similar to: Hotjar positioning
+
+## Configuration
+
+To change your widget position:
+
+1. Go to your Feedbackito dashboard
+2. Click **"Create New Survey"** or edit an existing survey
+3. In the **Customization** section, select your preferred **Widget Position** from the dropdown
+4. Save your survey
+
+The widget will automatically reposition based on your selection without requiring any changes to your website code.
+
+## Why Survey-Level Configuration?
+
+Widget positioning is configured at the **survey level** rather than the space level because:
+
+- **Different surveys** might need different positioning strategies
+- **A/B testing** different positions for different surveys
+- **Survey-specific positioning** based on content or target audience
+- **More granular control** over user experience
+- **Better alignment** with survey-specific settings like themes and targeting
 
 ## Customization
 
@@ -96,6 +130,11 @@ The widget supports the following themes:
 ## Security
 
 The widget is loaded in an iframe for security and isolation. Communication between the widget and the parent window is handled through secure postMessage events.
+
+## Testing
+
+You can test the different widget positions using our demo page:
+- [Widget Position Test Page](/test-widget-positions.html)
 
 ## Support
 

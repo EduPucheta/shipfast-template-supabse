@@ -258,6 +258,11 @@ export default function ConfigurationPage() {
                             {space.organization_url}
                           </a>
                         )}
+                        <div className="mt-2">
+                          <span className="text-sm text-base-content/70">
+                            <strong>Note:</strong> Widget positioning is now configured per survey in the survey creation form.
+                          </span>
+                        </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <button

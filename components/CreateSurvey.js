@@ -34,6 +34,7 @@ const CreateSurvey = () => {
   });
   const [targetingType, setTargetingType] = useState('all_pages'); // 'all_pages' or 'specific_pages'
   const [targetPaths, setTargetPaths] = useState([{ path: '', matchType: 'exact' }]); // Array of page path objects
+  const [widgetPosition, setWidgetPosition] = useState('bottom-right'); // Widget positioning
 
   useEffect(() => {
     const getUser = async () => {
@@ -163,6 +164,7 @@ const CreateSurvey = () => {
                     space_id: selectedSpace.id,
                     targeting_type: targetingType,
                     target_urls: targetingType === 'specific_pages' ? targetPaths.filter(p => p.path.trim()) : null,
+                    widget_position: widgetPosition,
                 },
             ])
             .select()
@@ -395,6 +397,22 @@ const CreateSurvey = () => {
                           <span className="label-text-alt">The body of the thank you message.</span>
                       </label>
                   </div>
+              <div className="form-control pt-4">
+                      <label className="label">
+                          <span className="label-text font-semibold">Widget Position</span>
+                      </label>
+                      <select
+                          className="select select-bordered w-full"
+                          value={widgetPosition}
+                          onChange={(e) => setWidgetPosition(e.target.value)}
+                      >
+                          <option value="bottom-right">Bottom Right</option>
+                          <option value="lateral-right">Right Side (Centered)</option>
+                      </select>
+                       <label className="label">
+                          <span className="label-text-alt">Choose where the feedback widget appears on your website.</span>
+                      </label>
+                  </div>
             </div>
           </div>
 
@@ -452,9 +470,9 @@ const CreateSurvey = () => {
                         onChange={(e) => setSelectedDevices(prev => ({ ...prev, mobile: e.target.checked }))}
                       />
                       <span className="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <rect x="5" y="2" width="14" height="20" rx="2" />
-                          <circle cx="12" cy="18" r="1" />
+                          <line x1="12" y1="18" x2="12" y2="18" />
                         </svg>
                         Mobile
                       </span>

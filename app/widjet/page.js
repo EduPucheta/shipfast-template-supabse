@@ -18,6 +18,7 @@ export default function WidgetPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [deviceType, setDeviceType] = useState('desktop');
   const [country, setCountry] = useState('Unknown');
+  const [widgetPosition, setWidgetPosition] = useState('bottom-right');
 
   // Function to check if current page matches survey targeting
   const checkPageMatching = (survey, currentPath) => {
@@ -79,12 +80,14 @@ export default function WidgetPage() {
     const spaceIdParam = params.get('space_id');
     const deviceTypeParam = params.get('deviceType');
     const countryParam = params.get('country');
+    const positionParam = params.get('position');
 
     if (url) setPageUrl(url);
     if (browserInfo) setBrowser(browserInfo);
     if (origin) setParentOrigin(origin);
     if (deviceTypeParam) setDeviceType(deviceTypeParam);
     if (countryParam) setCountry(countryParam);
+    if (positionParam) setWidgetPosition(positionParam);
 
     // Fetch active survey without authentication
     const fetchActiveSurvey = async () => {
@@ -98,6 +101,7 @@ export default function WidgetPage() {
         // Use device type passed from parent window
         console.log('Widget device type received from parent:', deviceTypeParam || deviceType);
         console.log('Widget country received from parent:', countryParam || country);
+        console.log('Widget position received from parent:', positionParam || widgetPosition);
 
         // First, get all active surveys for this space with their device targets and targeting info
         const { data: surveys, error: surveysError } = await supabase
@@ -108,6 +112,7 @@ export default function WidgetPage() {
             created_at,
             targeting_type,
             target_urls,
+            widget_position,
             survey_devices(device_name)
           `)
           .eq('is_active', true)
@@ -140,7 +145,17 @@ export default function WidgetPage() {
           console.log('Found compatible survey:', survey.id, 'for device:', currentDevice);
           setActiveSurveyId(survey.id);
           setSurveyTheme(survey.survey_theme || "light");
+          setWidgetPosition(survey.widget_position || 'bottom-right');
           setError(null);
+          
+          // Send position update to parent window
+          if (window.parent) {
+            const position = survey.widget_position || 'bottom-right';
+            window.parent.postMessage({ 
+              type: "update-position", 
+              position 
+            }, parentOrigin);
+          }
         } else {
           console.log('No surveys found for device type:', currentDevice);
           setError(`No active survey found for ${currentDevice} devices`);
@@ -154,7 +169,7 @@ export default function WidgetPage() {
     };
 
     fetchActiveSurvey();
-  }, [deviceType, country]);
+  }, [deviceType, country, widgetPosition]);
 
   // Define handlers before they're used in useEffect
   const handleCollapse = useCallback(() => {
@@ -267,11 +282,23 @@ export default function WidgetPage() {
       ) : (
         <button
           onClick={handleExpand}
-        
-          className="btn btn-primary cursor-pointer rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex flex-row items-center gap-2 text-sm"
+          className={`cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 text-sm ${
+            widgetPosition === 'lateral-right' 
+              ? 'bg-primary hover:bg-primary-focus text-primary-content rounded-bl-2xl rounded-tl-2xl px-3 py-2 min-h-[120px] justify-center' 
+              : 'btn btn-primary rounded-full px-4 py-2 flex-row'
+          }`}
         >
-          <MessageSquare className="w-4 h-4" />
-          Feedback
+          {widgetPosition === 'lateral-right' ? (
+            <div className="flex flex-col items-center gap-2">
+              <span className="writing-mode-vertical text-center font-medium">Feedback</span>
+              <MessageSquare className="w-4 h-4" />
+            </div>
+          ) : (
+            <>
+              <MessageSquare className="w-4 h-4" />
+              Feedback
+            </>
+          )}
         </button>
       )}
     </div>

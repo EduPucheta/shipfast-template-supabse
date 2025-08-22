@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Position Testing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .position-controls {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .position-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .position-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+        .position-btn:not(.active) {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        .position-btn:hover:not(.active) {
+            background: #d1d5db;
+        }
+        .description {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        .widget-info {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+        .widget-info h3 {
+            margin-top: 0;
+            color: #1f2937;
+        }
+        .widget-info ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .widget-info li {
+            margin: 8px 0;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Widget Position Testing</h1>
+        
+        <div class="description">
+            <p>This page demonstrates the widget in different positions. Use the buttons below to switch between positioning modes.</p>
+        </div>
+
+        <div class="position-controls">
+            <button class="position-btn active" onclick="setPosition('bottom-right')">Bottom Right</button>
+            <button class="position-btn" onclick="setPosition('lateral-right')">Lateral Right</button>
+        </div>
+
+        <div class="widget-info">
+            <h3>Widget Features:</h3>
+            <ul>
+                <li><strong>Bottom Right:</strong> Traditional rounded button with horizontal text</li>
+                <li><strong>Lateral Right:</strong> Vertical tab with rotated text, orange-red background</li>
+                <li>Responsive design that adapts to different screen sizes</li>
+                <li>Smooth transitions between positions</li>
+                <li>Click to expand and view the survey</li>
+            </ul>
+        </div>
+
+        <div class="widget-info">
+            <h3>How to Test:</h3>
+            <ul>
+                <li>Click the position buttons above to see the widget change</li>
+                <li>Notice how the widget adapts its styling and dimensions</li>
+                <li>Click on the widget to expand it and see the survey</li>
+                <li>Resize your browser window to see responsive behavior</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function setPosition(position) {
+            // Update active button
+            document.querySelectorAll('.position-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Send message to widget to change position
+            if (window.parent) {
+                window.parent.postMessage({ 
+                    type: "update-position", 
+                    position 
+                }, '*');
+            }
+        }
+
+        // Simulate widget position updates for demo purposes
+        function simulateWidgetPosition(position) {
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+                iframe.dataset.position = position;
+                if (position === 'lateral-right') {
+                    iframe.style.width = '60px';
+                    iframe.style.height = '120px';
+                    iframe.style.right = '0px';
+                    iframe.style.borderRadius = '0px';
+                } else {
+                    iframe.style.width = '124px';
+                    iframe.style.height = '40px';
+                    iframe.style.right = '20px';
+                    iframe.style.borderRadius = '20px';
+                }
+            }
+        }
+    </script>
+
+    <!-- Widget will be loaded here -->
+    <script src="widget.js?space_id=demo"></script>
+</body>
+</html>

@@ -17,6 +17,13 @@ progress::-webkit-progress-value {
   background-color: unset !important;
 }
 
+/* Vertical text orientation for lateral widget positioning */
+.writing-mode-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
 /*
 @layer base {
   .btn-gradient {
