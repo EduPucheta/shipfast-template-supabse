@@ -1,3 +1,4 @@
+import {describe, expect, test} from '@jest/globals';
 import config from '../config.js';
 
 // Get the pricing function from the Scale plan
