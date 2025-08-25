@@ -30,24 +30,7 @@ export default async function CardHowItWorks({ lang }) {
           {Array.isArray(steps) && steps.map((step, idx) => (
             <Card key={idx} className="border border-base-200 hover:shadow-2xl transition-shadow">
               <div className="p-6 md:p-8 h-full flex flex-col">
-                {/* Step Image */}
-                <div className="mb-6 flex justify-center">
-                  <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-                    <Image
-                      src={stepImages[idx] || "/images/step-placeholder.png"}
-                      alt={`Step ${idx + 1}: ${step.title}`}
-                      width={96}
-                      height={96}
-                      className="object-cover w-full h-full"
-                    />
-                    {/* Fallback icon overlay - will show if image fails to load */}
-                    <div className="absolute inset-0 flex items-center justify-center text-4xl text-primary/60 bg-base-100/80 opacity-0 hover:opacity-100 transition-opacity">
-                      {idx === 0 && "📝"}
-                      {idx === 1 && "🔗"}
-                      {idx === 2 && "📊"}
-                    </div>
-                  </div>
-                </div>
+
                 
                 <div className="flex items-start gap-4 mb-4">
                   <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-content font-bold">
