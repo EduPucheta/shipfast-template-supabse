@@ -60,6 +60,7 @@ const config = {
           { name: "pricing.plans.pro.features.2" },
           { name: "pricing.plans.pro.features.3" },
           { name: "pricing.plans.pro.features.4" },
+          { name: "pricing.plans.pro.features.5" },
           { name: "Dedicated customer success manager" },
    
 
@@ -122,6 +123,7 @@ const config = {
           { name: "pricing.plans.pro.features.2" },
           { name: "pricing.plans.pro.features.3" },
           { name: "pricing.plans.pro.features.4" },
+          { name: "pricing.plans.pro.features.5" },
           { name: "Dedicated customer success manager" },
         ],
       },
