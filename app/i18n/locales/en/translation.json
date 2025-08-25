@@ -188,5 +188,23 @@
   },
   "testimonialsAvatars": {
     "joinAndGetDiscount": "Join our <1>{{subscriberCount}}</1> subscribers and get <3>40% off</3> when launch!"
+  },
+  "howItWorks": {
+    "eyebrow": "How it works?",
+    "title": "Find value in 3 steps",
+    "steps": [
+      {
+        "title": "Install Feedbackito script",
+        "description": "Copy a tiny script tag into your site. It loads fast and works anywhere."
+      },
+      {
+        "title": "Create your first survey",
+        "description": "Launch in minutes from the dashboard. You can create a survey in seconds."
+      },
+      {
+        "title": "Analyze results",
+        "description": "See responses and recommended actions to improve. You can also ask the AI questions to get more insights."
+      }
+    ]
   }
 } 

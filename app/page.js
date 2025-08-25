@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import Problem from "@/components/Problem";
 import FeaturesAccordion from "@/components/FeaturesAccordion";
 import CardUseCases from "@/components/CardUseCases";
+import CardHowItWorks from "@/components/CardHowItWorks";
 import { cookies } from "next/headers";
 
 
@@ -28,6 +29,7 @@ export default async function Page() {
         <HeroSection lang={lng}/>
         <Problem lang={lng}/> 
         <FeaturesAccordion lang={lng}/>
+        <CardHowItWorks lang={lng} />
         <CardUseCases lang={lng} />
         <Pricing lang={lng}/>
         <PricingComparison lang={lng}/>
