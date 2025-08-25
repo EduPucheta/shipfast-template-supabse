@@ -2,12 +2,13 @@
   "name": "ship-fast-code",
   "version": "0.1.0",
   "private": true,
-  
   "scripts": {
     "dev": "next dev  ",
     "build": "next build && next-sitemap",
     "start": "next start",
     "lint": "next lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "stripe": "stripe listen --forward-to localhost:3000/api/webhook/stripe",
     "clean": "rm -rf .next && rm -rf node_modules/.cache",
     "fresh": "npm run clean && npm install && npm run dev",
@@ -58,9 +59,17 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.11",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "autoprefixer": "^10.4.15",
     "daisyui": "^5.0.46",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.8.3"
   }
 }
