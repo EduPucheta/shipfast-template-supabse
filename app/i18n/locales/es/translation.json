@@ -189,5 +189,23 @@
   },
   "testimonialsAvatars": {
     "joinAndGetDiscount": "¡Únete a nuestros <1>{{subscriberCount}}</1> suscriptores y obtén un <3>40% de descuento</3> en el lanzamiento!"
+  },
+  "howItWorks": {
+    "eyebrow": "¿Cómo funciona?",
+    "title": "Descubre valor en 3 pasos",
+    "steps": [
+      {
+        "title": "Instala el script de Feedbackito",
+        "description": "Copia una etiqueta de script mínima en tu sitio. Carga rápido y funciona en cualquier lugar."
+      },
+      {
+        "title": "Crea tu primera encuesta",
+        "description": "Elige una plantilla o empieza desde cero. Lanza en minutos desde el panel."
+      },
+      {
+        "title": "Analiza los resultados",
+        "description": "Mira respuestas, resúmenes con IA y acciones recomendadas para mejorar."
+      }
+    ]
   }
 } 
