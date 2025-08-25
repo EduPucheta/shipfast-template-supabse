@@ -36,6 +36,7 @@ const config = {
           { name: "pricing.plans.free.features.1" },
           { name: "pricing.plans.free.features.2" },
           { name: "pricing.plans.free.features.3" },
+          { name: "pricing.plans.free.features.4" },
           
         ],
       },
@@ -59,11 +60,7 @@ const config = {
         
           { name: "pricing.plans.pro.features.2" },
           { name: "pricing.plans.pro.features.3" },
-          { name: "pricing.plans.pro.features.4" },
-          { name: "pricing.plans.pro.features.5" },
-          { name: "Dedicated customer success manager" },
-   
-
+          { name: "pricing.plans.pro.features.4" }
         ],
       },
       {
@@ -122,9 +119,7 @@ const config = {
           },
           { name: "pricing.plans.pro.features.2" },
           { name: "pricing.plans.pro.features.3" },
-          { name: "pricing.plans.pro.features.4" },
-          { name: "pricing.plans.pro.features.5" },
-          { name: "Dedicated customer success manager" },
+          { name: "pricing.plans.pro.features.4" }
         ],
       },
       {

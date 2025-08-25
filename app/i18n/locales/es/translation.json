@@ -93,7 +93,8 @@
           "0": "100 respuestas mensuales",
           "1": "Encuestas ilimitadas",
           "2": "Totalmente personalizable",
-          "3": "Algunos tokens para hablar con la IA"
+          "3": "Algunos tokens para hablar con la IA",
+          "4": "Gerente de éxito del cliente dedicado"
         }
       },
       "pro": {
@@ -105,7 +106,7 @@
           "2": "100 millones de tokens de IA mensuales",
           "3": "Eliminar la marca Feedbackito",
           "4": "Acciones recomendadas con IA",
-          "5": "Soporte humano"
+          "5": ""
         }
       },
       "scale": {
