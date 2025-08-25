@@ -1,193 +1,27 @@
 {
-  "hero": {
-    "title": "You just launched a new product and you want to...",
-    "subtitle": "Get user feedback before you run out of money.",
-    "cta": "Get started"
-  },
-  "heroSection": {
-    "title": "Stop guessing. Start listening. Feedbackito gets the answers",
-    "titleHighlight": " straight from your users.",
-    "subtitle": "Collect website feedback, turn it into an AI chat."
-  },
-  "problem": {
-    "title": "80% of businesses struggle to leverage customer feedback effectively",
-    "subtitle": "Sorting through responses, analyzing data, and implementing changes can feel like an endless cycle.",
-    "step1": "Spending hours on data analysis",
-    "step2": "Overwhelmed by conflicting insights",
-    "step3": "Missing out on valuable opportunities"
-  },
-  "featuresAccordion": {
-    "title": "Transform customer feedback into",
-    "titleHighlight": "actionable insights",
-    "features": [
-      {
-        "title": "Website Widget",
-        "description": "Seamlessly collect customer reviews with our beautiful, customizable widget on your website, or share a direct link to your survey. It's mobile-responsive and designed for maximum engagement, so you can get real-time feedback from your users wherever they are."
-      },
-      {
-        "title": "Analytics Dashboard",
-        "description": "Comprehensive analytics dashboard that gives you deep insights into customer feedback. Track sentiment trends, identify key themes, and measure customer satisfaction over time. Make data-driven decisions with beautiful visualizations and detailed reports."
-      },
-      {
-        "title": "AI Chat",
-        "description": "Utilizing advanced AI, our chat assistant analyzes collected data to provide deep insights into customer feedback. Ask questions to discover how you can improve your business and enhance customer satisfaction."
-      },
-      {
-        "title": "AI Actions Recommendations",
-        "description": "Receive intelligent recommendations for actions to take based on AI analysis of customer feedback. Improve your business processes and customer satisfaction with data-driven suggestions."
+  "plans": {
+    "free": {
+      "name": "Free",
+      "description": "Perfect for small projects",
+      "features": {
+        "0": "100 monthly responses",
+        "1": "Unlimited surveys",
+        "2": "Fully customizable",
+        "3": "Some tokens to talk to the AI",
+        "4": "Dedicated customer success manager"
       }
-    ]
-  },
-  "useCases": {
-    "title": "Use cases to",
-    "titleHighlight": "unlock value",
-    "subtitle": "Popular ways teams use Feedbackito to collect insights and act fast.",
-    "items": [
-      {
-        "title": "SaaS Product Feedback",
-        "description": "Collect in-app feedback on features, analyze sentiment, and prioritize your roadmap with AI summaries."
-      },
-      {
-        "title": "E‑commerce Post‑Purchase",
-        "description": "Trigger surveys after checkout to learn about friction, product satisfaction, and reasons for returns."
-      },
-      {
-        "title": "Marketing Website UX",
-        "description": "Embed a widget on landing pages to understand objections and improve conversion copy."
-      },
-      {
-        "title": "Customer Support QA",
-        "description": "Aggregate support feedback, find recurring issues, and get recommended fixes to reduce ticket volume."
-      },
-      {
-        "title": "Beta Programs",
-        "description": "Run structured betas, centralize feedback, and identify must‑fix items before launch."
-      },
-      {
-        "title": "Onboarding Feedback",
-        "description": "Measure activation friction, uncover confusing steps, and ship quick fixes that increase day‑1 success."
-      }
-    ]
-  },
-  "pricing": {
-    "title": "Pricing",
-    "subtitle": "Choose the perfect plan for your growth journey",
-    "monthly": "Monthly",
-    "yearly": "Yearly",
-    "monthsFree": "2 months free",
-    "popular": "POPULAR",
-    "website": "website",
-    "websites": "websites",
-    "upTo": "Up to",
-    "contactUs": "Contact us",
-    "noCreditCard": "No credit card required.",
-    "billedMonthly": "Billed monthly. Cancel anytime.",
-    "billedYearly": "Billed yearly. Cancel anytime.",
-    "getStarted": "Get Started",
-    "websiteTooltip": "A website is a project with a unique domain and its subdomains.",
-    "plans": {
-      "free": {
-        "name": "Free",
-        "description": "Perfect for small projects",
-        "features": {
-          "0": "100 monthly responses",
-          "1": "Unlimited surveys",
-          "2": "Fully customizable",
-          "3": "Some tokens to talk to the AI"
-        }
-      },
-      "pro": {
-        "name": "Pro",
-        "description": "You need more power",
-        "features": {
-          "0": "Everything in Free",
-          "1": "Unlimited responses",
-          "2": "100 million monthly AI tokens",
-          "3": "Remove Feedbackito branding",
-          "4": "AI actions recommendations",
-          "5": "Human Support"
-        }
-      },
-      "scale": {
-        "name": "Scale",
-        "description": "For managing multiple sites",
-        "features": {
-          "0": "Everything in Pro"
-        }
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "You need more power",
+      "features": {
+        "0": "Everything in Free",
+        "1": "Unlimited responses",
+        "2": "100 million monthly AI tokens",
+        "3": "Remove Feedbackito branding",
+        "4": "AI actions recommendations",
+        "5": ""
       }
     }
-  },
-  "pricingComparison": {
-    "title": "See how we stack up against the competition",
-    "subtitle": "Compare Feedbackito's pricing for 200 survey responses with other popular survey on-site tools",
-    "getStarted": "Get Started",
-    "learnMore": "Learn More",
-    "whyChoose": "Why choose Feedbackito?",
-    "whyChooseText": "While other tools focus on just collecting responses, we provide AI-powered analysis that turns feedback into actionable insights."
-  },
-  "faq": {
-    "title": "FAQ",
-    "subtitle": "Frequently Asked Questions",
-    "questions": [
-      {
-        "question": "How does the AI analysis of feedback work?",
-        "answer": "Our AI analyzes your survey responses to identify patterns, trends, and key insights. You can have natural conversations with the AI to dive deeper into specific aspects of your feedback, ask follow-up questions, and get actionable recommendations based on the data."
-      },
-      {
-        "question": "What types of feedback can I collect?",
-        "answer": "You can collect various types of feedback including customer satisfaction surveys, product feedback, employee feedback, market research, and more. Our platform supports multiple question types and can handle both structured and unstructured responses."
-      },
-      {
-        "question": "Is my feedback data secure?",
-        "answer": "Yes, we take data security seriously. All feedback is encrypted in transit and at rest. We use industry-standard security practices and comply with data protection regulations. Your data is never shared with third parties without your explicit consent."
-      },
-      {
-        "question": "We use a similar tool, do you help in migration?",
-        "answer": "Yes, we can help with migration. Please log in to your account and contact our support team to request it. We will be happy to assist you with the process."
-      },
-      {
-        "question": "Would you help in setting up and onboarding?",
-        "answer": "Absolutely! We offer dedicated support for setting up your account and onboarding your team. Please reach out to our support team after you have signed up, and we will be happy to guide you through the process."
-      },
-      {
-        "question": "How do I get started?",
-        "answer": "Getting started is easy! Simply sign up for an account, create your first survey, and start collecting feedback. Our AI assistant will automatically analyze responses as they come in, and you can start asking questions about your data right away."
-      }
-    ]
-  },
-  "cta": {
-    "title": "Transform your feedback into actionable insights",
-    "subtitle": "Stop spending hours analyzing survey responses manually. Let AI help you understand what your users are really saying."
-  },
-  "footer": {
-    "copyright": "Copyright © 2025 - All rights reserved",
-    "links": "LINKS",
-    "legal": "LEGAL",
-    "pricing": "Pricing",
-    "termsOfService": "Terms of services",
-    "privacyPolicy": "Privacy policy"
-  },
-  "buttonSignin": {
-    "login": "Login",
-    "account": "Account"
-  },
-  "buttonSupport": {
-    "support": "Support"
-  },
-  "buttonLead": {
-    "joinWaitlist": "Join waitlist",
-    "emailPlaceholder": "tom@cruise.com",
-    "successMessage": "Thanks for joining the waitlist!"
-  },
-  "signUpPresale": {
-    "alreadySubscribed": "This email is already subscribed!",
-    "success": "Thanks for subscribing!",
-    "error": "Something went wrong. Please try again later.",
-    "emailPlaceholder": "Enter your email",
-    "subscribing": "Subscribing...",
-    "joinWaitlist": "Join Waitlist"
-  },
-  "testimonialsAvatars": {
-    "joinAndGetDiscount": "Join our <1>{{subscriberCount}}</1> subscribers and get <3>40% off</3> when launch!"
   }
-} 
+}
