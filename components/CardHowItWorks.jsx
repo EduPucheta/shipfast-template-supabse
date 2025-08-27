@@ -19,10 +19,10 @@ export default async function CardHowItWorks({ lang }) {
     <section className="py-24 md:py-32 bg-base-100">
       <div className="max-w-7xl mx-auto px-8">
         <p className="text-sm font-semibold tracking-widest uppercase text-primary mb-2">
-          {t("howItWorks.eyebrow")}
+         
         </p>
         <h2 className="font-extrabold text-4xl lg:text-6xl tracking-tight mb-4">
-          {t("howItWorks.title")}
+        {t("howItWorks.eyebrow")}
         </h2>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mt-8 lg:items-stretch">
