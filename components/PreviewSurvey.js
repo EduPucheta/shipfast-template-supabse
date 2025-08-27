@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useSurvey } from "../app/context/SurveyContext";
 import { Smartphone, Monitor, RefreshCcw } from "lucide-react";
+import { detectBrowserName } from "../libs/browser-detector";
 
 const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browser, deviceType: propDeviceType, country: propCountry }) => {
   const supabase = createClientComponentClient();
@@ -157,7 +158,7 @@ const PreviewSurvey = ({ isPreview, surveyID, showDeviceToggles, pageUrl, browse
 
     // Get the parent page URL from the referrer (safely after mounting)
     const pageUrlToSubmit = pageUrl || (typeof document !== 'undefined' ? document.referrer : '');
-    const browserToSubmit = browser || (typeof navigator !== 'undefined' ? navigator.userAgent : '');
+    const browserToSubmit = browser || (typeof navigator !== 'undefined' ? detectBrowserName(navigator.userAgent) : 'Unknown');
     const countryToSubmit = propCountry || 'Unknown';
 
     console.log('Page URL:', pageUrlToSubmit);

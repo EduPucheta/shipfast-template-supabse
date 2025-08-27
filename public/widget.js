@@ -32,6 +32,59 @@
     }
   };
 
+  // Function to detect browser name from user agent
+  const detectBrowserName = (userAgent) => {
+    if (!userAgent) return 'Unknown';
+
+    const ua = userAgent.toLowerCase();
+
+    // Check for Edge first (before Chrome, since Edge includes "chrome" in UA)
+    if (ua.includes('edg/') || ua.includes('edge/')) {
+      return 'Microsoft Edge';
+    }
+    
+    // Check for Chrome (must be before Safari, since Chrome includes "safari" in UA)
+    if (ua.includes('chrome/') && !ua.includes('edg')) {
+      return 'Chrome';
+    }
+    
+    // Check for Firefox
+    if (ua.includes('firefox/')) {
+      return 'Firefox';
+    }
+    
+    // Check for Safari (must be after Chrome check)
+    if (ua.includes('safari/') && !ua.includes('chrome/')) {
+      return 'Safari';
+    }
+    
+    // Check for Opera
+    if (ua.includes('opera/') || ua.includes('opr/')) {
+      return 'Opera';
+    }
+    
+    // Check for Internet Explorer
+    if (ua.includes('msie') || ua.includes('trident/')) {
+      return 'Internet Explorer';
+    }
+    
+    // Check for other browsers
+    if (ua.includes('vivaldi/')) {
+      return 'Vivaldi';
+    }
+    
+    if (ua.includes('brave/')) {
+      return 'Brave';
+    }
+    
+    if (ua.includes('samsung')) {
+      return 'Samsung Internet';
+    }
+    
+    // Default fallback
+    return 'Unknown Browser';
+  };
+
   // Function to apply positioning based on position setting
   const applyPositioning = (iframe, position) => {
     iframe.style.position = 'fixed';
@@ -69,7 +122,7 @@
     const widgetUrl = new URL(`${baseUrl}/widjet`);
     
     widgetUrl.searchParams.set('pageUrl', window.location.href);
-    widgetUrl.searchParams.set('browser', navigator.userAgent);
+    widgetUrl.searchParams.set('browser', detectBrowserName(navigator.userAgent));
     widgetUrl.searchParams.set('parentOrigin', window.location.origin);
     widgetUrl.searchParams.set('space_id', spaceId);
     widgetUrl.searchParams.set('deviceType', detectDeviceType());
