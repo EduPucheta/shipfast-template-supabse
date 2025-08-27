@@ -25,16 +25,16 @@ const PricingComparison = ({ lang }) => {
       color: "bg-orange-500"
     },
     {
-      name: "Typeform",
-      price: 25, // Pro plan
+      name: "Survicate",
+      price: 92, // Pro plan
       responses: "100 responses",
-      features: ["Basic analytics", "Custom branding", "File uploads"],
+      features: ["Basic analytics", "Custom branding", "2 years data retention"],
       color: "bg-blue-500"
     },
     {
-      name: "SurveyMonkey",
-      price: 75, // Team Advantage plan
-      responses: "Unlimited",
+      name: "Survio",
+      price: 50, // Team Advantage plan
+      responses: "3000 responses",
       features: ["Advanced analytics", "Team collaboration", "Custom themes"],
       color: "bg-purple-500"
     },
@@ -70,7 +70,7 @@ const PricingComparison = ({ lang }) => {
                     <img src="/icon.png" alt="Feedbackito" className="w-8 h-8 filter brightness-0 invert" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold">Feedbackito</h3>
+                    <h3 className="text-base font-bold">Feedbackito Pro</h3>
                     <p className="text-sm text-base-content/70">Unlimited responses</p>
                   </div>
                 </div>
