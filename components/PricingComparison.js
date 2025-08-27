@@ -2,47 +2,48 @@
 import { useTranslation } from '@/app/i18n/client';
 import config from "@/config";
 import ButtonCheckout from "./ButtonCheckout";
-import Link from "next/link";
+import Image from "next/image";
+
 
 const PricingComparison = ({ lang }) => {
   const { t } = useTranslation(lang);
 
   // Calculate Feedbackito pricing for 200 responses
-  const calculateFeedbackitoPrice = (responses) => {
+  const calculateFeedbackitoPrice = () => {
     // Based on your config, for 200 responses you'd need the Scale plan
     // Since 200 responses is beyond the 100 free limit, user needs Pro plan
     // Pro plan has unlimited responses for $29/month
     return 29;
   };
 
-  const feedbackitoPrice = calculateFeedbackitoPrice(200);
+  const feedbackitoPrice = calculateFeedbackitoPrice();
   const competitors = [
     {
       name: "Hotjar",
       price: 59, // Plus plan
-      responses: "500 responses",
-      features: ["Unlimited surveys", "Hotjar logo", "No AI analysis"],
+      responses: `500 ${t('pricingComparison.responses')}`,
+      features: [t('pricingComparison.features.unlimitedSurveys'), t('pricingComparison.features.hotjarLogo'), t('pricingComparison.features.noAiAnalysis')],
       color: "bg-orange-500"
     },
     {
       name: "Survicate",
       price: 92, // Pro plan
-      responses: "100 responses",
-      features: ["Basic analytics", "Custom branding", "2 years data retention"],
+      responses: `100 ${t('pricingComparison.responses')}`,
+      features: [t('pricingComparison.features.basicAnalytics'), t('pricingComparison.features.customBranding'), t('pricingComparison.features.dataRetention')],
       color: "bg-blue-500"
     },
     {
       name: "Survio",
       price: 50, // Team Advantage plan
-      responses: "3000 responses",
-      features: ["Advanced analytics", "Team collaboration", "Custom themes"],
+      responses: `3000 ${t('pricingComparison.responses')}`,
+      features: [t('pricingComparison.features.advancedAnalytics'), t('pricingComparison.features.teamCollaboration'), t('pricingComparison.features.customThemes')],
       color: "bg-purple-500"
     },
     {
       name: "Qualtrics",
       price: 1500, // Research Core plan
-      responses: "Unlimited",
-      features: ["Advanced research tools", "Statistical analysis", "Enterprise features"],
+      responses: t('pricingComparison.unlimitedText'),
+      features: [t('pricingComparison.features.advancedResearchTools'), t('pricingComparison.features.statisticalAnalysis'), t('pricingComparison.features.enterpriseFeatures')],
       color: "bg-red-500"
     }
   ];
@@ -67,20 +68,20 @@ const PricingComparison = ({ lang }) => {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                    <img src="/icon.png" alt="Feedbackito" className="w-8 h-8 filter brightness-0 invert" />
+                    <Image src="/icon.png" alt="Feedbackito" className="w-8 h-8 filter brightness-0 invert" width={32} height={32} />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold">Feedbackito Pro</h3>
-                    <p className="text-sm text-base-content/70">Unlimited responses</p>
+                    <h3 className="text-base font-bold">{t('pricingComparison.feedbackitoPro')}</h3>
+                    <p className="text-sm text-base-content/70">{t('pricingComparison.unlimitedResponses')}</p>
                   </div>
                 </div>
-                <div className="badge badge-primary badge-lg">BEST VALUE</div>
+                <div className="badge badge-primary ">{t('pricingComparison.bestValue')}</div>
               </div>
               
               <div className="mb-6">
                 <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-4xl font-bold text-primary">${feedbackitoPrice}</span>
-                  <span className="text-base-content/70">/month</span>
+                  <span className="text-base-content/70">{t('pricingComparison.perMonth')}</span>
                 </div>
             
               </div>
@@ -92,7 +93,7 @@ const PricingComparison = ({ lang }) => {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-sm">AI-powered analysis</span>
+                  <span className="text-sm">{t('pricingComparison.aiPoweredAnalysis')}</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
@@ -100,7 +101,7 @@ const PricingComparison = ({ lang }) => {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-sm">Unlimited surveys</span>
+                  <span className="text-sm">{t('pricingComparison.unlimitedSurveys')}</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
@@ -108,7 +109,7 @@ const PricingComparison = ({ lang }) => {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-sm">Actionable insights</span>
+                  <span className="text-sm">{t('pricingComparison.actionableInsights')}</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
@@ -116,7 +117,7 @@ const PricingComparison = ({ lang }) => {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <span className="text-sm">No branding</span>
+                  <span className="text-sm">{t('pricingComparison.noBranding')}</span>
                 </li>
               </ul>
 
@@ -147,9 +148,9 @@ const PricingComparison = ({ lang }) => {
               <div className="mb-4">
                 <div className="flex items-baseline gap-2">
                   <span className="text-2xl font-bold">
-                    {competitor.price === 0 ? 'Free' : `$${competitor.price}`}
+                    {competitor.price === 0 ? t('pricingComparison.free') : `$${competitor.price}`}
                   </span>
-                  {competitor.price > 0 && <span className="text-base-content/70">/month</span>}
+                  {competitor.price > 0 && <span className="text-base-content/70">{t('pricingComparison.perMonth')}</span>}
                 </div>
               </div>
 
@@ -178,10 +179,10 @@ const PricingComparison = ({ lang }) => {
               {t('pricingComparison.whyChooseText')}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <div className="badge badge-primary badge-lg">AI Analysis</div>
-              <div className="badge badge-secondary badge-lg">Unlimited Surveys</div>
-              <div className="badge badge-accent badge-lg">Custom Branding</div>
-              <div className="badge badge-info badge-lg">Actionable Insights</div>
+              <div className="badge badge-primary badge-lg">{t('pricingComparison.badges.aiAnalysis')}</div>
+              <div className="badge badge-secondary badge-lg">{t('pricingComparison.badges.unlimitedSurveys')}</div>
+              <div className="badge badge-accent badge-lg">{t('pricingComparison.badges.customBranding')}</div>
+              <div className="badge badge-info badge-lg">{t('pricingComparison.badges.actionableInsights')}</div>
             </div>
           </div>
         </div>

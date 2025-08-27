@@ -123,7 +123,38 @@
     "getStarted": "Get Started",
     "learnMore": "Learn More",
     "whyChoose": "Why choose Feedbackito?",
-    "whyChooseText": "While other tools focus on just collecting responses, we provide AI-powered analysis that turns feedback into actionable insights."
+    "whyChooseText": "While other tools focus on just collecting responses, we provide AI-powered analysis that turns feedback into actionable insights.",
+    "feedbackitoPro": "Feedbackito Pro",
+    "unlimitedResponses": "Unlimited responses",
+    "bestValue": "BEST VALUE",
+    "perMonth": "/month",
+    "aiPoweredAnalysis": "AI-powered analysis",
+    "unlimitedSurveys": "Unlimited surveys",
+    "actionableInsights": "Actionable insights",
+    "noBranding": "No branding",
+    "responses": "responses",
+    "unlimitedText": "Unlimited",
+    "free": "Free",
+    "features": {
+      "unlimitedSurveys": "Unlimited surveys",
+      "hotjarLogo": "Hotjar logo",
+      "noAiAnalysis": "No AI analysis",
+      "basicAnalytics": "Basic analytics",
+      "customBranding": "Custom branding",
+      "dataRetention": "2 years data retention",
+      "advancedAnalytics": "Advanced analytics",
+      "teamCollaboration": "Team collaboration",
+      "customThemes": "Custom themes",
+      "advancedResearchTools": "Advanced research tools",
+      "statisticalAnalysis": "Statistical analysis",
+      "enterpriseFeatures": "Enterprise features"
+    },
+    "badges": {
+      "aiAnalysis": "AI Analysis",
+      "unlimitedSurveys": "Unlimited Surveys",
+      "customBranding": "Custom Branding",
+      "actionableInsights": "Actionable Insights"
+    }
   },
   "faq": {
     "title": "FAQ",

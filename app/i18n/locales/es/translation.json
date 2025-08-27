@@ -123,7 +123,38 @@
     "getStarted": "Empezar",
     "learnMore": "Saber Más",
     "whyChoose": "¿Por qué elegir Feedbackito?",
-    "whyChooseText": "Mientras que otras herramientas se enfocan solo en recopilar respuestas, nosotros proporcionamos análisis impulsado por IA que convierte los comentarios en información accionable."
+    "whyChooseText": "Mientras que otras herramientas se enfocan solo en recopilar respuestas, nosotros proporcionamos análisis impulsado por IA que convierte los comentarios en información accionable.",
+    "feedbackitoPro": "Feedbackito Pro",
+    "unlimitedResponses": "Respuestas ilimitadas",
+    "bestValue": "MEJOR VALOR",
+    "perMonth": "/mes",
+    "aiPoweredAnalysis": "Análisis impulsado por IA",
+    "unlimitedSurveys": "Encuestas ilimitadas",
+    "actionableInsights": "Información accionable",
+    "noBranding": "Sin marca",
+    "responses": "respuestas",
+    "unlimitedText": "Ilimitado",
+    "free": "Gratis",
+    "features": {
+      "unlimitedSurveys": "Encuestas ilimitadas",
+      "hotjarLogo": "Logo de Hotjar",
+      "noAiAnalysis": "Sin análisis de IA",
+      "basicAnalytics": "Análisis básico",
+      "customBranding": "Marca personalizada",
+      "dataRetention": "Retención de datos de 2 años",
+      "advancedAnalytics": "Análisis avanzado",
+      "teamCollaboration": "Colaboración en equipo",
+      "customThemes": "Temas personalizados",
+      "advancedResearchTools": "Herramientas de investigación avanzadas",
+      "statisticalAnalysis": "Análisis estadístico",
+      "enterpriseFeatures": "Funciones empresariales"
+    },
+    "badges": {
+      "aiAnalysis": "Análisis IA",
+      "unlimitedSurveys": "Encuestas Ilimitadas",
+      "customBranding": "Marca Personalizada",
+      "actionableInsights": "Información Accionable"
+    }
   },
   "faq": {
     "title": "Preguntas Frecuentes",

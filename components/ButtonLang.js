@@ -2,24 +2,19 @@
 
 import { useTranslation } from '@/app/i18n/client';
 import { languages } from '@/app/i18n/settings';
-
+import { usePathname, useRouter } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 
 export default function ButtonLang({ lng }) {
   const { i18n } = useTranslation(lng);
+  const router = useRouter();
+  const pathname = usePathname();
 
-
-  const changeLanguage = async (newLng) => {
-    // Set the cookie immediately
-    document.cookie = `i18next=${newLng}; path=/; max-age=31536000`; // 1 year
-    
-    // Change the language in i18next
-    i18n.changeLanguage(newLng);
-    
-    // Force a complete page reload to ensure server components get the new language
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
+  const changeLanguage = (newLng) => {
+    const newPath = pathname.replace(`/${lng}`, `/${newLng}`);
+    // Set the cookie for future visits
+    document.cookie = `i18next=${newLng}; path=/; max-age=31536000`;
+    router.push(newPath);
   };
 
   return (
