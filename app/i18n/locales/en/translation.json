@@ -85,6 +85,7 @@
     "billedYearly": "Billed yearly. Cancel anytime.",
     "getStarted": "Get Started",
     "websiteTooltip": "A website is a project with a unique domain and its subdomains.",
+    "featureSuggestionPriorityTooltip": "We are a fast growing start-up, so we implement your suggestions in days",
     "plans": {
       "free": {
         "name": "Free",
@@ -94,7 +95,7 @@
           "1": "Unlimited surveys",
           "2": "Fully customizable",
           "3": "Some tokens to talk to the AI",
-          "4": "Dedicated customer success manager"
+          "4": "Feature suggestion priority"
         }
       },
       "pro": {
