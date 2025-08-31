@@ -24,6 +24,9 @@ progress::-webkit-progress-value {
   transform: rotate(180deg);
 }
 
+/* Ensure highlight backgrounds hug glyphs on small screens */
+.bg-neutral.inline-block { padding-left: 0; padding-right: 0; }
+
 /*
 @layer base {
   .btn-gradient {
