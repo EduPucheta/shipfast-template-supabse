@@ -12,7 +12,7 @@ export default async function CardUseCases({ lang }) {
     <section className="py-24 md:py-32 bg-base-100">
       <div className="max-w-7xl mx-auto px-8">
         <h2 className="font-extrabold text-4xl lg:text-6xl tracking-tight mb-4">
-          {t("useCases.title")} <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed whitespace-nowrap">{t("useCases.titleHighlight")}</span>
+          {t("useCases.title")} <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed inline-block whitespace-normal md:whitespace-nowrap break-words">{t("useCases.titleHighlight")}</span>
         </h2>
         <p className="text-base-content/70 mb-10 md:mb-14 max-w-3xl">{t("useCases.subtitle")}</p>
 

@@ -31,7 +31,7 @@ const HeroSection = () => {
             {t('heroSection.title')}
             <br />
             {" "}
-            <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed whitespace-nowrap">
+            <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed inline-block whitespace-normal md:whitespace-nowrap break-words">
               {t('heroSection.titleHighlight')}
             </span>
           </h1>
