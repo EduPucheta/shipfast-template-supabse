@@ -102,13 +102,16 @@ const HeaderDashboard = () => {
 
           {/* Create New Survey Button */}
           <div className="p-4 border-b border-base-300">
-            <Link
-              href="/dashboard/new-survey"
-              className="btn btn-outline w-full flex items-center justify-center gap-2"
-            >
-              <Plus className="w-5 h-5" />
-              Create new survey
-            </Link>
+            <div className="dropdown dropdown-bottom w-full">
+              <div tabIndex={0} role="button" className="btn btn-outline w-full flex items-center justify-center gap-2">
+                <Plus className="w-5 h-5" />
+                Create
+              </div>
+              <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full">
+                <li><Link href="/dashboard/new-survey">New survey</Link></li>
+                <li><Link href="/dashboard/new-ab-test">New AB Test</Link></li>
+              </ul>
+            </div>
           </div>
 
           {/* Spaces Dropdown */}

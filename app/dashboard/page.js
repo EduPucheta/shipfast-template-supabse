@@ -53,10 +53,16 @@ export default async function Dashboard() {
         </div>
 
         <div className="w-full flex justify-end mb-4">
-          <Link href={"/dashboard/new-survey"} className="btn">
-            <Plus />
-            Create new survey
-          </Link>
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className="btn">
+              <Plus />
+              Create
+            </div>
+            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+              <li><Link href="/dashboard/new-survey">New survey</Link></li>
+              <li><Link href="/dashboard/new-ab-test">New AB Test</Link></li>
+            </ul>
+          </div>
         </div>
         <div className="w-full">
           <SurveyNav />
@@ -65,4 +71,3 @@ export default async function Dashboard() {
     </>
   );
 }
- 
